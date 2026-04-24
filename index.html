@@ -265,5 +265,40 @@
     document.getElementById('page-' + id).classList.add('active');
   }
 </script>
+  <script>
+  async function loadDailyData() {
+  const response = await fetch('https://kosmoso-worker.yourname.workers.dev');
+  const data = await response.json();
+  
+  // Now use 'data.bellissima' and 'data.discovery' to fill your page
+  renderBella(data.bellissima);
+  renderNASA(data.discovery);
+  document.getElementById('side-apod').src = data.apod.url;
+}
+async function fetchBellissima() {
+  const cat = await fetch("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=categorymembers&cmtitle=Category:Physics&cmlimit=50").then(r => r.json());
+  const topic = cat.query.categorymembers[Math.floor(Math.random() * 50)].title.replace(/\s+/g, '_');
+  const d = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + topic).then(r => r.json());
+  return { title: d.title, text: d.extract, img: d.thumbnail?.source || '' };
+}
+
+async function fetchNasaDiscoveryRandom() {
+  const q = ['nebula','pulsar','voyager','hubble'][Math.floor(Math.random()*4)];
+  const res = await fetch(`https://images-api.nasa.gov/search?q=${q}&media_type=image,video`).then(r => r.json());
+  const item = res.collection.items[Math.floor(Math.random()*10)];
+  return { title: item.data[0].title, url: item.links[0].href, type: item.data[0].media_type };
+}
+
+async function fetchApod(key) {
+  return await fetch(`https://api.nasa.gov/planetary/apod?api_key=${key}`).then(r => r.json());
+}
+
+async function fetchEpic(key) {
+  const epic = await fetch(`https://api.nasa.gov/EPIC/api/natural/latest?api_key=${key}`).then(r => r.json());
+  const p = epic[0]; 
+  const dt = p.date.slice(0,10).replace(/-/g,'/');
+  return { url: `https://epic.gsfc.nasa.gov/archive/natural/${dt}/jpg/${p.image}.jpg` };
+}
+  </script>
 </body>
 </html>
