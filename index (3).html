@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>COSMOSO</title>
+<style>
+  body {
+    background: #ffffff;
+    color: #000000;
+    font-family: Times New Roman, Times, serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow-x: hidden;
+  }
+  a { color: #0000cc; }
+  a:visited { color: #551a8b; }
+  a:hover { color: #cc0000; }
+
+
+  /* ── background decor images ── */
+  .bg-decor-img {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: multiply;
+  }
+  
+
+  /* ── top bar ── */
+  #topbar {
+    background: #000080;
+    color: #ffffff;
+    text-align: center;
+    padding: 6px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* ── main layout ── */
+  #outer {
+    width: 760px;
+    margin: 0 auto;
+    padding: 10px 0 40px;
+    position: relative;
+    z-index: 5;
+  }
+
+  /* ── site title ── */
+  #sitetitle {
+    text-align: center;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 10px;
+    margin-bottom: 6px;
+  }
+  #sitetitle h1 {
+    font-family: Times New Roman, serif;
+    font-size: 42px;
+    font-weight: bold;
+    letter-spacing: 8px;
+    margin: 10px 0 2px;
+  }
+  #sitetitle .tagline { font-size: 13px; font-style: italic; color: #444444; }
+
+  /* ── nav ── */
+  #nav {
+    text-align: center;
+    border-bottom: 1px solid #000000;
+    padding: 6px 0;
+    margin-bottom: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+  }
+  #nav a { margin: 0 12px; text-decoration: none; color: #000080; font-weight: bold; }
+  #nav a:hover { text-decoration: underline; color: #cc0000; }
+  #nav a.active { color: #cc0000; text-decoration: underline; }
+
+  /* ── pages ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── home layout ── */
+  #home-layout { display: table; width: 100%; border-collapse: collapse; }
+  #home-main {
+    display: table-cell; width: 490px; vertical-align: top;
+    padding-right: 20px; border-right: 1px solid #cccccc;
+  }
+  #home-sidebar { display: table-cell; width: 230px; vertical-align: top; padding-left: 18px; }
+
+  .section-head {
+    font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold;
+    letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid #000000;
+    padding-bottom: 3px; margin-bottom: 10px; color: #000000;
+  }
+
+  /* intro */
+  #intro-box { border: 1px solid #000080; padding: 14px 16px; margin-bottom: 18px; background: #f0f0ff; }
+  #intro-box p { margin: 0 0 8px; line-height: 1.7; font-size: 15px; }
+  #intro-box p:last-child { margin-bottom: 0; }
+
+  /* bellissima */
+  #bellissima-box { border: 2px solid #000000; margin-bottom: 18px; background: #fffff0; }
+  #bellissima-head {
+    background: #000000; color: #ffffff; font-family: Times New Roman, serif;
+    font-size: 15px; font-style: italic; font-weight: bold; padding: 6px 12px; letter-spacing: 1px;
+  }
+  #bellissima-head a { color: #aaaaff; font-size: 11px; font-style: normal; font-weight: normal; margin-left: 10px; }
+  #bellissima-head a:hover { color: #ffaaaa; }
+  #bellissima-body { padding: 14px 16px; }
+  #bellissima-img-wrap { float: right; margin: 0 0 10px 18px; max-width: 196px; text-align: center; position: relative; }
+  #bellissima-img-inner { position: relative; display: inline-block; padding: 10px; background: #fffff0; }
+  #bellissima-img-inner::before { content: ''; position: absolute; inset: 0; border: 2px solid #888866; pointer-events: none; }
+  #bellissima-img-inner::after {
+    content: '❧'; position: absolute; bottom: -11px; left: 50%; transform: translateX(-50%);
+    font-size: 18px; color: #888866; background: #fffff0; padding: 0 4px; line-height: 1;
+  }
+  .bella-corner { position: absolute; font-size: 15px; color: #888866; line-height: 1; background: #fffff0; padding: 0 1px; }
+  .bella-corner.tl { top: -9px; left: -9px; }
+  .bella-corner.tr { top: -9px; right: -9px; transform: scaleX(-1); }
+  .bella-corner.bl { bottom: -9px; left: -9px; transform: scaleY(-1); }
+  .bella-corner.br { bottom: -9px; right: -9px; transform: scale(-1,-1); }
+  #bellissima-img-wrap img { max-width: 170px; display: block; border: 1px solid #ccccaa; }
+  #bellissima-img-caption { font-size: 10px; color: #666644; font-style: italic; padding: 5px 4px 2px; }
+  #bellissima-fact-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; }
+  #bellissima-fact-text { font-size: 14px; line-height: 1.75; color: #222222; margin-bottom: 10px; }
+  #bellissima-fact-text p { margin: 0 0 8px; }
+  #bellissima-wiki { font-size: 12px; font-style: italic; clear: both; padding-top: 6px; border-top: 1px dashed #cccccc; }
+  #bellissima-date { font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #888888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .bellissima-empty { font-size: 13px; color: #888888; font-style: italic; padding: 6px 0; }
+
+  /* apod */
+  #apod-box { margin-bottom: 18px; }
+  #apod-img-wrap { width: 100%; margin-bottom: 8px; border: 1px solid #999999; text-align: center; background: #111111; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+  #apod-img-wrap img { max-width: 100%; display: block; }
+  #apod-img-wrap iframe { width: 100%; height: 260px; border: none; }
+  #apod-title { font-weight: bold; font-size: 15px; margin-bottom: 4px; }
+  #apod-credit { font-size: 12px; color: #666666; margin-bottom: 6px; }
+  #apod-explanation { font-size: 13px; line-height: 1.65; color: #333333; }
+
+  /* nasa image library */
+  #nasa-img-box { margin-bottom: 18px; }
+  #nasa-img-wrap { width: 100%; margin-bottom: 8px; border: 1px solid #999999; background: #111111; min-height: 60px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #nasa-img-wrap img { max-width: 100%; display: block; }
+  #nasa-img-wrap iframe { width: 100%; height: 240px; border: none; }
+  #nasa-img-title { font-weight: bold; font-size: 14px; margin-bottom: 4px; }
+  #nasa-img-caption { font-size: 12px; color: #444444; line-height: 1.6; margin-bottom: 4px; }
+  #nasa-img-credit { font-size: 11px; color: #888888; }
+
+  /* sidebar */
+  .sidebar-widget { border: 1px solid #999999; margin-bottom: 14px; font-size: 13px; }
+  .sidebar-widget-head { background: #000080; color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; padding: 4px 8px; letter-spacing: 1px; }
+  .sidebar-widget-body { padding: 8px 10px; }
+  .live-indicator { display: inline-block; width: 7px; height: 7px; background: #009900; border-radius: 50%; margin-right: 4px; animation: blink 1.5s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.2} }
+  #mars-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-bottom: 5px; }
+  #mars-mini-grid img { width: 100%; height: 52px; object-fit: cover; border: 1px solid #cccccc; }
+  #mars-mini-count { font-size: 11px; color: #666666; }
+
+  /* epic iframe */
+  #epic-iframe { width: 100%; height: 340px; border: none; display: block; }
+
+  /* bellissima archive */
+  #bella-archive-layout { max-width: 640px; }
+  .archive-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 10px; }
+  .archive-item { border: 1px solid #cccccc; padding: 8px; background: #fffff0; }
+  .archive-item-img { width: 100%; height: 80px; object-fit: cover; border: 1px solid #ccccaa; margin-bottom: 6px; display: block; }
+  .archive-item-img-placeholder { width: 100%; height: 80px; background: #f0f0e0; border: 1px solid #ccccaa; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #aaaaaa; font-style: italic; }
+  .archive-item-date { font-family: Arial, sans-serif; font-size: 10px; color: #888888; margin-bottom: 3px; }
+  .archive-item-title { font-size: 13px; font-weight: bold; line-height: 1.3; margin-bottom: 4px; }
+  .archive-item-wiki { font-size: 11px; }
+
+  /* blog */
+  #blog-layout { max-width: 640px; }
+  .blog-intro { border-left: 3px solid #000080; padding: 10px 14px; margin-bottom: 22px; font-style: italic; color: #333333; font-size: 14px; line-height: 1.7; background: #f8f8ff; }
+  .blog-entry { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid #cccccc; }
+  .blog-entry:last-child { border-bottom: none; }
+  .blog-entry-date { font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #666666; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+  .blog-entry-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; line-height: 1.3; }
+  .blog-entry-body { font-size: 15px; line-height: 1.8; color: #222222; }
+  .blog-entry-body p { margin: 0 0 12px; }
+  .blog-entry-link { margin-top: 10px; font-size: 13px; font-style: italic; }
+
+  /* admin */
+  #admin-lock { border: 2px solid #000000; padding: 18px; max-width: 340px; margin: 0 auto 24px; text-align: center; background: #fffff0; }
+  #admin-lock p { font-size: 14px; margin-bottom: 10px; }
+  #admin-lock input[type=password] { font-family: Courier New, monospace; font-size: 14px; padding: 5px 8px; border: 1px solid #999999; width: 180px; margin-right: 6px; }
+  #admin-lock button, .retro-btn { font-family: Arial, Helvetica, sans-serif; font-size: 12px; padding: 5px 12px; background: #000080; color: #ffffff; border: 2px outset #8888cc; cursor: pointer; font-weight: bold; }
+  #admin-lock button:hover, .retro-btn:hover { background: #0000aa; }
+  #admin-lock .error { color: #cc0000; font-size: 13px; margin-top: 6px; }
+  #admin-panel { display: none; }
+  #admin-panel.open { display: block; }
+  .admin-form { border: 1px solid #cccccc; padding: 16px; margin-bottom: 20px; background: #fafafa; }
+  .admin-form h3 { font-family: Arial, Helvetica, sans-serif; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #cccccc; padding-bottom: 6px; margin-bottom: 12px; }
+  .form-row { margin-bottom: 10px; }
+  .form-row label { display: block; font-size: 12px; font-family: Arial, Helvetica, sans-serif; margin-bottom: 3px; font-weight: bold; color: #333333; }
+  .form-row input[type=text], .form-row input[type=url], .form-row textarea, .form-row select { width: 100%; font-family: Times New Roman, serif; font-size: 14px; padding: 5px 7px; border: 1px solid #999999; box-sizing: border-box; background: #ffffff; }
+  .form-row textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+  .form-note { font-size: 11px; color: #888888; margin-top: 3px; font-style: italic; }
+  .submit-row { margin-top: 14px; }
+  .success-msg { color: #006600; font-size: 13px; margin-top: 8px; font-style: italic; }
+  .admin-entry-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid #eeeeee; font-size: 13px; }
+  .admin-entry-row:last-child { border-bottom: none; }
+  .delete-btn { font-family: Arial, sans-serif; font-size: 11px; padding: 2px 8px; background: #cc0000; color: #ffffff; border: 2px outset #ee8888; cursor: pointer; flex-shrink: 0; margin-left: 10px; }
+  .delete-btn:hover { background: #aa0000; }
+  .retro-loading { font-family: Courier New, monospace; font-size: 13px; color: #666666; padding: 10px 0; }
+
+  /* footer */
+  #footer { text-align: center; border-top: 2px solid #000000; padding-top: 10px; margin-top: 30px; font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #666666; }
+  #footer a { color: #0000cc; }
+  hr.retro { border: none; border-top: 1px solid #cccccc; margin: 16px 0; }
+
+  @media(max-width:780px){
+    #outer { width: 98%; }
+    #home-layout { display: block; }
+    #home-main { display: block; width: 100%; padding-right: 0; border-right: none; border-bottom: 1px solid #cccccc; padding-bottom: 16px; margin-bottom: 16px; }
+    #home-sidebar { display: block; width: 100%; padding-left: 0; }
+    .archive-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+
+
+<div id="topbar">
+  <span class="live-indicator"></span>
+  COSMOSO &nbsp;·&nbsp; A PERSONAL RECORD OF THE UNIVERSE
+</div>
+
+<div id="outer">
+  <div id="sitetitle">
+    <h1>COSMOSO</h1>
+    <div class="tagline">a personal record of the universe</div>
+  </div>
+
+  <div id="nav">
+    <a href="#" class="active" id="nav-home" onclick="showPage('home');return false;">HOME</a>
+    <a href="#" id="nav-blog" onclick="showPage('blog');return false;">THE LETTERS</a>
+    <a href="#" id="nav-bella-archive" onclick="showPage('bella-archive');return false;">BELLISSIMA ARCHIVE</a>
+    <a href="#" id="nav-admin" onclick="showPage('admin');return false;">EDIT</a>
+  </div>
+
+  <!-- HOME -->
+  <div id="page-home" class="page active">
+    <div id="home-layout">
+      <div id="home-main">
+
+        <div id="intro-box">
+          <div class="section-head">INTRODUCTION</div>
+          <div id="intro-text"><p>Loading...</p></div>
+        </div>
+
+        <div id="bellissima-box">
+          <div id="bellissima-head">
+            bellissima! &mdash; today's physics fact
+            <a href="#" onclick="showPage('bella-archive');return false;">[ archive ]</a>
+          </div>
+          <div id="bellissima-body">
+            <div class="bellissima-empty">No fact posted yet. Go to EDIT to add today's fact.</div>
+          </div>
+        </div>
+
+        <div id="apod-box">
+          <div class="section-head">NASA — ASTRONOMY PICTURE OF THE DAY</div>
+          <div id="apod-img-wrap"><div class="retro-loading">[ loading image... ]</div></div>
+          <div id="apod-title"></div>
+          <div id="apod-credit"></div>
+          <div id="apod-explanation"></div>
+        </div>
+
+        <div id="nasa-img-box">
+          <div class="section-head">NASA IMAGE LIBRARY — TODAY'S PICK</div>
+          <div id="nasa-img-wrap"><div class="retro-loading">[ searching NASA archives... ]</div></div>
+          <div id="nasa-img-title"></div>
+          <div id="nasa-img-caption"></div>
+          <div id="nasa-img-credit"></div>
+        </div>
+
+      </div>
+
+      <div id="home-sidebar">
+
+        <div class="sidebar-widget">
+          <div class="sidebar-widget-head">EARTH FROM SPACE — EPIC</div>
+          <div class="sidebar-widget-body" style="padding:0;">
+            <iframe id="epic-iframe" src="https://epic.gsfc.nasa.gov" title="NASA EPIC Earth viewer" loading="lazy"></iframe>
+          </div>
+        </div>
+
+        <div class="sidebar-widget">
+          <div class="sidebar-widget-head">MARS — CURIOSITY ROVER</div>
+          <div class="sidebar-widget-body">
+            <div id="mars-mini-grid"><div class="retro-loading" style="grid-column:1/-1">[ loading... ]</div></div>
+            <div id="mars-mini-count"></div>
+          </div>
+        </div>
+
+        <div class="sidebar-widget">
+          <div class="sidebar-widget-head">RECENT LETTERS</div>
+          <div class="sidebar-widget-body" id="sidebar-recent">
+            <div class="retro-loading">[ loading... ]</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOG -->
+  <div id="page-blog" class="page">
+    <div id="blog-layout">
+      <div class="section-head">THE LETTERS</div>
+      <div class="blog-intro">
+        These are letters written to no one in particular and everyone at once. About space, about physics, about cricket and boxing and the strange fact of being alive on a rock hurtling through a universe we barely understand. Write in, if you feel like it.
+      </div>
+      <div id="blog-entries-list"><div class="retro-loading">[ loading entries... ]</div></div>
+    </div>
+  </div>
+
+  <!-- BELLISSIMA ARCHIVE -->
+  <div id="page-bella-archive" class="page">
+    <div id="bella-archive-layout">
+      <div class="section-head">BELLISSIMA ARCHIVE</div>
+      <p style="font-size:13px;color:#666666;font-style:italic;margin-bottom:14px;">Every physics fact, every day. Images where they exist.</p>
+      <div class="archive-grid" id="bella-archive-grid">
+        <div style="grid-column:1/-1;" class="retro-loading">[ no archive entries yet ]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="page-admin" class="page">
+    <div class="section-head">EDIT SITE</div>
+    <div id="admin-lock">
+      <p><strong>enter password to edit</strong></p>
+      <input type="password" id="pw-input" placeholder="password" onkeydown="if(event.key==='Enter')checkPw()"/>
+      <button onclick="checkPw()">ENTER</button>
+      <div class="error" id="pw-error"></div>
+    </div>
+    <div id="admin-panel">
+
+      <div class="admin-form">
+        <h3>Bellissima! &mdash; Today's Physics Fact</h3>
+        <div class="form-row">
+          <label>Fact title</label>
+          <input type="text" id="bella-title" placeholder="e.g. The Casimir Effect"/>
+        </div>
+        <div class="form-row">
+          <label>Fact text</label>
+          <textarea id="bella-text" rows="5" placeholder="Explain the physics fact in your own words. Separate paragraphs with a blank line."></textarea>
+        </div>
+        <div class="form-row">
+          <label>Image — paste a URL (from Wikipedia, NASA, Wikimedia, etc.)</label>
+          <input type="url" id="bella-img-url" placeholder="https://upload.wikimedia.org/..."/>
+          <div class="form-note">Right-click any image online → "Copy image address" and paste it here.</div>
+        </div>
+        <div class="form-row">
+          <label>— OR — Upload an image from your computer</label>
+          <input type="file" id="bella-img-upload" accept="image/*" onchange="handleBellaUpload(event)" style="font-size:13px;"/>
+        </div>
+        <div id="bella-img-preview" style="margin-top:8px;display:none;">
+          <img id="bella-preview-img" style="max-width:200px;border:1px solid #cccccc;" alt="preview"/>
+          <div style="font-size:11px;color:#666666;margin-top:3px;">image preview</div>
+        </div>
+        <div class="form-row">
+          <label>Image caption (optional)</label>
+          <input type="text" id="bella-img-caption" placeholder="e.g. Diagram of the Casimir Effect"/>
+        </div>
+        <div class="form-row">
+          <label>Wikipedia page URL</label>
+          <input type="url" id="bella-wiki" placeholder="https://en.wikipedia.org/wiki/..."/>
+        </div>
+        <div class="submit-row">
+          <button class="retro-btn" onclick="saveBellissima()">SAVE &amp; PUBLISH FACT</button>
+          <span class="success-msg" id="bella-saved"></span>
+        </div>
+      </div>
+
+      <div class="admin-form">
+        <h3>Edit Introduction (Home Page)</h3>
+        <div class="form-row">
+          <label>Introduction text (one paragraph per line)</label>
+          <textarea id="edit-intro" rows="5"></textarea>
+        </div>
+        <div class="submit-row">
+          <button class="retro-btn" onclick="saveIntro()">SAVE INTRODUCTION</button>
+          <span class="success-msg" id="intro-saved"></span>
+        </div>
+      </div>
+
+      <div class="admin-form">
+        <h3>New Letter / Blog Entry</h3>
+        <div class="form-row"><label>Title</label><input type="text" id="new-title" placeholder="Enter title"/></div>
+        <div class="form-row">
+          <label>Body text</label>
+          <textarea id="new-body" placeholder="Write your entry here. Separate paragraphs with a blank line."></textarea>
+        </div>
+        <div class="form-row"><label>Image URL (optional)</label><input type="url" id="new-img" placeholder="https://..."/></div>
+        <div class="form-row"><label>Link (optional)</label><input type="url" id="new-link" placeholder="https://..."/></div>
+        <div class="form-row"><label>Link label (optional)</label><input type="text" id="new-link-label" placeholder="e.g. Read the full paper"/></div>
+        <div class="submit-row">
+          <button class="retro-btn" onclick="publishEntry()">PUBLISH ENTRY</button>
+          <span class="success-msg" id="entry-saved"></span>
+        </div>
+      </div>
+
+      <div class="admin-form">
+        <h3>Manage Existing Entries</h3>
+        <div id="admin-entry-list"><div class="retro-loading">[ no entries yet ]</div></div>
+      </div>
+
+      <div class="admin-form">
+        <h3>Change Password</h3>
+        <div class="form-row"><label>New password</label><input type="password" id="new-pw" placeholder="new password"/></div>
+        <div class="form-row"><label>Confirm</label><input type="password" id="new-pw2" placeholder="confirm"/></div>
+        <div class="submit-row">
+          <button class="retro-btn" onclick="changePw()">CHANGE PASSWORD</button>
+          <span class="success-msg" id="pw-changed"></span>
+        </div>
+      </div>
+
+
+      <div class="admin-form">
+        <h3>Background Decorations</h3>
+        <p style="font-size:12px;color:#666666;margin-bottom:12px;">Add images that float in the page background. Set opacity low (0.05–0.2) so they don't block text.</p>
+        <div class="form-row">
+          <label>Image — paste URL</label>
+          <input type="url" id="bg-img-url" placeholder="https://..."/>
+        </div>
+        <div class="form-row">
+          <label>— OR — Upload from computer</label>
+          <input type="file" id="bg-img-upload" accept="image/*" onchange="handleBgUpload(event)" style="font-size:13px;"/>
+        </div>
+        <div id="bg-img-preview" style="margin-top:6px;display:none;">
+          <img id="bg-preview-img" style="max-width:160px;border:1px solid #cccccc;" alt="preview"/>
+        </div>
+        <div class="form-row" style="margin-top:10px;">
+          <label>Horizontal position</label>
+          <select id="bg-pos-x">
+            <option value="5">Far left</option>
+            <option value="20">Left</option>
+            <option value="40">Centre-left</option>
+            <option value="50" selected>Centre</option>
+            <option value="60">Centre-right</option>
+            <option value="75">Right</option>
+            <option value="90">Far right</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Vertical position</label>
+          <select id="bg-pos-y">
+            <option value="5">Top</option>
+            <option value="25" selected>Upper</option>
+            <option value="45">Middle</option>
+            <option value="65">Lower</option>
+            <option value="85">Bottom</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Size (% of viewport width)</label>
+          <select id="bg-size">
+            <option value="10">Small (10%)</option>
+            <option value="20" selected>Medium (20%)</option>
+            <option value="30">Large (30%)</option>
+            <option value="45">Very large (45%)</option>
+            <option value="60">Huge (60%)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Rotation (degrees)</label>
+          <select id="bg-rotate">
+            <option value="0" selected>None</option>
+            <option value="10">10°</option>
+            <option value="18">18°</option>
+            <option value="25">25°</option>
+            <option value="45">45°</option>
+            <option value="-10">-10°</option>
+            <option value="-18">-18°</option>
+            <option value="-25">-25°</option>
+            <option value="-45">-45°</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Opacity (0.05 = barely visible, 0.5 = strong)</label>
+          <select id="bg-opacity">
+            <option value="0.05">0.05 — ghost</option>
+            <option value="0.08">0.08 — very faint</option>
+            <option value="0.12" selected>0.12 — subtle</option>
+            <option value="0.18">0.18 — light</option>
+            <option value="0.25">0.25 — visible</option>
+            <option value="0.4">0.4 — strong</option>
+            <option value="0.6">0.6 — bold</option>
+            <option value="1.0">1.0 — full</option>
+          </select>
+        </div>
+        <div class="submit-row">
+          <button class="retro-btn" onclick="addBgImage()">ADD TO BACKGROUND</button>
+          <span class="success-msg" id="bg-saved"></span>
+        </div>
+        <div id="bg-list" style="margin-top:16px;"></div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <button class="retro-btn" style="background:#666666;" onclick="lockAdmin()">LOCK &amp; EXIT</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer">
+    COSMOSO &nbsp;·&nbsp;
+    Data: <a href="https://api.nasa.gov" target="_blank">NASA APIs</a> &amp;
+    <a href="https://epic.gsfc.nasa.gov" target="_blank">NASA EPIC</a>
+    &nbsp;·&nbsp; Built with curiosity
+  </div>
+</div>
+
+<script>
+const NASA_KEY = 'TKBivYAGaBGI8eMexg23ORunenoeAHvZOlwqoWLh';
+const DEFAULT_PW = 'cosmos2026';
+
+function get(k,fb){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):fb;}catch{return fb;}}
+function set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const navEl = document.getElementById('nav-'+name);
+  if(navEl) navEl.classList.add('active');
+  if(name==='blog') renderBlog();
+  if(name==='bella-archive') renderBellaArchive();
+  if(name==='admin'){renderAdminList();loadIntroField();loadBellaFields();renderBgList();}
+}
+
+/* intro */
+const DEFAULT_INTRO = `This is Cosmoso. A personal record of the universe.\n\nI am a student. I am interested in space, physics, science, technology, cricket, boxing, film, and the strangeness of being alive. This site is where I put it all down.\n\nThe live feeds are real. The image is from NASA. The photos are from Mars.`;
+function getIntro(){return get('cosmoso_intro',DEFAULT_INTRO);}
+function renderIntro(){
+  const text=getIntro();
+  document.getElementById('intro-text').innerHTML=text.split('\n').filter(l=>l.trim()).map(p=>`<p>${p}</p>`).join('');
+}
+function loadIntroField(){document.getElementById('edit-intro').value=getIntro();}
+function saveIntro(){
+  const val=document.getElementById('edit-intro').value.trim();
+  if(!val)return;
+  set('cosmoso_intro',val);renderIntro();flash('intro-saved','Saved.');
+}
+
+/* blog */
+function getEntries(){return get('cosmoso_entries',[]);}
+function setEntries(arr){set('cosmoso_entries',arr);}
+function renderBlog(){
+  const entries=getEntries();
+  const container=document.getElementById('blog-entries-list');
+  if(!entries.length){container.innerHTML='<p style="color:#666666;font-style:italic;">No entries yet.</p>';return;}
+  container.innerHTML=entries.slice().reverse().map(e=>{
+    const paras=(e.body||'').split(/\n\s*\n/).filter(Boolean);
+    const bodyHTML=paras.map(p=>`<p>${p.replace(/\n/g,'<br/>')}</p>`).join('');
+    const imgHTML=e.img?`<div><img src="${e.img}" style="max-width:100%;border:1px solid #cccccc;margin:10px 0;" alt=""/></div>`:'';
+    const linkHTML=e.link?`<div style="margin-top:10px;font-size:13px;font-style:italic;">&#8594; <a href="${e.link}" target="_blank">${e.linkLabel||e.link}</a></div>`:'';
+    return `<div class="blog-entry">
+      <div class="blog-entry-date">${formatDate(e.date)}</div>
+      <div class="blog-entry-title">${e.title}</div>
+      <div class="blog-entry-body">${bodyHTML}${imgHTML}${linkHTML}</div>
+    </div>`;
+  }).join('');
+}
+function renderSidebarRecent(){
+  const entries=getEntries();
+  const el=document.getElementById('sidebar-recent');
+  if(!entries.length){el.innerHTML='<span style="font-size:12px;color:#888888;">No entries yet.</span>';return;}
+  el.innerHTML=entries.slice(-4).reverse().map(e=>
+    `<div style="margin-bottom:7px;font-size:13px;">
+      <div style="font-size:10px;color:#888888;font-family:Arial,sans-serif;">${formatDate(e.date)}</div>
+      <a href="#" onclick="showPage('blog');return false;">${e.title}</a>
+    </div>`
+  ).join('');
+}
+function publishEntry(){
+  const title=document.getElementById('new-title').value.trim();
+  const body=document.getElementById('new-body').value.trim();
+  if(!title||!body){alert('Please enter a title and body.');return;}
+  const entries=getEntries();
+  entries.push({id:Date.now(),date:new Date().toISOString(),title,body,
+    img:document.getElementById('new-img').value.trim(),
+    link:document.getElementById('new-link').value.trim(),
+    linkLabel:document.getElementById('new-link-label').value.trim()
+  });
+  setEntries(entries);
+  ['new-title','new-body','new-img','new-link','new-link-label'].forEach(id=>document.getElementById(id).value='');
+  renderAdminList();renderSidebarRecent();flash('entry-saved','Published.');
+}
+function renderAdminList(){
+  const entries=getEntries();
+  const el=document.getElementById('admin-entry-list');
+  if(!entries.length){el.innerHTML='<div class="retro-loading">[ no entries yet ]</div>';return;}
+  el.innerHTML=entries.slice().reverse().map(e=>
+    `<div class="admin-entry-row">
+      <div><strong>${e.title}</strong><div style="font-size:11px;color:#888888;">${formatDate(e.date)}</div></div>
+      <button class="delete-btn" onclick="deleteEntry(${e.id})">DELETE</button>
+    </div>`
+  ).join('');
+}
+function deleteEntry(id){
+  if(!confirm('Delete this entry?'))return;
+  setEntries(getEntries().filter(e=>e.id!==id));
+  renderAdminList();renderSidebarRecent();
+}
+function formatDate(iso){
+  try{return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});}catch{return iso;}
+}
+
+/* password */
+function getPw(){return get('cosmoso_pw',DEFAULT_PW);}
+function checkPw(){
+  const val=document.getElementById('pw-input').value;
+  if(val===getPw()){
+    document.getElementById('admin-lock').style.display='none';
+    document.getElementById('admin-panel').classList.add('open');
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-error').textContent='';
+    renderAdminList();loadIntroField();loadBellaFields();
+  } else {
+    document.getElementById('pw-error').textContent='Incorrect password.';
+  }
+}
+function lockAdmin(){
+  document.getElementById('admin-lock').style.display='block';
+  document.getElementById('admin-panel').classList.remove('open');
+  showPage('home');
+}
+function changePw(){
+  const p1=document.getElementById('new-pw').value;
+  const p2=document.getElementById('new-pw2').value;
+  if(!p1){alert('Enter a new password.');return;}
+  if(p1!==p2){alert('Passwords do not match.');return;}
+  set('cosmoso_pw',p1);
+  document.getElementById('new-pw').value='';
+  document.getElementById('new-pw2').value='';
+  flash('pw-changed','Password changed.');
+}
+function flash(id,msg){
+  const el=document.getElementById(id);
+  el.textContent=msg;
+  setTimeout(()=>{el.textContent='';},3000);
+}
+
+/* bellissima */
+function getBellissima(){return get('cosmoso_bellissima',null);}
+
+async function fetchDailyPhysicsFact(){
+  const today=new Date().toISOString().slice(0,10);
+  const cached=get('cosmoso_auto_bella',null);
+  if(cached&&cached.date===today){renderAutoBella(cached);return;}
+  try{
+    const res=await fetch('/.netlify/functions/daily-physics');
+    if(!res.ok)throw new Error('fetch failed');
+    const d=await res.json();
+    const fact={date:today,title:d.title,text:d.extract,img:d.thumbnail||'',imgCaption:d.description||'',wiki:d.wikiUrl,auto:true};
+    set('cosmoso_auto_bella',fact);
+    renderAutoBella(fact);
+  }catch(e){
+    /* silently fall back to manual entry */
+  }
+}
+
+function renderAutoBella(b){
+  /* only show auto fact if no manual fact exists for today */
+  const manual=getBellissima();
+  const today=new Date().toISOString().slice(0,10);
+  if(manual&&manual.date&&manual.date.slice(0,10)===today)return;
+  const body=document.getElementById('bellissima-body');
+  const paras=(b.text||'').split(/
+\s*
+/).filter(Boolean);
+  const textHTML=paras.map(p=>`<p>${p.replace(/\n/g,'<br/>')}</p>`).join('');
+  const imgHTML=b.img?`<div id="bellissima-img-wrap"><div id="bellissima-img-inner">
+    <span class="bella-corner tl">&#10070;</span><span class="bella-corner tr">&#10070;</span>
+    <span class="bella-corner bl">&#10070;</span><span class="bella-corner br">&#10070;</span>
+    <img src="${b.img}" alt="${b.imgCaption||''}"/></div>
+    ${b.imgCaption?`<div id="bellissima-img-caption">${b.imgCaption}</div>`:''}</div>`:'';
+  const wikiHTML=b.wiki?`<div id="bellissima-wiki">&#8594; <a href="${b.wiki}" target="_blank">Read more on Wikipedia</a></div>`:'';
+  body.innerHTML=`<div id="bellissima-date" style="font-family:Arial,sans-serif;font-size:10px;color:#888888;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">auto-fetched · ${b.date}</div>${imgHTML}<div id="bellissima-fact-title">${b.title}</div><div id="bellissima-fact-text">${textHTML}</div>${wikiHTML}<div style="clear:both;"></div>`;
+  /* add to archive */
+  const archive=getBellaArchive();
+  const existing=archive.findIndex(a=>a.date&&a.date.slice(0,10)===b.date);
+  if(existing<0){archive.push(b);setBellaArchive(archive);}
+}
+function getBellaArchive(){return get('cosmoso_bella_archive',[]);}
+function setBellaArchive(arr){set('cosmoso_bella_archive',arr);}
+
+function renderBellissima(){
+  const b=getBellissima();
+  const body=document.getElementById('bellissima-body');
+  if(!b||!b.title){body.innerHTML='<div class="bellissima-empty">No fact posted yet. Go to EDIT to add today\'s fact.</div>';return;}
+  const paras=(b.text||'').split(/\n\s*\n/).filter(Boolean);
+  const textHTML=paras.map(p=>`<p>${p.replace(/\n/g,'<br/>')}</p>`).join('');
+  const imgHTML=b.img?`
+    <div id="bellissima-img-wrap">
+      <div id="bellissima-img-inner">
+        <span class="bella-corner tl">&#10070;</span>
+        <span class="bella-corner tr">&#10070;</span>
+        <span class="bella-corner bl">&#10070;</span>
+        <span class="bella-corner br">&#10070;</span>
+        <img src="${b.img}" alt="${b.imgCaption||''}"/>
+      </div>
+      ${b.imgCaption?`<div id="bellissima-img-caption">${b.imgCaption}</div>`:''}
+    </div>`:'';
+  const wikiHTML=b.wiki?`<div id="bellissima-wiki">&#8594; <a href="${b.wiki}" target="_blank">Read more on Wikipedia</a></div>`:'';
+  const dateHTML=b.date?`<div id="bellissima-date">${formatDate(b.date)}</div>`:'';
+  body.innerHTML=`${dateHTML}${imgHTML}<div id="bellissima-fact-title">${b.title}</div><div id="bellissima-fact-text">${textHTML}</div>${wikiHTML}<div style="clear:both;"></div>`;
+}
+
+function renderBellaArchive(){
+  const archive=getBellaArchive();
+  const grid=document.getElementById('bella-archive-grid');
+  if(!archive.length){grid.innerHTML='<div style="grid-column:1/-1;" class="retro-loading">[ no archive entries yet — facts appear here each day after you publish them ]</div>';return;}
+  grid.innerHTML=archive.slice().reverse().map(b=>{
+    const imgHTML=b.img
+      ?`<img src="${b.img}" class="archive-item-img" alt="${b.imgCaption||''}"/>`
+      :`<div class="archive-item-img-placeholder">no image</div>`;
+    const wikiHTML=b.wiki?`<div class="archive-item-wiki"><a href="${b.wiki}" target="_blank">Wikipedia &#8594;</a></div>`:'';
+    return `<div class="archive-item">
+      ${imgHTML}
+      <div class="archive-item-date">${formatDate(b.date)}</div>
+      <div class="archive-item-title">${b.title}</div>
+      ${wikiHTML}
+    </div>`;
+  }).join('');
+}
+
+function loadBellaFields(){
+  const b=getBellissima();
+  if(!b)return;
+  document.getElementById('bella-title').value=b.title||'';
+  document.getElementById('bella-text').value=b.text||'';
+  document.getElementById('bella-img-url').value=b.imgUrl||'';
+  document.getElementById('bella-img-caption').value=b.imgCaption||'';
+  document.getElementById('bella-wiki').value=b.wiki||'';
+  if(b.img){document.getElementById('bella-preview-img').src=b.img;document.getElementById('bella-img-preview').style.display='block';}
+}
+
+function handleBellaUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const dataUrl=ev.target.result;
+    document.getElementById('bella-preview-img').src=dataUrl;
+    document.getElementById('bella-img-preview').style.display='block';
+    document.getElementById('bella-img-url').value='';
+    window._bellaUploadedImg=dataUrl;
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveBellissima(){
+  const title=document.getElementById('bella-title').value.trim();
+  const text=document.getElementById('bella-text').value.trim();
+  if(!title||!text){alert('Please enter a title and fact text.');return;}
+  let img=window._bellaUploadedImg||document.getElementById('bella-img-url').value.trim()||'';
+  const b={title,text,img,imgUrl:document.getElementById('bella-img-url').value.trim(),imgCaption:document.getElementById('bella-img-caption').value.trim(),wiki:document.getElementById('bella-wiki').value.trim(),date:new Date().toISOString()};
+  set('cosmoso_bellissima',b);
+  /* add to archive (avoid duplicate same-day entries) */
+  const archive=getBellaArchive();
+  const today=new Date().toISOString().slice(0,10);
+  const existing=archive.findIndex(a=>a.date&&a.date.slice(0,10)===today);
+  if(existing>=0) archive[existing]=b; else archive.push(b);
+  setBellaArchive(archive);
+  window._bellaUploadedImg=null;
+  renderBellissima();
+  flash('bella-saved','Published!');
+}
+
+/* NASA APOD */
+async function fetchAPOD(){
+  try{
+    const res=await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NASA_KEY}`);
+    const d=await res.json();
+    const isVideo=d.media_type==='video';
+    const src=(d.url||'').replace('http://','https://');
+    document.getElementById('apod-img-wrap').innerHTML=isVideo
+      ?`<iframe src="${src}" allowfullscreen></iframe>`
+      :`<img src="${src}" alt="${d.title}" style="max-width:100%;display:block;"/>`;
+    document.getElementById('apod-title').innerHTML=`<strong>${d.title}</strong>`;
+    document.getElementById('apod-credit').textContent=d.copyright?`Credit: ${d.copyright.replace(/\n/g,' ')}`:'Credit: NASA';
+    const exp=d.explanation.length>400?d.explanation.slice(0,400)+'…':d.explanation;
+    document.getElementById('apod-explanation').textContent=exp;
+  }catch(e){
+    document.getElementById('apod-img-wrap').innerHTML='<div style="padding:10px;color:#cc0000;font-size:13px;">Could not load image.</div>';
+  }
+}
+
+/* NASA Image Library — random daily pick based on date seed */
+const NASA_SEARCH_TERMS=['nebula','galaxy','supernova','asteroid','jupiter','saturn','apollo','hubble','webb telescope','black hole','aurora','solar flare','mars landscape','comet','exoplanet','milky way','neutron star','spacecraft','eclipse','moon crater'];
+async function fetchNASAImageLibrary(){
+  try{
+    const seed=new Date().toISOString().slice(0,10).replace(/-/g,'');
+    const idx=parseInt(seed)%NASA_SEARCH_TERMS.length;
+    const term=NASA_SEARCH_TERMS[idx];
+    const res=await fetch(`https://images-api.nasa.gov/search?q=${encodeURIComponent(term)}&media_type=image&page_size=20`);
+    const d=await res.json();
+    const items=(d.collection&&d.collection.items)||[];
+    if(!items.length){document.getElementById('nasa-img-wrap').innerHTML='<div style="padding:10px;font-size:13px;color:#888888;">No results today.</div>';return;}
+    const pick=items[parseInt(seed)%items.length];
+    const data=pick.data&&pick.data[0];
+    const links=pick.links&&pick.links[0];
+    if(links&&links.href){
+      const imgSrc=links.href.replace('http://','https://');
+      document.getElementById('nasa-img-wrap').innerHTML=`<img src="${imgSrc}" alt="${data&&data.title||''}" style="max-width:100%;display:block;"/>`;
+    }
+    if(data){
+      document.getElementById('nasa-img-title').innerHTML=`<strong>${data.title||''}</strong>`;
+      const desc=(data.description||'').slice(0,280);
+      document.getElementById('nasa-img-caption').textContent=desc+(data.description&&data.description.length>280?'…':'');
+      document.getElementById('nasa-img-credit').textContent=data.photographer?`Photo: ${data.photographer}`:(data.center?`Center: ${data.center}`:'');
+    }
+  }catch(e){
+    document.getElementById('nasa-img-wrap').innerHTML='<div style="padding:10px;color:#cc0000;font-size:13px;">Could not reach NASA Image Library.</div>';
+  }
+}
+
+/* Mars */
+async function fetchMars(){
+  try{
+    const res=await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?api_key=${NASA_KEY}`);
+    const d=await res.json();
+    const photos=(d.latest_photos||[]).slice(0,4);
+    if(!photos.length){document.getElementById('mars-mini-grid').innerHTML='<span style="font-size:12px;color:#888888;">No photos available.</span>';return;}
+    document.getElementById('mars-mini-grid').innerHTML=photos.map(p=>{
+      const src=p.img_src.replace('http://','https://');
+      return `<img src="${src}" alt="Mars" loading="lazy"/>`;
+    }).join('');
+    document.getElementById('mars-mini-count').textContent=`Sol ${photos[0].sol} · Curiosity`;
+  }catch(e){
+    document.getElementById('mars-mini-grid').innerHTML='<span style="font-size:12px;color:#888888;">Could not reach rover.</span>';
+  }
+}
+
+
+/* ── background decorations ── */
+function getBgImages(){return get('cosmoso_bg_images',[]);}
+function setBgImages(arr){set('cosmoso_bg_images',arr);}
+
+function renderBgImages(){
+  document.querySelectorAll('.bg-decor-img').forEach(el=>el.remove());
+  getBgImages().forEach(b=>{
+    const img=document.createElement('img');
+    img.className='bg-decor-img';
+    img.src=b.src;
+    img.alt='';
+    img.style.left=b.x+'%';
+    img.style.top=b.y+'%';
+    img.style.width=b.size+'vw';
+    img.style.opacity=b.opacity;
+    img.style.transform='translate(-50%,-50%) rotate('+b.rotate+'deg)';
+    document.body.appendChild(img);
+  });
+}
+
+function renderBgList(){
+  const el=document.getElementById('bg-list');
+  if(!el)return;
+  const imgs=getBgImages();
+  if(!imgs.length){el.innerHTML='<div class="retro-loading">[ no background images yet ]</div>';return;}
+  el.innerHTML='<div style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;margin-bottom:6px;">CURRENT BACKGROUND IMAGES</div>'+
+  imgs.map((b,i)=>`
+    <div class="admin-entry-row" style="align-items:center;">
+      <img src="${b.src}" style="width:40px;height:40px;object-fit:cover;border:1px solid #cccccc;flex-shrink:0;" alt=""/>
+      <div style="flex:1;margin:0 8px;font-size:12px;">
+        pos: ${b.x}% / ${b.y}% &nbsp;·&nbsp; size: ${b.size}vw &nbsp;·&nbsp; rotate: ${b.rotate}° &nbsp;·&nbsp; opacity: ${b.opacity}
+      </div>
+      <button class="delete-btn" onclick="deleteBgImage(${i})">REMOVE</button>
+    </div>`
+  ).join('');
+}
+
+function handleBgUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    window._bgUploadedImg=ev.target.result;
+    document.getElementById('bg-preview-img').src=ev.target.result;
+    document.getElementById('bg-img-preview').style.display='block';
+    document.getElementById('bg-img-url').value='';
+  };
+  reader.readAsDataURL(file);
+}
+
+function addBgImage(){
+  const src=window._bgUploadedImg||document.getElementById('bg-img-url').value.trim();
+  if(!src){alert('Please provide an image URL or upload a file.');return;}
+  const imgs=getBgImages();
+  imgs.push({
+    src,
+    x:parseInt(document.getElementById('bg-pos-x').value),
+    y:parseInt(document.getElementById('bg-pos-y').value),
+    size:parseInt(document.getElementById('bg-size').value),
+    rotate:parseInt(document.getElementById('bg-rotate').value),
+    opacity:parseFloat(document.getElementById('bg-opacity').value)
+  });
+  setBgImages(imgs);
+  window._bgUploadedImg=null;
+  document.getElementById('bg-img-url').value='';
+  document.getElementById('bg-img-preview').style.display='none';
+  renderBgImages();
+  renderBgList();
+  flash('bg-saved','Added!');
+}
+
+function deleteBgImage(idx){
+  if(!confirm('Remove this background image?'))return;
+  const imgs=getBgImages();
+  imgs.splice(idx,1);
+  setBgImages(imgs);
+  renderBgImages();
+  renderBgList();
+}
+
+/* init */
+renderIntro();
+renderBellissima();
+renderSidebarRecent();
+fetchAPOD();
+fetchNASAImageLibrary();
+fetchMars();
+fetchDailyPhysicsFact();
+renderBgImages();
+</script>
+</body>
+</html>
