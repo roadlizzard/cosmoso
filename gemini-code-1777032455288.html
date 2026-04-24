@@ -1,147 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>COSMOSO</title>
-<style>
-  body {
-    background: #ffffff;
-    color: #000000;
-    font-family: Times New Roman, Times, serif;
-    font-size: 16px;
-    margin: 0;
-    padding: 0;
-    position: relative;
-    overflow-x: hidden;
-  }
-  a { color: #0000cc; }
-  a:visited { color: #551a8b; }
-  a:hover { color: #cc0000; }
+<script type="module">
+  // 1. Firebase SDK Imports
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-  /* ── epic viewer ── */
-  #epic-viewer { width: 100%; }
-  #epic-img-wrap {
-    width: 100%;
-    aspect-ratio: 1;
-    background: #000000;
-    border: 1px solid #333333;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-height: 210px;
-  }
-  #epic-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  #epic-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    margin-top: 5px;
-  }
-  .epic-btn {
-    font-family: Arial, sans-serif;
-    font-size: 11px;
-    padding: 2px 7px;
-    background: #000080;
-    color: #ffffff;
-    border: 1px outset #8888cc;
-    cursor: pointer;
-    line-height: 1.4;
-  }
-  .epic-btn:hover { background: #0000aa; }
-  .epic-btn.playing { background: #880000; border-color: #cc8888; }
+  // 2. Your Firebase Configuration (Updated from your Project Settings)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAxFfLgoXqHh6vkS788YCK0HmV5JuDlrEo", // Get this from 'Your apps' in Firebase Project Settings
+    authDomain: "kosmoso.firebaseapp.com",
+    databaseURL: "https://kosmoso-default-rtdb.firebaseio.com",
+    projectId: "kosmoso",
+    storageBucket: "kosmoso.appspot.com",
+    messagingSenderId: "907090872412",
+    appId: "1:907090872412:web:e8f4d4044c3a2726cafe99" // Get this from 'Your apps' in Firebase Project Settings
+  };
 
-  /* ── top bar ── */
-  #topbar {
-    background: #000080;
-    color: #ffffff;
-    text-align: center;
-    padding: 6px 0;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    letter-spacing: 1px;
-    position: relative;
-    z-index: 10;
-  }
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-  /* ── main layout ── */
-  #outer {
-    width: 760px;
-    margin: 0 auto;
-    padding: 10px 0 40px;
-    position: relative;
-    z-index: 5;
+  const NASA_KEY = 'TKBivYAGaBGI8eMexg23ORunenoeAHvZOlwqoWLh';
+  const DEFAULT_PW = 'cosmos2026';
+
+  // --- Core Utilities ---
+  function get(k,fb){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):fb;}catch{return fb;}}
+  function setLocal(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+
+  // --- Dynamic Physics Fact (Infinite Search Mechanism) ---
+  async function fetchDailyPhysicsFact() {
+    const today = new Date().toISOString().slice(0, 10);
+    const cached = get('cosmoso_auto_bella', null);
+    
+    if (cached && cached.date === today) {
+      renderAutoBella(cached);
+      return;
+    }
+
+    try {
+      // Step 1: Search the "Physics" category for 50 random members
+      const categoryUrl = "https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=categorymembers&cmtitle=Category:Physics&cmlimit=50";
+      const catRes = await fetch(categoryUrl);
+      const catData = await catRes.json();
+      const members = catData.query.categorymembers;
+      
+      // Step 2: Pick one random title from the search results
+      const randomPage = members[Math.floor(Math.random() * members.length)];
+      const topic = randomPage.title.replace(/\s+/g, '_');
+
+      // Step 3: Fetch the Wikipedia summary for that specific topic
+      const res = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + topic);
+      const d = await res.json();
+      
+      const fact = {
+        date: today,
+        title: d.title,
+        text: d.extract,
+        img: d.thumbnail ? d.thumbnail.source : '',
+        wiki: d.content_urls.desktop.page
+      };
+
+      setLocal('cosmoso_auto_bella', fact);
+      renderAutoBella(fact);
+    } catch (e) {
+      console.error("Physics fetch error:", e);
+    }
   }
 
-  /* ── site title ── */
-  #sitetitle {
-    text-align: center;
-    border-bottom: 2px solid #000000;
-    padding-bottom: 10px;
-    margin-bottom: 6px;
-  }
-  #sitetitle h1 {
-    font-family: Times New Roman, serif;
-    font-size: 42px;
-    font-weight: bold;
-    letter-spacing: 8px;
-    margin: 10px 0 2px;
-  }
-  #sitetitle .tagline { font-size: 13px; font-style: italic; color: #444444; }
+  // --- Firebase Cloud Syncing ---
+  window.saveIntro = function() {
+    const val = document.getElementById('edit-intro').value.trim();
+    if(!val) return;
+    set(ref(db, 'siteData/intro'), val);
+    flash('intro-saved', 'Saved to Cloud.');
+  };
 
-  /* ── nav ── */
-  #nav {
-    text-align: center;
-    border-bottom: 1px solid #000000;
-    padding: 6px 0;
-    margin-bottom: 16px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 13px;
-  }
-  #nav a { margin: 0 12px; text-decoration: none; color: #000080; font-weight: bold; }
-  #nav a:hover { text-decoration: underline; color: #cc0000; }
-  #nav a.active { color: #cc0000; text-decoration: underline; }
+  window.saveBellissima = function() {
+    const title = document.getElementById('bella-title').value.trim();
+    const text = document.getElementById('bella-text').value.trim();
+    if(!title || !text) return;
+    const b = { title, text, date: new Date().toISOString() };
+    set(ref(db, 'siteData/bellissima'), b);
+    flash('bella-saved', 'Published to Cloud!');
+  };
 
-  /* ── pages ── */
-  .page { display: none; }
-  .page.active { display: block; }
+  onValue(ref(db, 'siteData/intro'), (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      setLocal('cosmoso_intro', data);
+      renderIntro();
+    }
+  });
 
-  /* ── home layout ── */
-  #home-layout { display: table; width: 100%; border-collapse: collapse; }
-  #home-main {
-    display: table-cell; width: 490px; vertical-align: top;
-    padding-right: 20px; border-right: 1px solid #cccccc;
-  }
-  #home-sidebar { display: table-cell; width: 230px; vertical-align: top; padding-left: 18px; }
+  onValue(ref(db, 'siteData/bellissima'), (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      setLocal('cosmoso_bellissima', data);
+      renderBellissima();
+    }
+  });
 
-  .section-head {
-    font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold;
-    letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid #000000;
-    padding-bottom: 3px; margin-bottom: 10px; color: #000000;
-  }
+  // --- Existing Site Logic (UI Rendering & NASA) ---
+  // [Note: Keep your existing render functions and NASA fetch functions here]
+  // ...
+  
+  // Initialize on Load
+  renderIntro();
+  renderBellissima();
+  fetchAPOD();
+  fetchNASAImageLibrary();
+  fetchMars();
+  fetchDailyPhysicsFact();
+  fetchEPIC();
 
-  /* intro */
-  #intro-box { border: 1px solid #000080; padding: 14px 16px; margin-bottom: 18px; background: #f0f0ff; }
-  #intro-box p { margin: 0 0 8px; line-height: 1.7; font-size: 15px; }
-  #intro-box p:last-child { margin-bottom: 0; }
-
-  /* bellissima */
-  #bellissima-box { border: 2px solid #000000; margin-bottom: 18px; background: #fffff0; }
-  #bellissima-head {
-    background: #000000; color: #ffffff; font-family: Times New Roman, serif;
-    font-size: 15px; font-style: italic; font-weight: bold; padding: 6px 12px; letter-spacing: 1px;
-  }
-  #bellissima-head a { color: #aaaaff; font-size: 11px; font-style: normal; font-weight: normal; margin-left: 10px; }
-  #bellissima-head a:hover { color: #ffaaaa; }
-  #bellissima-body { padding: 14px 16px; }
-  #bellissima-img-wrap { float: right; margin: 0 0 10px 18px; max-width: 196px; text-align: center; position: relative; }
-  #bellissima-img-inner { position: relative; display: inline-block; padding: 10px; background: #fffff0; }
-  #bellissima-img-inner::before { content: ''; position: absolute; inset: 0; border: 2px solid #888866; pointer-events: none; }
-  #bellissima-img-inner::after {
-    content: '❧'; position: absolute; bottom: -11px; left: 50%; transform: translateX(-50%);
-    font-size: 18px; color: #888866; background: #fffff0; padding: 0 4px; line-height: 1;
-  }
-  .bella-corner { position: absolute; font-size: 15px; color: #888866; line-height: 1; background: #fffff0; padding: 0 1px; }
-  .bella-corner.tl { top: -9px; left
+</script>
