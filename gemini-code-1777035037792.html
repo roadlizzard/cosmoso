@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>COSMOSO</title>
+<style>
+  body { background: #ffffff; color: #000000; font-family: "Times New Roman", Times, serif; font-size: 16px; margin: 0; padding: 0; overflow-x: hidden; }
+  #topbar { background: #000080; color: #ffffff; text-align: center; padding: 8px 0; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 1px; }
+  #outer { width: 760px; margin: 0 auto; padding: 20px 0; }
+  #sitetitle { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 10px; }
+  #nav { text-align: center; border-bottom: 1px solid #000; padding: 8px 0; margin-bottom: 20px; font-family: Arial, sans-serif; font-size: 13px; }
+  #nav a { margin: 0 15px; font-weight: bold; color: #000080; text-decoration: none; }
+  .page { display: none; }
+  .page.active { display: block; }
+  #home-layout { display: flex; gap: 20px; }
+  #home-main { flex: 2; border-right: 1px solid #ccc; padding-right: 20px; }
+  #home-sidebar { flex: 1; }
+  .section-head { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid #000; padding-bottom: 4px; margin-bottom: 12px; }
+  #intro-box { border: 1px solid #000080; padding: 15px; background: #f0f0ff; margin-bottom: 20px; }
+  #bellissima-box { border: 2px solid #000; background: #fffff0; margin-bottom: 20px; padding: 15px; }
+  .admin-form { border: 1px solid #ccc; padding: 20px; background: #f9f9f9; }
+  textarea { width: 100%; font-family: "Times New Roman", serif; font-size: 15px; padding: 10px; box-sizing: border-box; }
+  .retro-btn { background: #000080; color: #fff; border: 2px outset #88c; padding: 6px 15px; cursor: pointer; }
+  .media-card { border: 1px solid #ddd; padding: 8px; margin-bottom: 15px; background: #fff; }
+</style>
+</head>
+<body>
+
+<div id="topbar">COSMOSO &nbsp;·&nbsp; A PERSONAL RECORD OF THE UNIVERSE</div>
+
+<div id="outer">
+  <div id="sitetitle">
+    <h1 style="font-size: 42px; margin: 10px 0 0; letter-spacing: 5px;">COSMOSO</h1>
+    <div style="font-style: italic; color: #555;">technical mastery & cosmic systems</div>
+  </div>
+
+  <div id="nav">
+    <a href="#" onclick="showPage('home');return false;">HOME</a>
+    <a href="#" onclick="showPage('admin');return false;">EDIT</a>
+  </div>
+
+  <div id="page-home" class="page active">
+    <div id="home-layout">
+      <div id="home-main">
+        <div id="intro-box">
+          <div class="section-head">INTRODUCTION</div>
+          <div id="intro-text">Syncing with cloud...</div>
+        </div>
+
+        <div id="bellissima-box">
+          <div class="section-head" style="border:none;">BELLISSIMA! &mdash; DAILY PHYSICS</div>
+          <div id="bellissima-body">Searching Wikipedia...</div>
+        </div>
+
+        <div class="section-head">NASA LIBRARY RANDOMIZER</div>
+        <div id="nasa-lib-display" class="media-card">
+          <div id="nasa-lib-media"></div>
+          <div id="nasa-lib-title" style="font-weight:bold; margin-top:8px;"></div>
+        </div>
+      </div>
+
+      <div id="home-sidebar">
+        <div class="section-head">DAILY EARTH VIEW</div>
+        <div id="epic-wrap" style="background:#000; min-height:180px; text-align:center;">
+          <img id="epic-img" src="" style="width:100%; display:none;">
+        </div>
+        <div class="section-head" style="margin-top:20px;">NASA APOD</div>
+        <div id="apod-wrap">
+          <img id="apod-img" src="" style="width:100%; border:1px solid #ccc;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-admin" class="page">
+    <div class="section-head">ADMIN PANEL</div>
+    <div class="admin-form">
+      <h3>Edit Site Introduction</h3>
+      <textarea id="edit-intro-input" rows="8"></textarea>
+      <button class="retro-btn" style="margin-top:10px;" onclick="saveIntro()">SAVE TO FIREBASE</button>
+      <span id="save-status"></span>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY_HERE",
+    authDomain: "kosmoso.firebaseapp.com",
+    databaseURL: "https://kosmoso-default-rtdb.firebaseio.com",
+    projectId: "kosmoso",
+    storageBucket: "kosmoso.appspot.com",
+    messagingSenderId: "907090872412",
+    appId: "YOUR_APP_ID_HERE"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const NASA_KEY = 'TKBivYAGaBGI8eMexg23ORunenoeAHvZOlwqoWLh';
+
+  // --- 1. FIREBASE INTRO SYNC ---
+  window.saveIntro = function() {
+    const txt = document.getElementById('edit-intro-input').value;
+    set(ref(db, 'siteData/intro'), txt);
+    document.getElementById('save-status').innerText = "✓ Saved!";
+    setTimeout(() => { document.getElementById('save-status').innerText = ""; }, 2000);
+  };
+
+  onValue(ref(db, 'siteData/intro'), (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      document.getElementById('intro-text').innerText = data;
+      document.getElementById('edit-intro-input').value = data;
+    }
+  });
+
+  // --- 2. INFINITE PHYSICS (WIKIPEDIA) ---
+  async function fetchPhysics() {
+    const today = new Date().toISOString().slice(0, 10);
+    const cached = JSON.parse(localStorage.getItem('cosmoso_physics'));
+    if (cached && cached.date === today) { renderPhysics(cached); return; }
+
+    try {
+      const cat = await fetch("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=categorymembers&cmtitle=Category:Physics&cmlimit=50").then(r => r.json());
+      const topic = cat.query.categorymembers[Math.floor(Math.random() * 50)].title.replace(/\s+/g, '_');
+      const d = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + topic).then(r => r.json());
+      const fact = { date: today, title: d.title, text: d.extract, img: d.thumbnail?.source || '' };
+      localStorage.setItem('cosmoso_physics', JSON.stringify(fact));
+      renderPhysics(fact);
+    } catch (e) { console.error(e); }
+  }
+
+  function renderPhysics(f) {
+    const img = f.img ? `<img src="${f.img}" style="float:right; max-width:140px; margin-left:10px;">` : '';
+    document.getElementById('bellissima-body').innerHTML = `${img}<b>${f.title}</b><p>${f.text}</p>`;
+  }
+
+  // --- 3. NASA IMAGES & VIDEO LIBRARY RANDOMIZER ---
+  async function fetchNASALibrary() {
+    const terms = ['nebula', 'galaxy', 'apollo', 'mars', 'black hole', 'saturn', 'earth', 'telescope'];
+    const query = terms[Math.floor(Math.random() * terms.length)];
+    try {
+      const res = await fetch(`https://images-api.nasa.gov/search?q=${query}&media_type=image,video`).then(r => r.json());
+      const items = res.collection.items;
+      const item = items[Math.floor(Math.random() * items.length)];
+      const data = item.data[0];
+      const nasaId = data.nasa_id;
+
+      document.getElementById('nasa-lib-title').innerText = `[${data.media_type.toUpperCase()}] ${data.title}`;
+      
+      if (data.media_type === 'video') {
+        const videoFiles = await fetch(item.href).then(r => r.json());
+        const mp4 = videoFiles.find(f => f.endsWith('~mobile.mp4') || f.endsWith('.mp4'));
+        document.getElementById('nasa-lib-media').innerHTML = `<video controls src="${mp4}" style="width:100%;"></video>`;
+      } else {
+        document.getElementById('nasa-lib-media').innerHTML = `<img src="${item.links[0].href}" style="width:100%;">`;
+      }
+    } catch(e) {}
+  }
+
+  // --- 4. NASA APOD & EPIC ---
+  async function loadNASADaily() {
+    try {
+      const apod = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NASA_KEY}`).then(r => r.json());
+      document.getElementById('apod-img').src = apod.url;
+      
+      const epic = await fetch(`https://api.nasa.gov/EPIC/api/natural/latest?api_key=${NASA_KEY}`).then(r => r.json());
+      const p = epic[0];
+      const d = p.date.slice(0, 10).replace(/-/g, '/');
+      document.getElementById('epic-img').src = `https://epic.gsfc.nasa.gov/archive/natural/${d}/jpg/${p.image}.jpg`;
+      document.getElementById('epic-img').style.display = 'block';
+    } catch(e) {}
+  }
+
+  fetchPhysics();
+  fetchNASALibrary();
+  loadNASADaily();
+</script>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+  }
+</script>
+</body>
+</html>
