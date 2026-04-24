@@ -11,60 +11,23 @@
   "compatibility_flags": [
     "nodejs_compat"
   ]
-[triggers]
-crons = ["0 15 * * *"]   # 15:00 UTC daily = 00:00 JST
-kv_namespaces = [
-  { binding = "KOSMOSO_KV", id = "<your-kv-id>" }
-export default {
-  async fetch(request, env, ctx) {
-    return handleRequest(request, env, ctx);
+{
+  "name": "kosmoso",
+  "compatibility_date": "2026-04-24",
+  "main": "src/index.js",
+  "assets": {
+    "directory": "./public"
   },
-
-  async scheduled(event, env, ctx) {
-    ctx.waitUntil(refreshDailySnapshot(env));
+  "kv_namespaces": [
+    {
+      "binding": "KOSMOSO_KV",
+      "id": "PASTE_YOUR_ACTUAL_KV_ID_HERE"
+    }
+  ],
+  "triggers": {
+    "crons": ["0 15 * * *"]
   },
-};
-
-// JST date key, e.g. "2026-04-25"
-function jstDateKey(d = new Date()) {
-  const jst = new Date(d.getTime() + 9 * 60 * 60 * 1000);
-  return jst.toISOString().slice(0, 10);
-}
-
-async function refreshDailySnapshot(env) {
-  const dateKey = jstDateKey();
-
-  // Run all four fetches in parallel; don't let one failure kill the others
-  const [bellissima, discovery, apod, epic] = await Promise.allSettled([
-    fetchBellissima(),                  // your existing Wikipedia physics picker
-    fetchNasaDiscoveryRandom(),         // your existing NASA images randomizer
-    fetchApod(env.NASA_API_KEY),        // https://api.nasa.gov/planetary/apod
-    fetchEpic(env.NASA_API_KEY),        // https://api.nasa.gov/EPIC/api/natural
-  ]);
-
-  const snapshot = {
-    date: dateKey,
-    generatedAt: new Date().toISOString(),
-    bellissima: bellissima.status === "fulfilled" ? bellissima.value : null,
-    discovery:  discovery.status  === "fulfilled" ? discovery.value  : null,
-    apod:       apod.status       === "fulfilled" ? apod.value       : null,
-    epic:       epic.status       === "fulfilled" ? epic.value       : null,
-  };
-
-  // Today's snapshot + permanent archive entry
-  await Promise.all([
-    env.KOSMOSO_KV.put("snapshot:today", JSON.stringify(snapshot)),
-    env.KOSMOSO_KV.put(`snapshot:${dateKey}`, JSON.stringify(snapshot)),
-  ]);
-}
-const raw = await env.KOSMOSO_KV.get("snapshot:today");
-const snap = raw ? JSON.parse(raw) : null;
-
-// If cron hasn't run yet (e.g. fresh deploy), fall back to live fetch once
-// and store it, so the page is never empty:
-if (!snap || snap.date !== jstDateKey()) {
-  await refreshDailySnapshot(env);
-}
-]
-
+  "vars": {
+    "NASA_API_KEY": "TKBivYAGaBGI8eMexg23ORunenoeAHvZOlwqoWLh"
+  }
 }
