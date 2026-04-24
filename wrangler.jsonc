@@ -1,0 +1,33 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kosmoso",
+  "compatibility_date": "2026-04-24",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "."
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+{
+  "name": "kosmoso",
+  "compatibility_date": "2026-04-24",
+  "main": "src/index.js",
+  "assets": {
+    "directory": "./public"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "KOSMOSO_KV",
+      "id": "PASTE_YOUR_ACTUAL_KV_ID_HERE"
+    }
+  ],
+  "triggers": {
+    "crons": ["0 15 * * *"]
+  },
+  "vars": {
+    "NASA_API_KEY": "TKBivYAGaBGI8eMexg23ORunenoeAHvZOlwqoWLh"
+  }
+}
