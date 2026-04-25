@@ -1,120 +1,176 @@
-// =============================================================
-// KOSMOSO — FULL DYNAMIC ENGINE (Firebase Integrated)
-// =============================================================
-
-const HTML = `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>KOSMOSO</title>
-    <style>
-        body { background: #fff; color: #000; font-family: "Times New Roman", serif; margin: 0; }
-        #outer { width: 700px; margin: 40px auto; border-top: 4px solid #000; padding-top: 20px; }
-        .section { margin-bottom: 30px; border: 1px solid #eee; padding: 15px; }
-        #nav { margin-bottom: 20px; text-align: center; font-family: Arial; font-size: 12px; }
-        #nav a { margin: 0 10px; cursor: pointer; text-decoration: underline; color: #000080; }
-        .page { display: none; }
-        .page.active { display: block; }
-        .admin-box { background: #f0f0f0; padding: 20px; margin-top: 20px; }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KOSMOSO</title>
+<style>
+  body { background: #ffffff; color: #000000; font-family: "Times New Roman", Times, serif; font-size: 16px; margin: 0; padding: 0; }
+  #topbar { background: #000080; color: #ffffff; text-align: center; padding: 8px 0; font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; }
+  #outer { width: 760px; margin: 0 auto; padding: 40px 0; }
+  #sitetitle { text-align: center; border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 20px; }
+  #nav { text-align: center; border-bottom: 1px solid #000; padding: 10px 0; margin-bottom: 30px; font-family: Arial; font-size: 12px; }
+  #nav a { margin: 0 15px; font-weight: bold; color: #000080; text-decoration: none; text-transform: uppercase; cursor: pointer; }
+  .page { display: none; }
+  .page.active { display: block; }
+  .section-head { font-family: Arial; font-size: 11px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid #000; margin-bottom: 15px; }
+  #intro-box { border: 1px solid #000080; padding: 20px; background: #f0f0ff; margin-bottom: 30px; line-height: 1.6; }
+  .archive-card { border-bottom: 1px solid #eee; padding: 15px 0; }
+  .admin-panel { border: 1px solid #ccc; padding: 20px; background: #f9f9f9; margin-top: 20px; }
+  textarea, input { width: 100%; margin-bottom: 10px; padding: 8px; border: 1px solid #ccc; font-family: inherit; box-sizing: border-box; }
+  .retro-btn { background: #000080; color: #fff; border: none; padding: 10px 20px; cursor: pointer; font-size: 12px; font-weight: bold; }
+</style>
 </head>
 <body>
-    <div id="outer">
-        <div id="nav">
-            <a onclick="showPage('home')">HOME</a> | <a onclick="showPage('admin')">DEVELOPER</a>
-        </div>
 
-        <div id="page-home" class="page active">
-            <div class="section">
-                <strong>Current Intro:</strong>
-                <p id="intro-display">Syncing...</p>
-            </div>
-            <div class="section">
-                <strong>Latest Bellissima:</strong>
-                <div id="bella-display">No data.</div>
-            </div>
-        </div>
+<div id="topbar">KOSMOSO &nbsp;·&nbsp; MANUAL SYSTEMS ONLINE</div>
 
-        <div id="page-admin" class="page">
-            <div id="login-form">
-                <input type="password" id="pass" placeholder="Password">
-                <button onclick="login()">Access System</button>
-            </div>
-            <div id="admin-controls" style="display:none;">
-                <div class="admin-box">
-                    <h3>Update Introduction</h3>
-                    <textarea id="new-intro" style="width:100%"></textarea>
-                    <button onclick="saveIntro()">Save to Firebase</button>
-                </div>
-            </div>
-        </div>
+<div id="outer">
+  <div id="sitetitle">
+    <h1 style="font-size: 48px; margin: 0; letter-spacing: 4px;">KOSMOSO</h1>
+    <div style="font-style: italic; color: #666; margin-top:5px;">A curated record of systems and mastery</div>
+  </div>
+
+  <div id="nav">
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('blog')">The Letters</a>
+    <a onclick="showPage('archive-bella')">Bella Archive</a>
+    <a onclick="showPage('archive-nasa')">Media Archive</a>
+    <a onclick="showPage('admin')">Developer</a>
+  </div>
+
+  <div id="page-home" class="page active">
+    <div id="intro-box">
+      <div class="section-head">Introduction</div>
+      <div id="intro-display">Syncing with Firebase...</div>
     </div>
+    <div class="section-head">Current Feature: Bellissima</div>
+    <div id="bella-display">No entry published yet.</div>
+    <div class="section-head" style="margin-top:40px;">Current Feature: Media</div>
+    <div id="media-display">No entry published yet.</div>
+  </div>
 
-    <script>
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + id).classList.add('active');
-        }
+  <div id="page-blog" class="page">
+    <div class="section-head">The Letters</div>
+    <div id="letters-list"></div>
+  </div>
 
-        async function loadData() {
-            const res = await fetch('/api/data');
-            const data = await res.json();
-            document.getElementById('intro-display').innerText = data.intro || "Welcome.";
-            if(data.bellissima) {
-                const latest = Object.values(data.bellissima).pop();
-                document.getElementById('bella-display').innerHTML = "<h3>" + latest.title + "</h3><p>" + latest.text + "</p>";
-            }
-        }
+  <div id="page-archive-bella" class="page">
+    <div class="section-head">Bellissima Archive</div>
+    <div id="bella-archive"></div>
+  </div>
 
-        async function login() {
-            const p = document.getElementById('pass').value;
-            const res = await fetch('/api/admin/login', { method: 'POST', body: JSON.stringify({password:p}) });
-            if(res.ok) {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('admin-controls').style.display = 'block';
-            } else { alert('Wrong password'); }
-        }
+  <div id="page-archive-nasa" class="page">
+    <div class="section-head">Media Archive</div>
+    <div id="media-archive"></div>
+  </div>
 
-        async function saveIntro() {
-            const txt = document.getElementById('new-intro').value;
-            await fetch('/api/admin/update', { method: 'POST', body: JSON.stringify({intro: txt}) });
-            location.reload();
-        }
+  <div id="page-admin" class="page">
+    <div id="admin-auth" style="display:none;">
+      <div class="admin-panel">
+        <h3>Update Introduction</h3>
+        <textarea id="inp-intro" rows="3"></textarea>
+        <button class="retro-btn" onclick="saveIntro()">Update</button>
+      </div>
+      <div class="admin-panel">
+        <h3>Publish Bellissima (Physics)</h3>
+        <input type="text" id="bell-title" placeholder="Topic Title">
+        <textarea id="bell-text" placeholder="Content..."></textarea>
+        <input type="text" id="bell-img" placeholder="Image URL (optional)">
+        <button class="retro-btn" onclick="pubBella()">Publish</button>
+      </div>
+      <div class="admin-panel">
+        <h3>Publish Media Entry</h3>
+        <input type="text" id="med-title" placeholder="Media Title">
+        <input type="text" id="med-url" placeholder="Direct Image/Video URL">
+        <select id="med-type"><option value="image">Image</option><option value="video">Video</option></select>
+        <button class="retro-btn" onclick="pubMedia()">Publish</button>
+      </div>
+    </div>
+    <div id="admin-login">
+      <input type="password" id="pass" placeholder="Enter System Password">
+      <button class="retro-btn" onclick="login()">Access</button>
+    </div>
+  </div>
+</div>
 
-        loadData();
-    </script>
-</body>
-</html>`;
-
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    const FIREBASE = "https://kosmoso-default-rtdb.firebaseio.com/.json";
-
-    // API: Pull data from Firebase
-    if (url.pathname === '/api/data') {
-      const res = await fetch(FIREBASE);
-      const data = await res.json();
-      return new Response(JSON.stringify(data), { headers: {'content-type':'application/json'} });
-    }
-
-    // API: Login logic
-    if (url.pathname === '/api/admin/login') {
-      const { password } = await request.json();
-      const valid = env.ADMIN_PASSWORD || 'cindy2026';
-      return new Response(password === valid ? 'ok' : 'fail', { status: password === valid ? 200 : 401 });
-    }
-
-    // API: Update logic
-    if (url.pathname === '/api/admin/update' && request.method === 'POST') {
-      const body = await request.json();
-      await fetch("https://kosmoso-default-rtdb.firebaseio.com/intro.json", {
-        method: 'PUT',
-        body: JSON.stringify(body.intro)
-      });
-      return new Response('ok');
-    }
-
-    return new Response(HTML, { headers: { 'content-type': 'text/html' } });
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-'+id).classList.add('active');
   }
-};
+
+  async function loadData() {
+    try {
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      document.getElementById('intro-display').innerText = data.intro || "Welcome.";
+      document.getElementById('inp-intro').value = data.intro || "";
+      if(data.bellissima) renderLatest(data.bellissima, 'bella-display', 'bella');
+      if(data.media) renderLatest(data.media, 'media-display', 'media');
+      renderArchive(data.bellissima, 'bella-archive');
+      renderArchive(data.media, 'media-archive');
+      if(data.letters) renderLetters(data.letters);
+    } catch(e) { console.error(e); }
+  }
+
+  function renderLatest(obj, id, type) {
+    const entries = Object.values(obj);
+    const item = entries[entries.length - 1];
+    let html = "<b>"+item.date+"</b><br><h3>"+item.title+"</h3>";
+    if(type === 'bella') {
+      if(item.img) html += '<img src="'+item.img+'" style="max-width:200px; float:right;">';
+      html += "<p>"+item.text+"</p>";
+    } else {
+      html += item.type === 'video' ? '<video src="'+item.url+'" controls style="width:100%"></video>' : '<img src="'+item.url+'" style="width:100%">';
+    }
+    document.getElementById(id).innerHTML = html;
+  }
+
+  function renderArchive(obj, id) {
+    if(!obj) return;
+    document.getElementById(id).innerHTML = Object.values(obj).reverse().map(i => '<div class="archive-card"><b>'+i.date+'</b> - '+i.title+'</div>').join('');
+  }
+
+  function renderLetters(obj) {
+    document.getElementById('letters-list').innerHTML = Object.values(obj).reverse().map(i => '<div style="margin-bottom:40px;"><h3>'+i.title+'</h3><small>'+i.date+'</small><p>'+i.content+'</p></div>').join('');
+  }
+
+  async function login() {
+    const pass = document.getElementById('pass').value;
+    const res = await fetch('/api/admin/login', { method:'POST', body: JSON.stringify({password:pass}) });
+    if(res.ok) {
+       document.getElementById('admin-login').style.display='none';
+       document.getElementById('admin-auth').style.display='block';
+    } else { alert('Access Denied.'); }
+  }
+
+  async function saveIntro() {
+    await fetch('/api/admin/update-intro', { method:'POST', body: JSON.stringify({text: document.getElementById('inp-intro').value}) });
+    location.reload();
+  }
+
+  async function pubBella() {
+    await fetch('/api/admin/pub-bella', { method:'POST', body: JSON.stringify({
+      title: document.getElementById('bell-title').value,
+      text: document.getElementById('bell-text').value,
+      img: document.getElementById('bell-img').value,
+      date: new Date().toLocaleDateString()
+    })});
+    location.reload();
+  }
+
+  async function pubMedia() {
+    await fetch('/api/admin/pub-media', { method:'POST', body: JSON.stringify({
+      title: document.getElementById('med-title').value,
+      url: document.getElementById('med-url').value,
+      type: document.getElementById('med-type').value,
+      date: new Date().toLocaleDateString()
+    })});
+    location.reload();
+  }
+
+  loadData();
+</script>
+</body>
+</html>
