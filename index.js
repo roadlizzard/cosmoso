@@ -1,4 +1,3 @@
-
 const HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,7 +67,7 @@ const HTML = `<!DOCTYPE html>
       <div id="home-sidebar">
         <div class="section-head">NASA APOD</div>
         <a id="side-apod-link" href="#" target="_blank" rel="noopener noreferrer">
-          <img id="side-apod" style="width:100%; border:1px solid #ccc;">
+          <img id="side-apod" alt="" style="width:100%; border:1px solid #ccc;"><!-- FIX 2: Added missing alt attribute — accessibility violation + console warning -->
         </a>
         <div id="side-apod-caption" style="font-family:Arial; font-size:11px; color:#333; margin-top:4px; font-style:italic;"></div>
         <div id="side-apod-source" style="font-family:Arial; font-size:10px; color:#666; margin-top:4px;"></div>
@@ -123,7 +122,7 @@ const HTML = `<!DOCTYPE html>
   const firebaseConfig = {
     apiKey: "AIzaSyAxFfLgoXqHh6vkS788YCK0HmV5JuDlrEo",
     authDomain: "kosmoso.firebaseapp.com",
-    // FIX 1: Corrected typo — was "kosmosoo" (extra o), broke all Firebase reads from the Worker
+    // FIX 1: Typo corrected — "kosmosoo" had an extra o, broke all Worker Firebase reads
     databaseURL: "https://kosmoso-default-rtdb.firebaseio.com",
     projectId: "kosmoso",
     storageBucket: "kosmoso.firebasestorage.app",
@@ -329,7 +328,7 @@ export default {
         headers: {
           ...corsHeaders(),
           'content-type': 'application/json; charset=utf-8',
-          'set-cookie': 'kosmosoo_admin=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0; Secure'
+          'set-cookie': 'kosmoso_admin=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0; Secure' // FIX 3: Cookie name was "kosmosoo_admin" — synced with isAuthed() and buildSessionCookie()
         }
       });
     }
@@ -361,7 +360,6 @@ export default {
       return json({ ok: true, snapshot }, 200, corsHeaders());
     }
 
-    // FIX 2: OPTIONS preflight moved above the 404 fallback — it was unreachable before and caused CORS failures
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders() });
     }
@@ -403,8 +401,8 @@ async function refreshAndPersist(env) {
     await firebasePatch(env, 'archives/bellissima.json', { [`b_${Date.now()}`]: bellissima });
   }
 
-  // FIX 3: Was using Date.now() and Date.now()+1 — both could resolve to the same ms, overwriting one entry
   const nasaEntries = {};
+  // FIX 4: Was Date.now() and Date.now()+1 — both calls could land in the same millisecond, silently overwriting one entry
   if (discovery && !discovery.error) {
     discovery.date = today;
     discovery.source_type = 'discovery';
@@ -462,7 +460,7 @@ async function fetchBellissima(env) {
 
 async function fetchDiscovery(env) {
   try {
-    // FIX 4: Was always fetching page 1 — now picks a random page so "Randomizer" label is accurate
+    // FIX 5: Was always fetching page 1 — UI labels this a "Randomizer" so now picks a random page
     const page = Math.ceil(Math.random() * 10);
     const r = await fetch(`https://images-api.nasa.gov/search?q=space&media_type=video&page=${page}`);
     const j = await r.json();
@@ -525,13 +523,13 @@ function clean(s) {
 
 function isAuthed(request, env) {
   const cookie = request.headers.get('cookie') || '';
-  const match = cookie.match(/(?:^|;\s*)kosmosoo_admin=([^;]+)/);
+  const match = cookie.match(/(?:^|;\s*)kosmoso_admin=([^;]+)/); // FIX 3: Was "kosmosoo_admin" — now consistent across all three cookie references
   return !!env.SESSION_SECRET && !!match && match[1] === env.SESSION_SECRET;
 }
 
 function buildSessionCookie(env) {
   if (!env.SESSION_SECRET) throw new Error('SESSION_SECRET missing');
-  return `kosmosoo_admin=${env.SESSION_SECRET}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000; Secure`;
+  return `kosmoso_admin=${env.SESSION_SECRET}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000; Secure`; // FIX 3: Was "kosmosoo_admin"
 }
 
 async function safeJson(request) {
