@@ -1,96 +1,139 @@
-// =============================================================
-// KOSMOSO — FINAL OPEN BUILD (NO AUTH LOGIC)
-// =============================================================
-
-const HTML = `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KOSMOSO</title>
     <style>
-        body { background: #fff; color: #000; font-family: serif; margin: 0; padding: 20px; }
-        #outer { max-width: 650px; margin: auto; border: 2px solid #000; padding: 20px; }
-        #nav { margin-bottom: 30px; border-bottom: 1px solid #000; padding-bottom: 10px; }
-        #nav a { margin-right: 20px; cursor: pointer; font-weight: bold; text-decoration: none; color: blue; }
+        /* Modern-Retro Aesthetic */
+        body { background: #ffffff; color: #000000; font-family: "Times New Roman", Times, serif; line-height: 1.6; margin: 0; padding: 0; }
+        #top-bar { background: #000080; color: #fff; text-align: center; padding: 10px; font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
+        #container { max-width: 700px; margin: 50px auto; padding: 20px; }
+        header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 30px; margin-bottom: 30px; }
+        h1 { font-size: 52px; margin: 0; letter-spacing: 5px; font-weight: normal; }
+        
+        #nav { text-align: center; margin-bottom: 40px; font-family: Arial, sans-serif; font-size: 12px; }
+        #nav a { margin: 0 15px; text-decoration: none; color: #000080; font-weight: bold; cursor: pointer; border-bottom: 1px solid transparent; transition: 0.2s; }
+        #nav a:hover { border-bottom: 1px solid #000080; }
+
         .page { display: none; }
-        .active { display: block; }
-        .control-panel { background: #f0f0f0; padding: 20px; border: 1px dashed #000; }
-        textarea { width: 100%; height: 80px; margin: 10px 0; }
-        button { background: #000; color: #fff; padding: 10px; cursor: pointer; width: 100%; }
+        .page.active { display: block; }
+
+        /* Content Sections */
+        .section-header { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 5px; color: #666; }
+        .content-box { margin-bottom: 50px; }
+        
+        /* Developer Panel */
+        .dev-panel { background: #f4f4f4; border: 1px dashed #000080; padding: 25px; }
+        textarea { width: 100%; height: 120px; margin: 10px 0; padding: 10px; font-family: inherit; font-size: 15px; border: 1px solid #ccc; box-sizing: border-box; }
+        button { background: #000080; color: #fff; border: none; padding: 12px 25px; cursor: pointer; font-family: Arial, sans-serif; font-weight: bold; font-size: 12px; text-transform: uppercase; }
+        button:hover { background: #0000ff; }
     </style>
 </head>
 <body>
-    <div id="outer">
-        <div id="nav">
-            <a onclick="showPage('home')">HOME</a>
-            <a onclick="showPage('dev')">DEVELOPER (OPEN)</a>
+
+<div id="top-bar">Kosmoso System Protocol — Active</div>
+
+<div id="container">
+    <header>
+        <h1>KOSMOSO</h1>
+        <div style="font-style: italic; color: #666;">A repository of systems, aesthetics, and technical mastery.</div>
+    </header>
+
+    <div id="nav">
+        <a onclick="showPage('home')">HOME</a>
+        <a onclick="showPage('dev')">DEVELOPER (OPEN)</a>
+    </div>
+
+    <div id="page-home" class="page active">
+        <div class="content-box">
+            <div class="section-header">Introduction</div>
+            <div id="intro-display" style="font-size: 18px;">Initializing connection to Firebase...</div>
         </div>
 
-        <div id="page-home" class="page active">
-            <h1>KOSMOSO</h1>
-            <div id="intro-text">Syncing with Firebase...</div>
-        </div>
-
-        <div id="page-dev" class="page">
-            <div class="control-panel">
-                <h3>System Controls</h3>
-                <label>Update Introduction:</label>
-                <textarea id="edit-intro"></textarea>
-                <button onclick="updateSystem()">PUSH UPDATE</button>
+        <div class="content-box">
+            <div class="section-header">Latest Record</div>
+            <div id="record-display">
+                <p style="color: #999;">Waiting for data sync...</p>
             </div>
         </div>
     </div>
 
-    <script>
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + id).classList.add('active');
-        }
+    <div id="page-dev" class="page">
+        <div class="dev-panel">
+            <div class="section-header" style="color: #000080; border-color: #000080;">System Controls</div>
+            <p>Direct Firebase Modification Enabled.</p>
+            
+            <label style="font-weight: bold;">Update Home Introduction:</label>
+            <textarea id="edit-intro" placeholder="Enter new introduction text here..."></textarea>
+            
+            <button onclick="pushUpdate()">Push Update to Cloud</button>
+        </div>
+    </div>
+</div>
 
-        async function load() {
-            const res = await fetch('/api/data');
-            const data = await res.json();
-            document.getElementById('intro-text').innerText = data.intro || "Online.";
-            document.getElementById('edit-intro').value = data.intro || "";
-        }
+<script>
+    // Navigation Logic
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-' + pageId).classList.add('active');
+    }
 
-        async function updateSystem() {
-            const val = document.getElementById('edit-intro').value;
-            await fetch('/api/update', { 
-                method: 'POST', 
-                body: JSON.stringify({text: val}) 
+    // Load Data from Worker API
+    async function refreshDisplay() {
+        try {
+            const response = await fetch('/api/data');
+            const data = await response.json();
+            
+            // Update Intro
+            const intro = data.intro || "Welcome to Kosmoso.";
+            document.getElementById('intro-display').innerText = intro;
+            document.getElementById('edit-intro').value = intro;
+
+            // Update Records (Optional logic for future entries)
+            if (data.bellissima) {
+                const latest = Object.values(data.bellissima).pop();
+                document.getElementById('record-display').innerHTML = `
+                    <h3 style="margin-bottom:5px;">${latest.title}</h3>
+                    <small style="color: #888;">${latest.date || 'Record Date'}</small>
+                    <p>${latest.text}</p>
+                `;
+            }
+        } catch (err) {
+            console.error("Data Sync Failed:", err);
+        }
+    }
+
+    // Push Data to Worker API
+    async function pushUpdate() {
+        const newText = document.getElementById('edit-intro').value;
+        const btn = event.target;
+        
+        btn.innerText = "Processing...";
+        btn.disabled = true;
+
+        try {
+            const response = await fetch('/api/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: newText })
             });
-            alert("Sent to Firebase!");
-            location.reload();
+
+            if (response.ok) {
+                alert("Firebase Updated Successfully.");
+                location.reload();
+            }
+        } catch (err) {
+            alert("Update Failed. Check connection.");
+        } finally {
+            btn.innerText = "Push Update to Cloud";
+            btn.disabled = false;
         }
+    }
 
-        load();
-    </script>
+    // Initial Load
+    refreshDisplay();
+</script>
+
 </body>
-</html>`;
-
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-
-    // API: Pull from Firebase
-    if (url.pathname === '/api/data') {
-      const res = await fetch("https://kosmoso-default-rtdb.firebaseio.com/.json");
-      const data = await res.json();
-      return new Response(JSON.stringify(data), { headers: {'content-type':'application/json'} });
-    }
-
-    // API: Push to Firebase
-    if (url.pathname === '/api/update' && request.method === 'POST') {
-      const body = await request.json();
-      await fetch("https://kosmoso-default-rtdb.firebaseio.com/intro.json", {
-        method: "PUT",
-        body: JSON.stringify(body.text)
-      });
-      return new Response("ok");
-    }
-
-    // Serve HTML
-    return new Response(HTML, { headers: { "content-type": "text/html" } });
-  }
-};
+</html>
