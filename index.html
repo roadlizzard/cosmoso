@@ -31,21 +31,14 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
 #home-dashboard{display:grid;grid-template-columns:1fr 320px;height:100%;background:#fff;gap:20px;padding:20px;}
 #home-main{display:grid;grid-template-rows:auto auto auto 1fr;border-right:1px solid #ccc;overflow-y:auto;padding-right:15px;gap:20px;}
 
-/* --- BELLISSIMA UNIFIED STYLE (Home & Archive) --- */
-.bella-entry {
-    border-bottom: 1px solid #000;
-    border-top: 2px solid #000;
-    padding: 20px;
-    background: #fffff0;
-    margin-bottom: 30px;
-}
+/* --- BELLISSIMA UNIFIED STYLE --- */
+.bella-entry { border-bottom: 1px solid #000; border-top: 2px solid #000; padding: 25px; background: #fffff0; margin-bottom: 30px; }
 .bella-content-wrapper { display: flex; gap: 30px; align-items: flex-start; }
 .bella-text-column { flex: 1; }
 .bella-thumb-wrap { flex: 0 0 450px; }
-.bella-thumb-inner { padding: 10px; background: #fffff0; border: 1px solid #888866; box-shadow: 6px 6px 0px rgba(0,0,128,0.1); position: relative;}
+.bella-thumb-inner { padding: 10px; background: #fffff0; border: 1px solid #888866; box-shadow: 6px 6px 0px rgba(0,0,128,0.1); }
 .bella-thumb-img { width: 100%; height: auto; display: block; border: 1px solid #ccccaa; }
-.bella-head { font-family: "Times New Roman", serif; font-size: 16px; font-style: italic; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 12px; }
-.bella-date { font-family: Arial; font-size: 11px; text-transform: uppercase; color: #888; }
+.bella-head { font-family: "Times New Roman", serif; font-size: 16px; font-style: italic; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px;}
 
 /* Grid for Letters */
 .cube-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
@@ -55,15 +48,14 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
 /* Sidebar */
 #home-sidebar{display:flex;flex-direction:column;overflow-y:auto;background:#fafafa;gap:20px;padding-right:10px;}
 .sb-head{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 10px;font-weight:bold;}
-#apod-win{position:relative;overflow:hidden;background:#000;min-height:350px;}
-#apod-win img.am{width:100%;height:100%;object-fit:cover;display:block;}
 
-/* Admin */
+/* Admin / Developer Styles */
 .adm-form{border:1px solid #ccc;padding:20px;margin-bottom:24px;background:#fafafa;}
 .retro-btn{background:#000080;color:#fff;border:2px outset #8888cc;padding:8px 16px;cursor:pointer;font-weight:bold;font-family:Arial;font-size:12px;}
 .fr { margin-bottom: 12px; }
 .fr label { display: block; font-size: 12px; font-family: Arial; font-weight: bold; margin-bottom: 4px; }
 .fr input, .fr textarea { width: 100%; padding: 8px; border: 1px solid #ccc; font-family: serif; font-size: 16px;}
+#admin-lock-wrap { text-align: center; padding: 100px 20px; }
 </style>
 </head>
 <body>
@@ -98,12 +90,6 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
         </div>
 
         <div id="bella-today-container"></div>
-
-        <div id="apod-win">
-          <div id="apod-overlay" style="position:absolute; bottom:0; width:100%; background:rgba(0,0,0,0.75); color:#fff; padding:15px; font-family:Arial;">
-            <div id="apod-overlay-title" style="font-weight:bold; font-size:14px; margin-bottom:2px;"></div>
-          </div>
-        </div>
       </div>
 
       <div id="home-sidebar">
@@ -126,14 +112,28 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
   </div>
 
   <div id="page-admin" class="page scrollable">
-    <div id="admin-panel">
+    <div id="admin-lock-wrap">
+      <p style="margin-bottom:15px;">ENTER DEVELOPER PASSWORD</p>
+      <input type="password" id="pw-input" onkeydown="if(event.key==='Enter')checkPw()" style="padding:10px; border:1px solid #000;"/>
+      <button class="retro-btn" onclick="checkPw()">UNLOCK</button>
+    </div>
+
+    <div id="admin-panel" style="display:none;">
       <div class="adm-form">
-        <h3>Bellissima! — Fact of the Day</h3>
-        <div class="fr"><label>Title</label><input type="text" id="bt"/></div>
+        <h3>Intro & Bellissima!</h3>
+        <div class="fr"><label>Global Introduction</label><textarea id="edit-intro" rows="3"></textarea></div>
+        <div class="fr"><label>Fact Title</label><input type="text" id="bt"/></div>
         <div class="fr"><label>Fact Text</label><textarea id="bb" rows="4"></textarea></div>
         <div class="fr"><label>Image URL</label><input type="url" id="bi"/></div>
         <div class="fr"><label>Wiki Link</label><input type="url" id="bw"/></div>
-        <button class="retro-btn" onclick="saveBella()">PUBLISH FACT</button>
+        <button class="retro-btn" onclick="saveBella()">PUBLISH FACT & INTRO</button>
+      </div>
+
+      <div class="adm-form">
+        <h3>New Letter</h3>
+        <div class="fr"><label>Title</label><input type="text" id="lt"/></div>
+        <div class="fr"><label>Content</label><textarea id="lb" rows="6"></textarea></div>
+        <button class="retro-btn" onclick="pubLetter()">PUBLISH LETTER</button>
       </div>
     </div>
   </div>
@@ -142,7 +142,7 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import{getDatabase,ref,set,push,onValue,remove}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import{getDatabase,ref,set,push,onValue}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig={apiKey:"AIzaSyAxFfLgoXqHh6vkS788YCK0HmV5JuDlrEo",authDomain:"kosmoso.firebaseapp.com",databaseURL:"https://kosmoso-default-rtdb.firebaseio.com",projectId:"kosmoso",storageBucket:"kosmoso.firebasestorage.app",messagingSenderId:"907090872412",appId:"1:907090872412:web:e8f4d4044c3a2726cafe99"};
 const app=initializeApp(firebaseConfig);
@@ -161,8 +161,8 @@ function createBellaHTML(data, isToday = false) {
     return `
         <div class="bella-entry">
             <div class="bella-head">
-                <span>bellissima! &mdash; ${isToday ? "today's physics fact" : "archived fact"}</span>
-                <span class="bella-date">${dateStr}</span>
+                <span>bellissima! &mdash; ${isToday ? "today's fact" : "archived fact"}</span>
+                <span style="font-family:Arial; font-size:11px; color:#888;">${dateStr}</span>
             </div>
             <div class="bella-content-wrapper">
                 <div class="bella-text-column">
@@ -180,7 +180,12 @@ function createBellaHTML(data, isToday = false) {
         </div>`;
 }
 
-onValue(ref(db,'siteData/intro'), s => { if(s.val()) document.getElementById('intro-text').textContent = s.val(); });
+// Syncing Site Data
+onValue(ref(db,'siteData/intro'), s => { 
+  const val = s.val() || "";
+  document.getElementById('intro-text').textContent = val; 
+  document.getElementById('edit-intro').value = val;
+});
 
 onValue(ref(db,'siteData/bellissima'), s => {
     document.getElementById('bella-today-container').innerHTML = createBellaHTML(s.val(), true);
@@ -188,10 +193,9 @@ onValue(ref(db,'siteData/bellissima'), s => {
 
 onValue(ref(db,'archives/bellissima'), s => {
     const d = s.val();
-    const container = document.getElementById('bella-archive-list');
-    if (!d) { container.innerHTML = "<p>No archive available.</p>"; return; }
-    const sorted = Object.values(d).sort((a,b) => b.date.localeCompare(a.date));
-    container.innerHTML = sorted.map(item => createBellaHTML(item, false)).join('');
+    if (!d) return;
+    const sorted = Object.values(d).sort((a,b) => (b.date || "").localeCompare(a.date || ""));
+    document.getElementById('bella-archive-list').innerHTML = sorted.map(item => createBellaHTML(item, false)).join('');
 });
 
 onValue(ref(db,'siteData/letters'), s => {
@@ -199,21 +203,64 @@ onValue(ref(db,'siteData/letters'), s => {
     const container = document.getElementById('blog-list');
     if(!d) return;
     const entries = Object.entries(d).sort((a,b) => b[1].date.localeCompare(a[1].date));
+    
+    // Update Latest Letter on Home
+    const latest = entries[0][1];
+    document.getElementById('latest-title').textContent = latest.title;
+    document.getElementById('latest-snip').textContent = latest.content.slice(0, 150) + "...";
+
     container.innerHTML = entries.map(([k, p]) => `
         <article class="content-cube">
             <div class="cube-inner">
-                <span class="cube-date">${new Date(p.date).toLocaleDateString('en-GB')}</span>
-                <div class="cube-title">${p.title}</div>
-                <div class="cube-body">${p.content.slice(0, 100)}...</div>
+                <span style="font-family:Arial; font-size:11px; color:#888;">${new Date(p.date).toLocaleDateString('en-GB')}</span>
+                <div style="font-weight:bold; margin: 5px 0;">${p.title}</div>
+                <div style="font-size:14px;">${p.content.slice(0, 100)}...</div>
             </div>
         </article>
     `).join('');
 });
 
-window.saveBella = function() {
-    const b = { title: document.getElementById('bt').value, text: document.getElementById('bb').value, img: document.getElementById('bi').value, wiki: document.getElementById('bw').value, date: new Date().toISOString() };
-    set(ref(db, 'siteData/bellissima'), b).then(() => push(ref(db, 'archives/bellissima'), b));
+// Admin Panel Logic
+window.checkPw = () => {
+    if(document.getElementById('pw-input').value === 'cosmos2026') {
+        document.getElementById('admin-lock-wrap').style.display='none';
+        document.getElementById('admin-panel').style.display='block';
+    } else {
+        alert("Incorrect Password");
+    }
 };
+
+window.saveBella = function() {
+    const b = { 
+      title: document.getElementById('bt').value, 
+      text: document.getElementById('bb').value, 
+      img: document.getElementById('bi').value, 
+      wiki: document.getElementById('bw').value, 
+      date: new Date().toISOString() 
+    };
+    set(ref(db, 'siteData/intro'), document.getElementById('edit-intro').value);
+    set(ref(db, 'siteData/bellissima'), b).then(() => push(ref(db, 'archives/bellissima'), b));
+    alert("Updated Fact and Intro.");
+};
+
+window.pubLetter = () => {
+    push(ref(db, 'siteData/letters'), { 
+      title: document.getElementById('lt').value, 
+      content: document.getElementById('lb').value, 
+      date: new Date().toISOString() 
+    }).then(() => {
+      document.getElementById('lt').value = "";
+      document.getElementById('lb').value = "";
+      alert("Letter Published.");
+    });
+};
+
+// NASA EPIC fetch for sidebar
+fetch('https://epic.gsfc.nasa.gov/api/natural').then(r=>r.json()).then(d=>{
+    const item = d[0];
+    const date = item.date.split(' ')[0].replaceAll('-','/');
+    document.getElementById('epic-img').src = `https://epic.gsfc.nasa.gov/archive/natural/${date}/png/${item.image}.png`;
+});
 </script>
 </body>
 </html>
