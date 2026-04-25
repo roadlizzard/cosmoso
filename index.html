@@ -6,10 +6,9 @@
 <title>KOSMOSO</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow-x:hidden;}
-/* Restored original background and font colors */
+html,body{height:100%;overflow:hidden;}
 body{background:#f5f5f0;color:#000;font-family:"Times New Roman",Times,serif;font-size:18px;}
-a{color:#0000cc;}a:visited{color:#551a8b;}a:hover{color:#cc0000;}
+a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:underline;color:#cc0000;}
 
 #topbar{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:12px;letter-spacing:1.5px;text-align:center;padding:6px 0;height:30px;}
 .live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#00cc00;margin-right:4px;animation:blink 1.5s infinite;}
@@ -20,37 +19,41 @@ a{color:#0000cc;}a:visited{color:#551a8b;}a:hover{color:#cc0000;}
 #sitetitle .tagline{font-size:13px;font-style:italic;color:#555;}
 
 #nav{background:#fff;text-align:center;border-bottom:1px solid #000;padding:8px 0;height:34px;font-family:Arial,sans-serif;font-size:12px;letter-spacing:1px;}
-#nav a{margin:0 12px;font-weight:bold;color:#000080;text-decoration:none;text-transform:uppercase;}
-#nav a:hover{color:#cc0000;text-decoration:underline;}
-#nav a.active{color:#cc0000;text-decoration:underline;}
+#nav a{margin:0 12px;color:#000080;text-transform:uppercase;}
+#nav a:hover, #nav a.active{color:#cc0000;text-decoration:underline;}
 
-.page{display:none;max-width:1100px;margin:0 auto;padding:20px 24px 100px;}
-.page.active{display:block;}
+#shell{height:calc(100vh - 139px);position:relative;}
+.page{display:none;height:100%;}
+.page.active{display:flex;flex-direction:column;}
+.page.scrollable{overflow-y:auto;padding:20px 24px 50px;max-width:900px;margin:0 auto;}
+.page.scrollable.active{display:block;}
 
-/* --- BELISSIMA STANDOFF SECTION --- */
-#belissima-standoff {
-    width: 100%;
-    margin: 40px 0;
-    padding: 40px 20px;
-    border-top: 2px solid #000;
+#home-dashboard{display:grid;grid-template-columns:1fr 320px;height:100%;background:#fff;gap:20px;padding:20px;}
+#home-main{display:grid;grid-template-rows:auto auto auto 1fr;border-right:1px solid #ccc;overflow-y:auto;padding-right:15px;gap:20px;}
+
+/* --- SECTION 1: BELISSIMA STANDOFF --- */
+#bella-strip {
     border-bottom: 1px solid #000;
-    background: #fffff0; /* Original light yellow */
-    clear: both;
-    text-align: center;
+    border-top: 2px solid #000;
+    padding: 12px 18px;
+    background: #fffff0;
+    clear: both; /* Ensures no overlap */
 }
-#bella-title-d { font-size: 24px; font-weight: bold; margin-bottom: 10px; color: #000080; }
-#bella-text-d { max-width: 800px; margin: 0 auto; font-size: 18px; line-height: 1.6; color: #333; }
+.bella-head{font-family:"Times New Roman",serif;font-size:16px;font-style:italic;font-weight:bold;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+#bella-thumb-wrap{float:right;margin:0 0 6px 12px;display:none;}
+#bella-thumb-inner{position:relative;display:inline-block;padding:8px;background:#fffff0;border:1px solid #888866;}
+#bella-thumb-img{max-width:100px;max-height:90px;display:block;border:1px solid #ccccaa;}
 
-/* --- RED HAND FILES STYLE GRID (Archives & Letters) --- */
+/* --- SECTION 2: GRID SYSTEM --- */
 .cube-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
 }
 .content-cube {
     border: 1px solid #ccc;
-    background: #fffff0; /* Restored original archive card color */
+    background: #fffff0;
     aspect-ratio: 1 / 1;
     position: relative;
     overflow: hidden;
@@ -58,23 +61,27 @@ a{color:#0000cc;}a:visited{color:#551a8b;}a:hover{color:#cc0000;}
 .cube-inner {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    padding: 20px;
+    padding: 18px;
     overflow-y: auto;
-    scrollbar-width: thin;
+    scrollbar-width: none;
 }
-/* Keeps the UI clean by hiding scrollbars until needed */
-.cube-inner::-webkit-scrollbar { width: 4px; }
-.cube-inner::-webkit-scrollbar-thumb { background: #000080; }
+.cube-inner::-webkit-scrollbar { display: none; }
+.cube-date { font-family: Arial; font-size: 11px; text-transform: uppercase; color: #888; display: block; margin-bottom: 6px; }
+.cube-title { font-size: 17px; font-weight: bold; margin-bottom: 8px; color: #000080; }
+.cube-body { font-size: 15px; line-height: 1.5; color: #222; }
 
-.cube-date { font-family: Arial; font-size: 11px; text-transform: uppercase; color: #888; display: block; margin-bottom: 8px; }
-.cube-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #000080; }
-.cube-body { font-size: 16px; line-height: 1.5; color: #222; }
-
-/* Admin styles preserved */
+/* Admin & Sidebar styles */
+#home-sidebar{display:flex;flex-direction:column;overflow-y:auto;background:#fafafa;gap:20px;padding-right:10px;}
+.sb-head{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 10px;font-weight:bold;}
+#apod-win{position:relative;overflow:hidden;background:#000;min-height:300px;}
+#apod-win img.am{width:100%;height:100%;object-fit:cover;display:block;}
 .adm-form{border:1px solid #ccc;padding:20px;margin-bottom:24px;background:#fafafa;}
-.retro-btn{background:#000080;color:#fff;border:2px outset #8888cc;padding:8px 16px;cursor:pointer;font-weight:bold;}
-#admin-panel{display:none;}
-#admin-panel.open{display:block;}
+.retro-btn{background:#000080;color:#fff;border:2px outset #8888cc;padding:8px 16px;cursor:pointer;font-weight:bold;font-family:Arial;font-size:12px;}
+.fr { margin-bottom: 12px; }
+.fr label { display: block; font-size: 12px; font-family: Arial; font-weight: bold; margin-bottom: 4px; }
+.fr input, .fr textarea { width: 100%; padding: 8px; border: 1px solid #ccc; }
+.adm-row { display: flex; align-items: center; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee; background: #fff; margin-bottom: 4px; }
+.del-btn { background: #cc0000; color: #fff; border: none; padding: 4px 8px; cursor: pointer; font-size: 10px; }
 </style>
 </head>
 <body>
@@ -96,54 +103,110 @@ a{color:#0000cc;}a:visited{color:#551a8b;}a:hover{color:#cc0000;}
 <div id="shell">
 
   <div id="page-home" class="page active">
-    <div id="intro-strip" style="background:#f0f0ff; border-left:4px solid #000080; padding:12px 18px; margin-bottom:20px;">
-        <div id="intro-text">loading...</div>
-    </div>
+    <div id="home-dashboard">
+      <div id="home-main">
+        <div id="intro-strip" style="background:#f0f0ff; border-left:4px solid #000080; padding:12px 18px;">
+          <div id="intro-text">loading...</div>
+        </div>
+        
+        <div id="latest-strip" onclick="showPage('blog')" style="cursor:pointer; border-bottom: 1px solid #ccc; padding: 12px 18px;">
+          <div style="font-family:Arial; font-size:11px; text-transform:uppercase; color:#555;">Latest Letter</div>
+          <div id="latest-title" style="font-size:20px; font-weight:bold; color:#000080;">—</div>
+          <div id="latest-snip" style="color:#666; font-size:15px;"></div>
+        </div>
 
-    <section id="belissima-standoff">
-      <div style="font-family:Arial; font-size:11px; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px; color:#000080;">Bellissima! — Today's Fact</div>
-      <div id="bella-title-d"></div>
-      <div id="bella-text-d"></div>
-      <div id="bella-wiki-d" style="margin-top:10px; font-style:italic;"></div>
-    </section>
+        <div id="bella-strip">
+          <div class="bella-head">
+            bellissima! &mdash; today's physics fact
+            <a href="#" onclick="showPage('archive-bella');return false;">[ archive ]</a>
+          </div>
+          <div id="bella-thumb-wrap">
+            <div id="bella-thumb-inner"><img id="bella-thumb-img" alt=""/></div>
+          </div>
+          <div id="bella-title-d" style="font-size:18px; font-weight:bold;"></div>
+          <div id="bella-text-d" style="font-size:16px; line-height:1.6; margin-top:5px;"></div>
+          <div id="bella-wiki-d" style="font-size:13px; font-style:italic; margin-top:6px;"></div>
+          <div style="clear:both;"></div>
+        </div>
 
-    <div id="latest-strip" style="cursor:pointer; text-align:center;" onclick="showPage('blog')">
-      <div style="font-family:Arial; font-size:11px; text-transform:uppercase; color:#555;">Latest Letter</div>
-      <div id="latest-title" style="font-size:24px; font-weight:bold; color:#000080;">—</div>
-      <div id="latest-snip" style="font-size:16px; color:#666;"></div>
+        <div id="apod-win">
+          <div id="apod-overlay" style="position:absolute; bottom:0; width:100%; background:rgba(0,0,0,0.6); color:#fff; padding:10px;">
+            <div id="apod-overlay-title" style="font-weight:bold;"></div>
+            <div id="apod-overlay-credit" style="font-size:12px; opacity:0.8;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="home-sidebar">
+        <div class="sb-sec">
+          <div class="sb-head">EARTH — NASA EPIC</div>
+          <img id="epic-img" style="width:100%; display:block;" />
+          <div id="epic-counter" style="font-size:11px; text-align:center; padding:5px; background:#111; color:#eee;"></div>
+        </div>
+        <div class="sb-sec">
+          <div class="sb-head">MARS — CURIOSITY</div>
+          <div id="mars-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:2px;"></div>
+          <div id="mars-lbl" style="font-size:11px; color:#888; padding:4px;"></div>
+        </div>
+        <div class="sb-sec">
+          <div class="sb-head">IMAGE GALLERY</div>
+          <div id="sb-img-grid"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div id="page-blog" class="page">
+  <div id="page-blog" class="page scrollable">
     <div style="font-family:Arial; font-size:13px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:20px;">The Letters</div>
-    <div id="blog-list" class="cube-grid"><div class="rl">[ loading... ]</div></div>
+    <div id="blog-list" class="cube-grid"></div>
   </div>
 
-  <div id="page-archive-bella" class="page">
+  <div id="page-archive-bella" class="page scrollable">
     <div style="font-family:Arial; font-size:13px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:20px;">Bellissima Archive</div>
-    <div class="cube-grid" id="bella-archive-list"><div class="rl">[ loading... ]</div></div>
+    <div id="bella-archive-list" class="cube-grid"></div>
   </div>
 
-  <div id="page-admin" class="page">
-    <div id="admin-lock-wrap" style="text-align:center; margin-top:50px;">
-      <p><strong>enter password to edit</strong></p>
-      <input type="password" id="pw-input" style="padding:8px; border:1px solid #999;"/>
+  <div id="page-admin" class="page scrollable">
+    <div id="admin-lock-wrap" style="text-align:center; padding:40px;">
+      <p>enter password to edit</p>
+      <input type="password" id="pw-input" onkeydown="if(event.key==='Enter')checkPw()" />
       <button class="retro-btn" onclick="checkPw()">ENTER</button>
       <div id="pw-error" style="color:red; margin-top:10px;"></div>
     </div>
-    <div id="admin-panel">
+
+    <div id="admin-panel" style="display:none;">
       <div class="adm-form">
-        <h3>Bellissima! — Physics Fact</h3>
-        <input type="text" id="bt" placeholder="Title"/>
-        <textarea id="bb" rows="4" placeholder="The full fact content"></textarea>
-        <input type="url" id="bw" placeholder="Wikipedia Link"/>
+        <h3>Bellissima! — Fact of the Day</h3>
+        <div class="fr"><label>Title</label><input type="text" id="bt"/></div>
+        <div class="fr"><label>Fact</label><textarea id="bb" rows="3"></textarea></div>
+        <div class="fr"><label>Image URL</label><input type="url" id="bi"/></div>
+        <div class="fr"><label>Wiki Link</label><input type="url" id="bw"/></div>
         <button class="retro-btn" onclick="saveBella()">PUBLISH FACT</button>
       </div>
+
       <div class="adm-form">
         <h3>New Letter</h3>
-        <input type="text" id="lt" placeholder="Letter Title"/>
-        <textarea id="lb" rows="8" placeholder="Letter body"></textarea>
+        <div class="fr"><label>Title</label><input type="text" id="lt"/></div>
+        <div class="fr"><label>Body</label><textarea id="lb" rows="6"></textarea></div>
         <button class="retro-btn" onclick="pubLetter()">PUBLISH LETTER</button>
+      </div>
+
+      <div class="adm-form">
+        <h3>Sidebar Media</h3>
+        <div class="fr"><label>Earth Override (URL)</label><input type="url" id="eu"/></div>
+        <button class="retro-btn" onclick="saveEpic()">SAVE EARTH</button>
+        <hr style="margin:15px 0;">
+        <div class="fr"><label>Mars Image 1</label><input type="url" id="mu1"/></div>
+        <div class="fr"><label>Mars Image 2</label><input type="url" id="mu2"/></div>
+        <button class="retro-btn" onclick="saveMars()">SAVE MARS</button>
+      </div>
+
+      <div class="adm-form">
+        <h3>Sidebar Gallery</h3>
+        <div class="fr"><label>Image URL</label><input type="url" id="si"/></div>
+        <div class="fr"><label>Caption</label><input type="text" id="sc"/></div>
+        <button class="retro-btn" onclick="addSbImg()">ADD IMAGE</button>
+        <div id="sb-admin-list" style="margin-top:15px;"></div>
       </div>
     </div>
   </div>
@@ -152,23 +215,29 @@ a{color:#0000cc;}a:visited{color:#551a8b;}a:hover{color:#cc0000;}
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import{getDatabase,ref,set,push,get,onValue,remove}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import{getDatabase,ref,set,push,onValue,remove}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig={apiKey:"AIzaSyAxFfLgoXqHh6vkS788YCK0HmV5JuDlrEo",authDomain:"kosmoso.firebaseapp.com",databaseURL:"https://kosmoso-default-rtdb.firebaseio.com",projectId:"kosmoso",storageBucket:"kosmoso.firebasestorage.app",messagingSenderId:"907090872412",appId:"1:907090872412:web:e8f4d4044c3a2726cafe99"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
 
-/* Renders cubes with full content and internal scrolling */
+/* NAVIGATION */
+window.showPage=function(n){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('#nav a').forEach(a=>a.classList.remove('active'));
+    document.getElementById('page-'+n).classList.add('active');
+    document.getElementById('nav-'+n).classList.add('active');
+};
+
+/* RENDERING CUBES */
 function renderCubes(data, containerId, isLetter = false) {
     const container = document.getElementById(containerId);
-    if (!data) { container.innerHTML = "No entries yet."; return; }
-    
+    if (!data) { container.innerHTML = "No entries found."; return; }
     const entries = Object.entries(data).sort((a,b) => (b[1].date||'').localeCompare(a[1].date||''));
-    
     container.innerHTML = entries.map(([k, p]) => `
         <article class="content-cube">
             <div class="cube-inner">
-                <span class="cube-date">${new Date(p.date).toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'})}</span>
+                <span class="cube-date">${new Date(p.date).toLocaleDateString('en-GB')}</span>
                 <div class="cube-title">${p.title}</div>
                 <div class="cube-body">${isLetter ? p.content.replace(/\n/g, '<br>') : p.text}</div>
             </div>
@@ -176,56 +245,73 @@ function renderCubes(data, containerId, isLetter = false) {
     `).join('');
 }
 
-window.showPage=function(n){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('#nav a').forEach(a=>a.classList.remove('active'));
-  document.getElementById('page-'+n).classList.add('active');
-  document.getElementById('nav-'+n).classList.add('active');
-};
-
-/* Firebase Listeners */
+/* FIREBASE LISTENERS */
 onValue(ref(db,'siteData/intro'), s => { if(s.val()) document.getElementById('intro-text').textContent = s.val(); });
 
 onValue(ref(db,'siteData/bellissima'), s => {
-  const b = s.val();
-  if(b) {
-    document.getElementById('bella-title-d').textContent = b.title;
-    document.getElementById('bella-text-d').textContent = b.text;
-    document.getElementById('bella-wiki-d').innerHTML = b.wiki ? `→ <a href="${b.wiki}" target="_blank">Wikipedia</a>` : '';
-  }
+    const b = s.val();
+    if(b) {
+        document.getElementById('bella-title-d').textContent = b.title;
+        document.getElementById('bella-text-d').textContent = b.text;
+        document.getElementById('bella-wiki-d').innerHTML = b.wiki ? `→ <a href="${b.wiki}" target="_blank">Wikipedia</a>` : '';
+        if(b.img) { document.getElementById('bella-thumb-img').src=b.img; document.getElementById('bella-thumb-wrap').style.display='block'; }
+    }
 });
 
 onValue(ref(db,'archives/bellissima'), s => renderCubes(s.val(), 'bella-archive-list'));
-
 onValue(ref(db,'siteData/letters'), s => {
-  const d = s.val();
-  renderCubes(d, 'blog-list', true);
-  if(d) {
-    const latest = Object.values(d).sort((a,b) => b.date.localeCompare(a.date))[0];
-    document.getElementById('latest-title').textContent = latest.title;
-    document.getElementById('latest-snip').textContent = latest.content.slice(0, 100) + "...";
-  }
+    const d = s.val();
+    renderCubes(d, 'blog-list', true);
+    if(d) {
+        const latest = Object.values(d).sort((a,b) => b.date.localeCompare(a.date))[0];
+        document.getElementById('latest-title').textContent = latest.title;
+        document.getElementById('latest-snip').textContent = latest.content.slice(0, 100) + "...";
+    }
 });
 
-/* Admin Logic */
+onValue(ref(db,'siteData/epic'), s => {
+    const d = s.val(); if(d) { document.getElementById('epic-img').src = d.url; document.getElementById('epic-counter').textContent = d.date || 'Manual Override'; }
+});
+
+onValue(ref(db,'siteData/mars'), s => {
+    const d = s.val(); if(d) {
+        document.getElementById('mars-grid').innerHTML = (d.img1 ? `<img src="${d.img1}" style="width:100%;">` : '') + (d.img2 ? `<img src="${d.img2}" style="width:100%;">` : '');
+        document.getElementById('mars-lbl').textContent = d.label || '';
+    }
+});
+
+onValue(ref(db,'siteData/gallery'), s => {
+    const d = s.val();
+    const grid = document.getElementById('sb-img-grid');
+    const adm = document.getElementById('sb-admin-list');
+    if(!d) return;
+    grid.innerHTML = Object.values(d).map(v => `<img src="${v.url}" title="${v.caption}" style="width:100%; margin-bottom:5px; border:1px solid #ccc;">`).join('');
+    adm.innerHTML = Object.entries(d).map(([k,v]) => `<div class="adm-row"><span>${v.caption||'Image'}</span><button class="del-btn" onclick="remove(ref(db,'siteData/gallery/${k}'))">DEL</button></div>`).join('');
+});
+
+/* ADMIN ACTIONS */
 window.checkPw = function() {
-  if(document.getElementById('pw-input').value === 'cosmos2026') {
-    document.getElementById('admin-lock-wrap').style.display='none';
-    document.getElementById('admin-panel').classList.add('open');
-  } else {
-    document.getElementById('pw-error').textContent = "Incorrect password.";
-  }
+    if(document.getElementById('pw-input').value === 'cosmos2026') {
+        document.getElementById('admin-lock-wrap').style.display='none';
+        document.getElementById('admin-panel').style.display='block';
+    } else { document.getElementById('pw-error').textContent = "Incorrect password."; }
 };
 
 window.saveBella = function() {
-  const b = { title: document.getElementById('bt').value, text: document.getElementById('bb').value, wiki: document.getElementById('bw').value, date: new Date().toISOString() };
-  set(ref(db, 'siteData/bellissima'), b).then(() => push(ref(db, 'archives/bellissima'), b));
+    const b = { title: document.getElementById('bt').value, text: document.getElementById('bb').value, img: document.getElementById('bi').value, wiki: document.getElementById('bw').value, date: new Date().toISOString() };
+    set(ref(db, 'siteData/bellissima'), b).then(() => push(ref(db, 'archives/bellissima'), b));
 };
 
 window.pubLetter = function() {
-  const l = { title: document.getElementById('lt').value, content: document.getElementById('lb').value, date: new Date().toISOString() };
-  push(ref(db, 'siteData/letters'), l);
+    const l = { title: document.getElementById('lt').value, content: document.getElementById('lb').value, date: new Date().toISOString() };
+    push(ref(db, 'siteData/letters'), l);
 };
+
+window.saveEpic = () => set(ref(db, 'siteData/epic'), {url: document.getElementById('eu').value, date: new Date().toISOString().split('T')[0]});
+window.saveMars = () => set(ref(db, 'siteData/mars'), {img1: document.getElementById('mu1').value, img2: document.getElementById('mu2').value, label: 'Manual Update'});
+window.addSbImg = () => push(ref(db, 'siteData/gallery'), {url: document.getElementById('si').value, caption: document.getElementById('sc').value});
+
+window.remove = (path) => remove(path);
 </script>
 </body>
 </html>
