@@ -6,131 +6,78 @@
 <title>KOSMOSO</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;}
-/* Increased base font size to 18px for readability */
+html,body{height:100%;overflow-x:hidden;}
+/* Restored original background and font colors */
 body{background:#f5f5f0;color:#000;font-family:"Times New Roman",Times,serif;font-size:18px;}
 a{color:#0000cc;}a:visited{color:#551a8b;}a:hover{color:#cc0000;}
+
 #topbar{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:12px;letter-spacing:1.5px;text-align:center;padding:6px 0;height:30px;}
 .live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#00cc00;margin-right:4px;animation:blink 1.5s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
 #sitetitle{text-align:center;background:#fff;border-bottom:2px solid #000;padding:10px 0 6px;height:75px;}
 #sitetitle h1{font-size:38px;letter-spacing:8px;font-weight:bold;line-height:1;}
 #sitetitle .tagline{font-size:13px;font-style:italic;color:#555;}
+
 #nav{background:#fff;text-align:center;border-bottom:1px solid #000;padding:8px 0;height:34px;font-family:Arial,sans-serif;font-size:12px;letter-spacing:1px;}
 #nav a{margin:0 12px;font-weight:bold;color:#000080;text-decoration:none;text-transform:uppercase;}
 #nav a:hover{color:#cc0000;text-decoration:underline;}
 #nav a.active{color:#cc0000;text-decoration:underline;}
-#shell{height:calc(100vh - 139px);position:relative;}
-.page{display:none;height:100%;}
-.page.active{display:flex;flex-direction:column;}
-.page.scrollable{overflow-y:auto;}
-.page.scrollable.active{display:block;padding:20px 24px 50px;max-width:900px;margin:0 auto;}
-#home-dashboard{display:grid;grid-template-columns:1fr 320px;height:100%;background:#fff;gap:20px;padding:20px;}
-/* Adjusted to allow scrolling and added gap between sections */
-#home-main{display:grid;grid-template-rows:auto auto auto 1fr;border-right:1px solid #ccc;overflow-y:auto;padding-right:15px;gap:20px;}
-#intro-strip{border-bottom:1px solid #ccc;padding:12px 18px;background:#f0f0ff;border-left:4px solid #000080;}
-#intro-strip .lbl{font-family:Arial,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000080;margin-bottom:4px;font-weight:bold;}
-#intro-text{font-size:16px;line-height:1.6;color:#333;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-#latest-strip{border-bottom:1px solid #ccc;padding:12px 18px;background:#fff;cursor:pointer;}
-#latest-strip:hover{background:#f8f8ff;}
-#latest-strip .lbl{font-family:Arial,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#555;margin-bottom:4px;font-weight:bold;}
-#latest-title{font-size:20px;font-weight:bold;color:#000080;}
-#latest-snip{font-size:16px;color:#666;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px;}
-#bella-strip{border-bottom:1px solid #000;border-top:2px solid #000;padding:12px 18px;background:#fffff0;overflow:hidden;}
-.bella-head{font-family:"Times New Roman",serif;font-size:16px;font-style:italic;font-weight:bold;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
-.bella-head a{font-size:12px;font-style:normal;font-weight:normal;}
-#bella-title-d{font-size:18px;font-weight:bold;margin-bottom:4px;}
-#bella-text-d{font-size:16px;line-height:1.6;color:#333;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
-#bella-wiki-d{font-size:13px;font-style:italic;margin-top:6px;}
-#bella-thumb-wrap{float:right;margin:0 0 6px 12px;display:none;}
-#bella-thumb-inner{position:relative;display:inline-block;padding:8px;background:#fffff0;border:1px solid #888866;}
-#bella-thumb-inner img{max-width:100px;max-height:90px;display:block;border:1px solid #ccccaa;}
-.bc{position:absolute;font-size:14px;color:#888866;background:#fffff0;line-height:1;}
-.bc.tl{top:-8px;left:-8px}.bc.tr{top:-8px;right:-8px;transform:scaleX(-1)}.bc.bl{bottom:-8px;left:-8px;transform:scaleY(-1)}.bc.br{bottom:-8px;right:-8px;transform:scale(-1,-1)}
-#apod-win{position:relative;overflow:hidden;background:#000;min-height:300px;}
-#apod-win img.am,#apod-win video.am{width:100%;height:100%;object-fit:cover;display:block;border:none;}
-#apod-win iframe.am{width:100%;height:100%;border:none;display:block;}
-#apod-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));padding:16px 20px 12px;color:#fff;pointer-events:none;display:none;}
-#apod-overlay-title{font-size:18px;font-weight:bold;margin-bottom:4px;}
-#apod-overlay-credit{font-size:13px;color:rgba(255,255,255,0.7);}
-.apod-badge{position:absolute;top:10px;left:10px;background:rgba(0,0,128,0.85);color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;font-weight:bold;display:none;}
-.apod-loader{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:"Courier New",monospace;font-size:14px;color:#888;}
-/* Sidebar gap and overflow */
-#home-sidebar{display:flex;flex-direction:column;overflow-y:auto;background:#fafafa;gap:20px;padding-right:10px;}
-.sb-sec{border-bottom:1px solid #ccc;overflow:hidden;flex-shrink:0;padding-bottom:10px;}
-.sb-head{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 10px;font-weight:bold;}
-#epic-wrap{background:#000;position:relative;}
-#epic-img{width:100%;display:block;aspect-ratio:1;object-fit:cover;display:none;}
-#epic-loading{font-family:"Courier New",monospace;font-size:13px;color:#888;padding:20px;text-align:center;}
-#epic-controls{display:flex;align-items:center;justify-content:center;gap:6px;padding:6px;background:#111;border-top:1px solid #333;}
-.epic-btn{background:#000080;color:#fff;border:1px outset #8888cc;font-size:12px;padding:4px 10px;cursor:pointer;font-family:Arial,sans-serif;}
-.epic-btn:hover{background:#0000aa;}.epic-btn.playing{background:#880000;}
-#epic-counter{font-family:"Courier New",monospace;font-size:12px;color:#aaa;}
-#epic-date-input{font-size:11px;font-family:Arial,sans-serif;border:1px solid #444;background:#111;color:#fff;padding:2px 4px;width:110px;}
-#mars-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:6px;}
-#mars-grid img{width:100%;aspect-ratio:1;object-fit:cover;border:1px solid #ccc;display:block;cursor:pointer;}
-#mars-grid img:hover{opacity:0.8;}
-#mars-lbl{font-family:Arial,sans-serif;font-size:12px;color:#888;padding:0 8px 6px;}
-#sb-img-menu{flex:1;overflow-y:auto;}
-#sb-img-grid{display:flex;flex-direction:column;gap:5px;padding:6px;}
-.sb-img-item{cursor:pointer;border:1px solid #ccc;overflow:hidden;}
-.sb-img-item img{width:100%;display:block;object-fit:cover;height:90px;transition:opacity 0.15s;}
-.sb-img-item:hover img{opacity:0.8;}
-.sb-img-cap{font-size:12px;font-family:Arial,sans-serif;color:#444;padding:4px 6px;background:#f0f0f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.section-head{font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #000;padding-bottom:6px;margin-bottom:20px;}
-.blog-post{margin-bottom:40px;padding-bottom:30px;border-bottom:1px solid #e0e0e0;}
-.blog-post:last-child{border-bottom:none;}
-.post-date{font-family:Arial,sans-serif;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-.post-title{font-size:26px;font-weight:bold;margin-bottom:14px;line-height:1.25;}
-.post-body{font-size:18px;line-height:1.8;color:#222;}
-.post-body p{margin-bottom:16px;}
-.post-img{max-width:100%;border:1px solid #ccc;margin:14px 0;display:block;}
-.post-link{font-size:15px;font-style:italic;margin-top:10px;}
-.archive-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px;}
-.arc-card{border:1px solid #ccc;padding:12px;background:#fffff0;}
-.arc-card-date{font-family:Arial,sans-serif;font-size:12px;color:#888;margin-bottom:6px;}
-.arc-card-title{font-size:15px;font-weight:bold;margin-bottom:6px;}
-.arc-card img{width:100%;height:90px;object-fit:cover;border:1px solid #ccccaa;margin-bottom:6px;display:block;}
-.arc-card-empty{width:100%;height:90px;background:#f0f0e0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#aaa;border:1px solid #ccccaa;margin-bottom:6px;font-style:italic;}
-.nas-card{border:1px solid #ccc;padding:12px;background:#f8f8ff;margin-bottom:14px;}
-.nas-card-date{font-family:Arial,sans-serif;font-size:12px;color:#888;margin-bottom:6px;}
-.nas-card img,.nas-card video{max-width:100%;margin:8px 0;display:block;border:1px solid #ccc;}
-#admin-lock-wrap{max-width:400px;margin:50px auto;border:2px solid #000;padding:30px;background:#fffff0;text-align:center;}
-#admin-lock-wrap p{font-size:16px;margin-bottom:16px;}
-#pw-input{font-family:"Courier New",monospace;font-size:16px;padding:8px 10px;border:1px solid #999;width:200px;margin-right:8px;}
-.retro-btn{background:#000080;color:#fff;border:2px outset #8888cc;padding:8px 16px;cursor:pointer;font-size:14px;font-weight:bold;font-family:Arial,sans-serif;}
-.retro-btn:hover{background:#0000aa;}
-.pw-error{color:#cc0000;font-size:15px;margin-top:10px;font-style:italic;}
-.ok-msg{color:#006600;font-size:15px;font-style:italic;margin-top:8px;display:inline-block;}
+
+.page{display:none;max-width:1100px;margin:0 auto;padding:20px 24px 100px;}
+.page.active{display:block;}
+
+/* --- BELISSIMA STANDOFF SECTION --- */
+#belissima-standoff {
+    width: 100%;
+    margin: 40px 0;
+    padding: 40px 20px;
+    border-top: 2px solid #000;
+    border-bottom: 1px solid #000;
+    background: #fffff0; /* Original light yellow */
+    clear: both;
+    text-align: center;
+}
+#bella-title-d { font-size: 24px; font-weight: bold; margin-bottom: 10px; color: #000080; }
+#bella-text-d { max-width: 800px; margin: 0 auto; font-size: 18px; line-height: 1.6; color: #333; }
+
+/* --- RED HAND FILES STYLE GRID (Archives & Letters) --- */
+.cube-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+.content-cube {
+    border: 1px solid #ccc;
+    background: #fffff0; /* Restored original archive card color */
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+}
+.cube-inner {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    padding: 20px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+/* Keeps the UI clean by hiding scrollbars until needed */
+.cube-inner::-webkit-scrollbar { width: 4px; }
+.cube-inner::-webkit-scrollbar-thumb { background: #000080; }
+
+.cube-date { font-family: Arial; font-size: 11px; text-transform: uppercase; color: #888; display: block; margin-bottom: 8px; }
+.cube-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #000080; }
+.cube-body { font-size: 16px; line-height: 1.5; color: #222; }
+
+/* Admin styles preserved */
+.adm-form{border:1px solid #ccc;padding:20px;margin-bottom:24px;background:#fafafa;}
+.retro-btn{background:#000080;color:#fff;border:2px outset #8888cc;padding:8px 16px;cursor:pointer;font-weight:bold;}
 #admin-panel{display:none;}
 #admin-panel.open{display:block;}
-.adm-form{border:1px solid #ccc;padding:20px;margin-bottom:24px;background:#fafafa;}
-.adm-form h3{font-family:Arial,sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #ccc;padding-bottom:8px;margin-bottom:16px;}
-.fr{margin-bottom:14px;}
-.fr label{display:block;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;margin-bottom:5px;color:#333;}
-.fr input[type=text],.fr input[type=url],.fr input[type=password],.fr textarea,.fr select{width:100%;font-family:"Times New Roman",serif;font-size:16px;padding:8px 10px;border:1px solid #999;background:#fff;}
-.fr textarea{min-height:100px;resize:vertical;line-height:1.6;}
-.fn{font-size:13px;color:#888;margin-top:4px;font-style:italic;}
-.adm-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid #eee;font-size:15px;}
-.adm-row:last-child{border-bottom:none;}
-.del-btn{background:#cc0000;color:#fff;border:2px outset #ee8888;font-size:12px;padding:4px 10px;cursor:pointer;font-family:Arial,sans-serif;flex-shrink:0;margin-left:10px;}
-.del-btn:hover{background:#aa0000;}
-.rl{font-family:"Courier New",monospace;font-size:14px;color:#888;}
-.img-prev{margin-top:8px;display:none;}
-.img-prev img{max-width:200px;border:1px solid #ccc;}
-#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:999;align-items:center;justify-content:center;cursor:zoom-out;}
-#lightbox.open{display:flex;}
-#lightbox img,#lightbox video{max-width:90vw;max-height:88vh;border:2px solid #fff;}
-#lb-close{position:fixed;top:16px;right:24px;color:#fff;font-size:36px;cursor:pointer;background:none;border:none;font-family:Arial,sans-serif;}
 </style>
 </head>
 <body>
-
-<div id="lightbox" onclick="closeLB()">
-  <button id="lb-close" onclick="closeLB()">&#x2715;</button>
-  <img id="lb-img" src="" alt="" style="display:none;"/>
-  <video id="lb-vid" controls style="display:none;"></video>
-</div>
 
 <div id="topbar"><span class="live-dot"></span>KOSMOSO &nbsp;&middot;&nbsp; A PERSONAL RECORD OF THE UNIVERSE</div>
 
@@ -143,400 +90,142 @@ a{color:#0000cc;}a:visited{color:#551a8b;}a:hover{color:#cc0000;}
   <a href="#" class="active" id="nav-home" onclick="showPage('home');return false;">HOME</a>
   <a href="#" id="nav-blog" onclick="showPage('blog');return false;">THE LETTERS</a>
   <a href="#" id="nav-archive-bella" onclick="showPage('archive-bella');return false;">BELLISSIMA ARCHIVE</a>
-  <a href="#" id="nav-archive-nasa" onclick="showPage('archive-nasa');return false;">NASA ARCHIVE</a>
   <a href="#" id="nav-admin" onclick="showPage('admin');return false;">EDIT</a>
 </div>
 
 <div id="shell">
 
   <div id="page-home" class="page active">
-    <div id="home-dashboard">
+    <div id="intro-strip" style="background:#f0f0ff; border-left:4px solid #000080; padding:12px 18px; margin-bottom:20px;">
+        <div id="intro-text">loading...</div>
+    </div>
 
-      <div id="home-main">
-        <div id="intro-strip">
-          <div class="lbl">introduction</div>
-          <div id="intro-text">loading...</div>
-        </div>
-        <div id="latest-strip" onclick="showPage('blog')">
-          <div class="lbl">latest letter</div>
-          <div id="latest-title">—</div>
-          <div id="latest-snip"></div>
-        </div>
-        <div id="bella-strip">
-          <div class="bella-head">
-            bellissima! &mdash; today's physics fact
-            <a href="#" onclick="showPage('archive-bella');return false;">[ archive ]</a>
-          </div>
-          <div id="bella-thumb-wrap">
-            <div id="bella-thumb-inner">
-              <span class="bc tl">&#10070;</span><span class="bc tr">&#10070;</span>
-              <span class="bc bl">&#10070;</span><span class="bc br">&#10070;</span>
-              <img id="bella-thumb-img" alt=""/>
-            </div>
-          </div>
-          <div id="bella-title-d"></div>
-          <div id="bella-text-d"></div>
-          <div id="bella-wiki-d"></div>
-          <div style="clear:both;"></div>
-        </div>
-        <div id="apod-win">
-          <div class="apod-loader" id="apod-loader">[ fetching image of the day... ]</div>
-          <div class="apod-badge" id="apod-badge"></div>
-          <div id="apod-overlay">
-            <div id="apod-overlay-title"></div>
-            <div id="apod-overlay-credit"></div>
-          </div>
-        </div>
-      </div>
+    <section id="belissima-standoff">
+      <div style="font-family:Arial; font-size:11px; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px; color:#000080;">Bellissima! — Today's Fact</div>
+      <div id="bella-title-d"></div>
+      <div id="bella-text-d"></div>
+      <div id="bella-wiki-d" style="margin-top:10px; font-style:italic;"></div>
+    </section>
 
-      <div id="home-sidebar">
-        <div class="sb-sec">
-          <div class="sb-head"><span class="live-dot"></span>EARTH — NASA EPIC</div>
-          <div id="epic-wrap">
-            <img id="epic-img" alt="Earth"/>
-            <div id="epic-loading">[ contacting EPIC... ]</div>
-          </div>
-          <div id="epic-controls">
-            <button class="epic-btn" onclick="epicStep(-1)">&#9664;</button>
-            <span id="epic-counter">&#8212;</span>
-            <button class="epic-btn" onclick="epicStep(1)">&#9654;</button>
-            <button class="epic-btn" id="epic-play-btn" onclick="epicTogglePlay()">&#9654;&#9654;</button>
-            <input type="date" id="epic-date-input" onchange="epicLoadDate(this.value)"/>
-          </div>
-        </div>
-        <div class="sb-sec">
-          <div class="sb-head">MARS &mdash; CURIOSITY ROVER</div>
-          <div id="mars-grid"><div class="rl" style="grid-column:1/-1;padding:8px;">[ loading... ]</div></div>
-          <div id="mars-lbl"></div>
-        </div>
-        <div id="sb-img-menu">
-          <div class="sb-head">IMAGE GALLERY</div>
-          <div id="sb-img-grid"><div class="rl" style="padding:8px;font-size:11px;">[ no images yet ]</div></div>
-        </div>
-      </div>
-
+    <div id="latest-strip" style="cursor:pointer; text-align:center;" onclick="showPage('blog')">
+      <div style="font-family:Arial; font-size:11px; text-transform:uppercase; color:#555;">Latest Letter</div>
+      <div id="latest-title" style="font-size:24px; font-weight:bold; color:#000080;">—</div>
+      <div id="latest-snip" style="font-size:16px; color:#666;"></div>
     </div>
   </div>
 
-  <div id="page-blog" class="page scrollable">
-    <div class="section-head">THE LETTERS</div>
-    <div style="font-style:italic;color:#555;font-size:16px;border-left:3px solid #000080;padding:12px 18px;margin-bottom:30px;background:#f8f8ff;">Letters written to no one in particular and everyone at once. About space, physics, cricket, boxing, and the strangeness of being alive on a rock hurtling through a universe we barely understand.</div>
-    <div id="blog-list"><div class="rl">[ loading... ]</div></div>
+  <div id="page-blog" class="page">
+    <div style="font-family:Arial; font-size:13px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:20px;">The Letters</div>
+    <div id="blog-list" class="cube-grid"><div class="rl">[ loading... ]</div></div>
   </div>
 
-  <div id="page-archive-bella" class="page scrollable">
-    <div class="section-head">BELLISSIMA ARCHIVE</div>
-    <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:20px;">Every physics fact, every day.</p>
-    <div class="archive-grid" id="bella-archive-list"><div class="rl">[ loading... ]</div></div>
+  <div id="page-archive-bella" class="page">
+    <div style="font-family:Arial; font-size:13px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:20px;">Bellissima Archive</div>
+    <div class="cube-grid" id="bella-archive-list"><div class="rl">[ loading... ]</div></div>
   </div>
 
-  <div id="page-archive-nasa" class="page scrollable">
-    <div class="section-head">NASA ARCHIVE</div>
-    <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:20px;">Every image and video of the day, archived.</p>
-    <div id="nasa-archive-list"><div class="rl">[ loading... ]</div></div>
-  </div>
-
-  <div id="page-admin" class="page scrollable">
-    <div class="section-head">EDIT &mdash; KOSMOSO</div>
-    <div id="admin-lock-wrap">
+  <div id="page-admin" class="page">
+    <div id="admin-lock-wrap" style="text-align:center; margin-top:50px;">
       <p><strong>enter password to edit</strong></p>
-      <input type="password" id="pw-input" placeholder="password" onkeydown="if(event.key==='Enter')checkPw()"/>
+      <input type="password" id="pw-input" style="padding:8px; border:1px solid #999;"/>
       <button class="retro-btn" onclick="checkPw()">ENTER</button>
-      <div class="pw-error" id="pw-error"></div>
+      <div id="pw-error" style="color:red; margin-top:10px;"></div>
     </div>
     <div id="admin-panel">
-
       <div class="adm-form">
-        <h3>Introduction</h3>
-        <div class="fr"><label>Text (keep to 2 sentences — shown compact on home)</label><textarea id="edit-intro" rows="3"></textarea></div>
-        <button class="retro-btn" onclick="saveIntro()">SAVE</button> <span class="ok-msg" id="intro-ok"></span>
+        <h3>Bellissima! — Physics Fact</h3>
+        <input type="text" id="bt" placeholder="Title"/>
+        <textarea id="bb" rows="4" placeholder="The full fact content"></textarea>
+        <input type="url" id="bw" placeholder="Wikipedia Link"/>
+        <button class="retro-btn" onclick="saveBella()">PUBLISH FACT</button>
       </div>
-
-      <div class="adm-form">
-        <h3>Bellissima! &mdash; Physics Fact of the Day</h3>
-        <div class="fr"><label>Title</label><input type="text" id="bt" placeholder="e.g. The Casimir Effect"/></div>
-        <div class="fr"><label>Fact (2–3 sentences for home page)</label><textarea id="bb" rows="4"></textarea></div>
-        <div class="fr"><label>Image URL</label><input type="url" id="bi" placeholder="https://upload.wikimedia.org/..."/></div>
-        <div class="fr"><label>— OR — Upload image</label><input type="file" id="bf" accept="image/*" onchange="prevFile('bf','bfp-img','bfp')" style="font-size:14px;"/><div class="img-prev" id="bfp"><img id="bfp-img" alt=""/></div></div>
-        <div class="fr"><label>Wikipedia link</label><input type="url" id="bw" placeholder="https://en.wikipedia.org/wiki/..."/></div>
-        <button class="retro-btn" onclick="saveBella()">PUBLISH FACT</button> <span class="ok-msg" id="bella-ok"></span>
-      </div>
-
       <div class="adm-form">
         <h3>New Letter</h3>
-        <div class="fr"><label>Title</label><input type="text" id="lt" placeholder="Letter title"/></div>
-        <div class="fr"><label>Body (blank line = new paragraph)</label><textarea id="lb" rows="8"></textarea></div>
-        <div class="fr"><label>Image URL (optional)</label><input type="url" id="li" placeholder="https://..."/></div>
-        <div class="fr"><label>External link (optional)</label><input type="url" id="ll" placeholder="https://..."/></div>
-        <div class="fr"><label>Link label</label><input type="text" id="llb" placeholder="e.g. Read the paper"/></div>
-        <button class="retro-btn" onclick="pubLetter()">PUBLISH LETTER</button> <span class="ok-msg" id="letter-ok"></span>
+        <input type="text" id="lt" placeholder="Letter Title"/>
+        <textarea id="lb" rows="8" placeholder="Letter body"></textarea>
+        <button class="retro-btn" onclick="pubLetter()">PUBLISH LETTER</button>
       </div>
-
-      <div class="adm-form">
-        <h3>Image / Video of the Day (main window)</h3>
-        <p style="font-size:14px;color:#666;margin-bottom:12px;">This is the big image on the home page. Also archived in NASA Archive.</p>
-        <div class="fr"><label>Title</label><input type="text" id="nt" placeholder="e.g. Pillars of Creation"/></div>
-        <div class="fr"><label>URL (image or video)</label><input type="url" id="nu" placeholder="https://apod.nasa.gov/..."/><div class="fn">For YouTube paste the embed URL: https://www.youtube.com/embed/...</div></div>
-        <div class="fr"><label>— OR — Upload image</label><input type="file" id="nf" accept="image/*" onchange="prevFile('nf','nfp-img','nfp')" style="font-size:14px;"/><div class="img-prev" id="nfp"><img id="nfp-img" alt=""/></div></div>
-        <div class="fr"><label>Type</label><select id="ntp"><option value="image">Image</option><option value="video">Video</option></select></div>
-        <div class="fr"><label>Credit / caption</label><input type="text" id="nc" placeholder="Credit: NASA / ESA..."/></div>
-        <button class="retro-btn" onclick="saveNASA()">SET AS TODAY'S IMAGE</button> <span class="ok-msg" id="nasa-ok"></span>
-      </div>
-
-      <div class="adm-form">
-        <h3>Manage Earth — NASA EPIC</h3>
-        <div class="fr"><label>Override Image URL</label><input type="url" id="eu" placeholder="https://..."/></div>
-        <div class="fr"><label>— OR — Upload image</label><input type="file" id="ef" accept="image/*" onchange="prevFile('ef','efp-img','efp')" style="font-size:14px;"/><div class="img-prev" id="efp"><img id="efp-img" alt=""/></div></div>
-        <div class="fr"><label>Date / Caption</label><input type="text" id="ed" placeholder="e.g. 2026-04-26"/></div>
-        <button class="retro-btn" onclick="saveEpic()">OVERRIDE EPIC</button> <span class="ok-msg" id="epic-ok"></span>
-      </div>
-
-      <div class="adm-form">
-        <h3>Manage Mars — Curiosity Rover</h3>
-        <div class="fr"><label>Rover Label/Caption</label><input type="text" id="mlbl" placeholder="e.g. Front Hazcam - Sol 4100"/></div>
-        <div class="fr"><label>Image 1 URL</label><input type="url" id="mu1" placeholder="https://..."/></div>
-        <div class="fr"><label>— OR — Upload Image 1</label><input type="file" id="mf1" accept="image/*" onchange="prevFile('mf1','mf1p-img','mf1p')" style="font-size:14px;"/><div class="img-prev" id="mf1p"><img id="mf1p-img" alt=""/></div></div>
-        <div class="fr"><label>Image 2 URL</label><input type="url" id="mu2" placeholder="https://..."/></div>
-        <div class="fr"><label>— OR — Upload Image 2</label><input type="file" id="mf2" accept="image/*" onchange="prevFile('mf2','mf2p-img','mf2p')" style="font-size:14px;"/><div class="img-prev" id="mf2p"><img id="mf2p-img" alt=""/></div></div>
-        <button class="retro-btn" onclick="saveMars()">OVERRIDE MARS</button> <span class="ok-msg" id="mars-ok"></span>
-      </div>
-
-      <div class="adm-form">
-        <h3>Sidebar Image Gallery</h3>
-        <div class="fr"><label>Image URL</label><input type="url" id="si" placeholder="https://..."/></div>
-        <div class="fr"><label>— OR — Upload</label><input type="file" id="sf" accept="image/*" onchange="prevFile('sf','sfp-img','sfp')" style="font-size:14px;"/><div class="img-prev" id="sfp"><img id="sfp-img" alt=""/></div></div>
-        <div class="fr"><label>Caption (optional)</label><input type="text" id="sc" placeholder="Short label"/></div>
-        <button class="retro-btn" onclick="addSbImg()">ADD TO GALLERY</button> <span class="ok-msg" id="sb-ok"></span>
-        <div id="sb-admin-list" style="margin-top:16px;"></div>
-      </div>
-
-      <div class="adm-form">
-        <h3>Manage Letters</h3>
-        <div id="adm-blog-list"><div class="rl">[ loading... ]</div></div>
-      </div>
-
-      <div class="adm-form">
-        <h3>Change Password</h3>
-        <div class="fr"><label>New password</label><input type="password" id="np1" placeholder="new password"/></div>
-        <div class="fr"><label>Confirm</label><input type="password" id="np2" placeholder="confirm"/></div>
-        <button class="retro-btn" onclick="changePw()">CHANGE PASSWORD</button> <span class="ok-msg" id="pw-ok"></span>
-      </div>
-
-      <button class="retro-btn" style="background:#555;" onclick="lockAdmin()">LOCK &amp; EXIT</button>
     </div>
   </div>
 
-</div><script type="module">
+</div>
+
+<script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import{getDatabase,ref,set,push,get,onValue,remove}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig={apiKey:"AIzaSyAxFfLgoXqHh6vkS788YCK0HmV5JuDlrEo",authDomain:"kosmoso.firebaseapp.com",databaseURL:"https://kosmoso-default-rtdb.firebaseio.com",projectId:"kosmoso",storageBucket:"kosmoso.firebasestorage.app",messagingSenderId:"907090872412",appId:"1:907090872412:web:e8f4d4044c3a2726cafe99"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
-const NK='TKBivYAGaBGI8eMexg23ORunenoeAHvZOlwqoWLh';
 
-function ls(k,fb){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):fb;}catch{return fb;}}
-function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
-function flash(id,msg){const el=document.getElementById(id);if(!el)return;el.textContent=msg;setTimeout(()=>el.textContent='',3000);}
-function fmt(iso){try{return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});}catch{return iso||'';}}
-function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+/* Renders cubes with full content and internal scrolling */
+function renderCubes(data, containerId, isLetter = false) {
+    const container = document.getElementById(containerId);
+    if (!data) { container.innerHTML = "No entries yet."; return; }
+    
+    const entries = Object.entries(data).sort((a,b) => (b[1].date||'').localeCompare(a[1].date||''));
+    
+    container.innerHTML = entries.map(([k, p]) => `
+        <article class="content-cube">
+            <div class="cube-inner">
+                <span class="cube-date">${new Date(p.date).toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'})}</span>
+                <div class="cube-title">${p.title}</div>
+                <div class="cube-body">${isLetter ? p.content.replace(/\n/g, '<br>') : p.text}</div>
+            </div>
+        </article>
+    `).join('');
+}
 
-/* Upload Previews */
-window.prevFile = function(inputId, imgId, wrapId) {
-  const file = document.getElementById(inputId).files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    document.getElementById(imgId).src = e.target.result;
-    document.getElementById(wrapId).style.display = 'block';
-    if(inputId==='bf') window._bUp = e.target.result;
-    if(inputId==='nf') window._nUp = e.target.result;
-    if(inputId==='sf') window._sUp = e.target.result;
-    if(inputId==='ef') window._eUp = e.target.result;
-    if(inputId==='mf1') window._m1Up = e.target.result;
-    if(inputId==='mf2') window._m2Up = e.target.result;
-  };
-  reader.readAsDataURL(file);
-};
-
-/* nav */
 window.showPage=function(n){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('#nav a').forEach(a=>a.classList.remove('active'));
-  const pg=document.getElementById('page-'+n);if(pg)pg.classList.add('active');
-  const nv=document.getElementById('nav-'+n);if(nv)nv.classList.add('active');
+  document.getElementById('page-'+n).classList.add('active');
+  document.getElementById('nav-'+n).classList.add('active');
 };
 
-/* password */
-function getPw(){return ls('kosmoso_pw','cosmos2026');}
-window.checkPw=function(){
-  const v=document.getElementById('pw-input').value;
-  if(v===getPw()){
+/* Firebase Listeners */
+onValue(ref(db,'siteData/intro'), s => { if(s.val()) document.getElementById('intro-text').textContent = s.val(); });
+
+onValue(ref(db,'siteData/bellissima'), s => {
+  const b = s.val();
+  if(b) {
+    document.getElementById('bella-title-d').textContent = b.title;
+    document.getElementById('bella-text-d').textContent = b.text;
+    document.getElementById('bella-wiki-d').innerHTML = b.wiki ? `→ <a href="${b.wiki}" target="_blank">Wikipedia</a>` : '';
+  }
+});
+
+onValue(ref(db,'archives/bellissima'), s => renderCubes(s.val(), 'bella-archive-list'));
+
+onValue(ref(db,'siteData/letters'), s => {
+  const d = s.val();
+  renderCubes(d, 'blog-list', true);
+  if(d) {
+    const latest = Object.values(d).sort((a,b) => b.date.localeCompare(a.date))[0];
+    document.getElementById('latest-title').textContent = latest.title;
+    document.getElementById('latest-snip').textContent = latest.content.slice(0, 100) + "...";
+  }
+});
+
+/* Admin Logic */
+window.checkPw = function() {
+  if(document.getElementById('pw-input').value === 'cosmos2026') {
     document.getElementById('admin-lock-wrap').style.display='none';
     document.getElementById('admin-panel').classList.add('open');
-    document.getElementById('pw-input').value='';
-    document.getElementById('pw-error').textContent='';
-    get(ref(db,'siteData/intro')).then(s=>{if(s.val())document.getElementById('edit-intro').value=s.val();});
-    renderAdmBlog();
-  }else document.getElementById('pw-error').textContent='Incorrect password.';
-};
-window.lockAdmin=function(){
-  document.getElementById('admin-lock-wrap').style.display='block';
-  document.getElementById('admin-panel').classList.remove('open');
-  showPage('home');
-};
-window.changePw=function(){
-  const p1=document.getElementById('np1').value,p2=document.getElementById('np2').value;
-  if(!p1||p1!==p2){alert('Passwords do not match.');return;}
-  lss('kosmoso_pw',p1);document.getElementById('np1').value='';document.getElementById('np2').value='';
-  flash('pw-ok','Password changed.');
-};
-
-/* intro */
-onValue(ref(db,'siteData/intro'),s=>{
-  const v=s.val();if(v){document.getElementById('intro-text').textContent=v;document.getElementById('edit-intro').value=v;}
-});
-window.saveIntro=function(){
-  const v=document.getElementById('edit-intro').value.trim();if(!v)return;
-  set(ref(db,'siteData/intro'),v).then(()=>flash('intro-ok','Saved.'));
-};
-
-/* blog */
-let _blogEntries=[];
-onValue(ref(db,'siteData/letters'),s=>{
-  const d=s.val();
-  const list=document.getElementById('blog-list');
-  if(!d){list.innerHTML='<p style="color:#888;font-style:italic;">No letters yet.</p>';renderLatest(null);return;}
-  _blogEntries=Object.entries(d).sort((a,b)=>(b[1].date||'').localeCompare(a[1].date||''));
-  renderLatest(_blogEntries[0]?_blogEntries[0][1]:null);
-  list.innerHTML=_blogEntries.map(([k,p])=>{
-    const paras=(p.content||'').split(/\n\s*\n/).filter(Boolean);
-    const body=paras.map(t=>`<p>${esc(t).replace(/\n/g,'<br/>')}</p>`).join('');
-    const img=p.img?`<img src="${esc(p.img)}" class="post-img" alt=""/>` :'';
-    const lnk=p.link?`<div class="post-link">&#8594; <a href="${esc(p.link)}" target="_blank">${esc(p.linkLabel||p.link)}</a></div>`:'';
-    return `<div class="blog-post"><div class="post-date">${fmt(p.date)}</div><div class="post-title">${esc(p.title)}</div><div class="post-body">${body}${img}${lnk}</div></div>`;
-  }).join('');
-  renderAdmBlog();
-});
-
-function renderLatest(p){
-  document.getElementById('latest-title').textContent=p?p.title:'No letters yet';
-  document.getElementById('latest-snip').textContent=p?(p.content||'').slice(0,80)+'…':'';
-}
-function renderAdmBlog(){
-  const el=document.getElementById('adm-blog-list');if(!el)return;
-  if(!_blogEntries.length){el.innerHTML='<div class="rl">[ no letters ]</div>';return;}
-  el.innerHTML=_blogEntries.map(([k,p])=>`
-    <div class="adm-row">
-      <div><strong>${esc(p.title)}</strong><div style="font-size:13px;color:#888;">${fmt(p.date)}</div></div>
-      <button class="del-btn" onclick="delLetter('${k}')">DELETE</button>
-    </div>`).join('');
-}
-window.pubLetter=function(){
-  const t=document.getElementById('lt').value.trim(),b=document.getElementById('lb').value.trim();
-  if(!t||!b){alert('Title and body required.');return;}
-  push(ref(db,'siteData/letters'),{title:t,content:b,date:new Date().toISOString(),img:document.getElementById('li').value.trim()||null,link:document.getElementById('ll').value.trim()||null,linkLabel:document.getElementById('llb').value.trim()||null})
-  .then(()=>{['lt','lb','li','ll','llb'].forEach(id=>document.getElementById(id).value='');flash('letter-ok','Published.');});
-};
-window.delLetter=function(k){if(!confirm('Delete?'))return;remove(ref(db,'siteData/letters/'+k));};
-
-/* bellissima */
-onValue(ref(db,'siteData/bellissima'),s=>{
-  const b=s.val();
-  if(!b){document.getElementById('bella-title-d').textContent='No fact yet — go to EDIT to add one.';return;}
-  document.getElementById('bella-title-d').textContent=b.title||'';
-  document.getElementById('bella-text-d').textContent=b.text||'';
-  document.getElementById('bella-wiki-d').innerHTML=b.wiki?`&#8594; <a href="${esc(b.wiki)}" target="_blank">Read on Wikipedia</a>`:'';
-  if(b.img){document.getElementById('bella-thumb-img').src=b.img;document.getElementById('bella-thumb-wrap').style.display='block';}
-  else document.getElementById('bella-thumb-wrap').style.display='none';
-});
-onValue(ref(db,'archives/bellissima'),s=>{
-  const d=s.val();const el=document.getElementById('bella-archive-list');
-  if(!d){el.innerHTML='<div class="rl" style="grid-column:1/-1;">[ no archive yet ]</div>';return;}
-  el.innerHTML=Object.values(d).reverse().map(b=>`
-    <div class="arc-card">
-      ${b.img?`<img src="${esc(b.img)}" alt="" style="cursor:zoom-in;" onclick="openLB('${esc(b.img)}','image')"/>`:`<div class="arc-card-empty">no image</div>`}
-      <div class="arc-card-date">${fmt(b.date)}</div>
-      <div class="arc-card-title">${esc(b.title)}</div>
-      ${b.wiki?`<a href="${esc(b.wiki)}" target="_blank" style="font-size:13px;">Wikipedia &#8599;</a>`:''}
-    </div>`).join('');
-});
-window.saveBella=function(){
-  const t=document.getElementById('bt').value.trim(),tx=document.getElementById('bb').value.trim();
-  if(!t||!tx){alert('Title and text required.');return;}
-  const img=window._bUp||document.getElementById('bi').value.trim()||null;
-  const b={title:t,text:tx,img,wiki:document.getElementById('bw').value.trim()||null,date:new Date().toISOString()};
-  set(ref(db,'siteData/bellissima'),b).then(()=>{push(ref(db,'archives/bellissima'),b);window._bUp=null;flash('bella-ok','Published.');});
-};
-
-/* NASA day */
-window.saveNASA = function() {
-  const t=document.getElementById('nt').value.trim();
-  const u=window._nUp || document.getElementById('nu').value.trim();
-  const type=document.getElementById('ntp').value;
-  const c=document.getElementById('nc').value.trim();
-  if(!t || !u) { alert('Title and URL/Image required.'); return; }
-  set(ref(db, 'siteData/nasaDay'), {title:t, url:u, type:type, credit:c}).then(() => {
-    window._nUp=null; flash('nasa-ok','Saved.');
-  });
-};
-
-onValue(ref(db,'siteData/nasaDay'),s=>{const d=s.val();if(d)renderNASA(d);});
-function renderNASA(d){
-  const win=document.getElementById('apod-win');
-  win.querySelectorAll('.am').forEach(el=>el.remove());
-  const loader=document.getElementById('apod-loader');if(loader)loader.style.display='none';
-  if(d.type==='video'){
-    const ifr=document.createElement('iframe');
-    ifr.className='am';ifr.src=d.url;ifr.allowFullscreen=true;
-    win.appendChild(ifr);
   } else {
-    const im=document.createElement('img');
-    im.className='am';im.src=d.url;
-    win.appendChild(im);
+    document.getElementById('pw-error').textContent = "Incorrect password.";
   }
-  document.getElementById('apod-overlay-title').textContent=d.title||'';
-  document.getElementById('apod-overlay-credit').textContent=d.credit||'';
-  document.getElementById('apod-overlay').style.display='block';
-}
-
-/* EPIC & MARS OVERRIDES */
-window.saveEpic = function() {
-  const url = window._eUp || document.getElementById('eu').value.trim();
-  const d = document.getElementById('ed').value.trim();
-  if(!url) { alert('Image required.'); return; }
-  set(ref(db, 'siteData/epic'), {url, date: d}).then(() => {
-    window._eUp = null; flash('epic-ok','Saved.');
-  });
 };
 
-window.saveMars = function() {
-  const m1 = window._m1Up || document.getElementById('mu1').value.trim();
-  const m2 = window._m2Up || document.getElementById('mu2').value.trim();
-  const lbl = document.getElementById('mlbl').value.trim();
-  set(ref(db, 'siteData/mars'), {img1: m1, img2: m2, label: lbl}).then(() => {
-    window._m1Up = null; window._m2Up = null; flash('mars-ok','Saved.');
-  });
+window.saveBella = function() {
+  const b = { title: document.getElementById('bt').value, text: document.getElementById('bb').value, wiki: document.getElementById('bw').value, date: new Date().toISOString() };
+  set(ref(db, 'siteData/bellissima'), b).then(() => push(ref(db, 'archives/bellissima'), b));
 };
 
-onValue(ref(db,'siteData/epic'), s => {
-  const d = s.val(); if(d) {
-     document.getElementById('epic-img').src = d.url;
-     document.getElementById('epic-img').style.display='block';
-     document.getElementById('epic-loading').style.display='none';
-     document.getElementById('epic-counter').textContent = d.date||'Manual Override';
-  }
-});
-
-onValue(ref(db,'siteData/mars'), s => {
-  const d = s.val(); if(d) {
-     document.getElementById('mars-grid').innerHTML = 
-       (d.img1 ? `<img src="${d.img1}"/>` : '') + 
-       (d.img2 ? `<img src="${d.img2}"/>` : '');
-     document.getElementById('mars-lbl').textContent = d.label||'';
-  }
-});
-
+window.pubLetter = function() {
+  const l = { title: document.getElementById('lt').value, content: document.getElementById('lb').value, date: new Date().toISOString() };
+  push(ref(db, 'siteData/letters'), l);
+};
 </script>
 </body>
 </html>
