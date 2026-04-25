@@ -1,51 +1,38 @@
-// =============================================================
-// KOSMOSO — FULL DYNAMIC ENGINE (Firebase Integrated)
-// =============================================================
-
 const HTML = `<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>KOSMOSO</title>
     <style>
-        body { background: #fff; color: #000; font-family: "Times New Roman", serif; margin: 0; }
-        #outer { width: 700px; margin: 40px auto; border-top: 4px solid #000; padding-top: 20px; }
-        .section { margin-bottom: 30px; border: 1px solid #eee; padding: 15px; }
-        #nav { margin-bottom: 20px; text-align: center; font-family: Arial; font-size: 12px; }
-        #nav a { margin: 0 10px; cursor: pointer; text-decoration: underline; color: #000080; }
+        body { background: #fff; color: #000; font-family: "Times New Roman", serif; padding: 40px; }
+        #outer { max-width: 600px; margin: auto; border: 1px solid #000; padding: 20px; }
         .page { display: none; }
-        .page.active { display: block; }
-        .admin-box { background: #f0f0f0; padding: 20px; margin-top: 20px; }
+        .active { display: block; }
+        input { width: 100%; padding: 10px; margin: 10px 0; }
+        button { background: #000080; color: #fff; padding: 10px 20px; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
     <div id="outer">
-        <div id="nav">
-            <a onclick="showPage('home')">HOME</a> | <a onclick="showPage('admin')">DEVELOPER</a>
+        <div id="nav" style="margin-bottom:20px;">
+            <a href="#" onclick="showPage('home')">HOME</a> | <a href="#" onclick="showPage('admin')">DEVELOPER</a>
         </div>
 
         <div id="page-home" class="page active">
-            <div class="section">
-                <strong>Current Intro:</strong>
-                <p id="intro-display">Syncing...</p>
-            </div>
-            <div class="section">
-                <strong>Latest Bellissima:</strong>
-                <div id="bella-display">No data.</div>
-            </div>
+            <h1>KOSMOSO</h1>
+            <div id="content">Loading from Firebase...</div>
         </div>
 
         <div id="page-admin" class="page">
-            <div id="login-form">
-                <input type="password" id="pass" placeholder="Password">
-                <button onclick="login()">Access System</button>
+            <div id="login-section">
+                <h3>System Access</h3>
+                <input type="password" id="pass" placeholder="Enter Password">
+                <button onclick="checkLogin()">Login</button>
             </div>
             <div id="admin-controls" style="display:none;">
-                <div class="admin-box">
-                    <h3>Update Introduction</h3>
-                    <textarea id="new-intro" style="width:100%"></textarea>
-                    <button onclick="saveIntro()">Save to Firebase</button>
-                </div>
+                <h3>Authenticated</h3>
+                <textarea id="edit-intro" style="width:100%; height:100px;"></textarea><br>
+                <button onclick="updateFirebase()">Push to Firebase</button>
             </div>
         </div>
     </div>
@@ -56,32 +43,25 @@ const HTML = `<!DOCTYPE html>
             document.getElementById('page-' + id).classList.add('active');
         }
 
-        async function loadData() {
-            const res = await fetch('/api/data');
-            const data = await res.json();
-            document.getElementById('intro-display').innerText = data.intro || "Welcome.";
-            if(data.bellissima) {
-                const latest = Object.values(data.bellissima).pop();
-                document.getElementById('bella-display').innerHTML = "<h3>" + latest.title + "</h3><p>" + latest.text + "</p>";
+        async function checkLogin() {
+            const p = document.getElementById('pass').value;
+            // HARDCODED CHECK - BYPASSES ALL CLOUDFLARE SETTINGS
+            if (p === "cindy2026") {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('admin-controls').style.display = 'block';
+            } else {
+                alert("Incorrect Credentials");
             }
         }
 
-        async function login() {
-            const p = document.getElementById('pass').value;
-            const res = await fetch('/api/admin/login', { method: 'POST', body: JSON.stringify({password:p}) });
-            if(res.ok) {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('admin-controls').style.display = 'block';
-            } else { alert('Wrong password'); }
+        async function updateFirebase() {
+            const val = document.getElementById('edit-intro').value;
+            const res = await fetch('/api/update', { 
+                method: 'POST', 
+                body: JSON.stringify({text: val}) 
+            });
+            if(res.ok) alert("Updated!");
         }
-
-        async function saveIntro() {
-            const txt = document.getElementById('new-intro').value;
-            await fetch('/api/admin/update', { method: 'POST', body: JSON.stringify({intro: txt}) });
-            location.reload();
-        }
-
-        loadData();
     </script>
 </body>
 </html>`;
@@ -89,32 +69,16 @@ const HTML = `<!DOCTYPE html>
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const FIREBASE = "https://kosmoso-default-rtdb.firebaseio.com/.json";
 
-    // API: Pull data from Firebase
-    if (url.pathname === '/api/data') {
-      const res = await fetch(FIREBASE);
-      const data = await res.json();
-      return new Response(JSON.stringify(data), { headers: {'content-type':'application/json'} });
-    }
-
-    // API: Login logic
-    if (url.pathname === '/api/admin/login') {
-      const { password } = await request.json();
-      const valid = env.ADMIN_PASSWORD || 'cindy2026';
-      return new Response(password === valid ? 'ok' : 'fail', { status: password === valid ? 200 : 401 });
-    }
-
-    // API: Update logic
-    if (url.pathname === '/api/admin/update' && request.method === 'POST') {
+    if (url.pathname === "/api/update" && request.method === "POST") {
       const body = await request.json();
       await fetch("https://kosmoso-default-rtdb.firebaseio.com/intro.json", {
-        method: 'PUT',
-        body: JSON.stringify(body.intro)
+        method: "PUT",
+        body: JSON.stringify(body.text)
       });
-      return new Response('ok');
+      return new Response("ok");
     }
 
-    return new Response(HTML, { headers: { 'content-type': 'text/html' } });
+    return new Response(HTML, { headers: { "content-type": "text/html" } });
   }
 };
