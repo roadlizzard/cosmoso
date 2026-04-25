@@ -1,4 +1,3 @@
-
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "kosmoso",
@@ -8,7 +7,8 @@
     "enabled": true
   },
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "not_found_handling": "none"
   },
   "compatibility_flags": [
     "nodejs_compat"
