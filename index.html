@@ -9,11 +9,12 @@
 html,body{height:100%;overflow:hidden;background:#f5f5f0;color:#000;font-family:"Times New Roman",serif;font-size:18px;}
 a{color:#000080;text-decoration:none;}a:hover{text-decoration:underline;color:#cc0000;}
 
+/* Layout */
 #topbar{background:#000080;color:#fff;font-family:Arial;font-size:12px;letter-spacing:1.5px;text-align:center;padding:6px 0;height:30px;}
 #sitetitle{text-align:center;background:#fff;border-bottom:2px solid #000;padding:10px 0;height:80px;}
 #sitetitle h1{font-size:38px;letter-spacing:8px;line-height:1;}
 #nav{background:#fff;text-align:center;border-bottom:1px solid #000;padding:8px 0;height:35px;font-family:Arial;font-size:11px;}
-#nav a{margin:0 12px;text-transform:uppercase;font-weight:bold;color:#000080;}
+#nav a{margin:0 12px;text-transform:uppercase;font-weight:bold;color:#000080;cursor:pointer;}
 #nav a.active{color:#cc0000;text-decoration:underline;}
 
 #shell{height:calc(100vh - 145px);position:relative;}
@@ -25,14 +26,213 @@ a{color:#000080;text-decoration:none;}a:hover{text-decoration:underline;color:#c
 #home-dashboard{display:grid;grid-template-columns:1fr 320px;height:100%;background:#fff;padding:20px;gap:20px;}
 #home-main{overflow-y:auto;padding-right:15px;display:flex;flex-direction:column;gap:25px;}
 
-/* Latest Letter Home Feature */
-.latest-letter-preview { border-bottom: 1px solid #ccc; padding-bottom: 20px; cursor: pointer; }
-.latest-letter-preview:hover h2 { color: #cc0000; }
+/* Home Content Styles */
+.latest-letter-preview { border-bottom: 1px solid #eee; padding-bottom: 20px; cursor: pointer; transition: 0.2s;}
+.latest-letter-preview:hover { background: #fafaff; }
+.latest-letter-preview h2 { color: #000080; margin: 8px 0; }
 
-/* Bellissima & Media */
 .bella-entry{border:2px solid #000;padding:20px;background:#fffff0;display:flex;gap:20px; align-items: center;}
-.bella-img{flex:0 0 200px;height:150px;object-fit:cover;border:1px solid #000;}
+.bella-img{flex:0 0 180px; height:120px; object-fit:cover; border:1px solid #000; background:#eee;}
 
-#apod-win{background:#000;min-height:380px;position:relative;border:1px solid #000; display: flex; align-items: center; justify-content: center;}
-#apod-win img, #apod-win iframe{max-width:100%; max-height:100%; border:none;}
-.apod-info{position:absolute;bottom:
+#apod-win{background:#000; min-height:400px; position:relative; border:1px solid #000; display:flex; align-items:center; justify-content:center; overflow:hidden;}
+#apod-win img, #apod-win iframe { width:100%; height:400px; object-fit:cover; border:none; }
+.apod-info{position:absolute; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.8); color:#fff; padding:12px; font-family:Arial; font-size:13px;}
+
+/* Admin Form */
+.adm-form{background:#f9f9f9; border:1px solid #ccc; padding:20px; margin-bottom:20px;}
+.fr{margin-bottom:15px;}
+.fr label{display:block; font-size:12px; font-family:Arial; font-weight:bold; margin-bottom:5px; color:#555;}
+.fr input, .fr textarea{width:100%; padding:10px; border:1px solid #bbb; font-family: serif; font-size: 16px;}
+.btn{background:#000080; color:#fff; border:none; padding:12px 24px; cursor:pointer; font-family:Arial; font-size:12px; font-weight:bold;}
+.btn:hover{background:#0000cc;}
+</style>
+</head>
+<body>
+
+<div id="topbar">KOSMOSO &middot; A PERSONAL RECORD OF THE UNIVERSE</div>
+<div id="sitetitle"><h1>KOSMOSO</h1></div>
+<div id="nav">
+    <a id="nav-home" class="active" onclick="showPage('home')">Home</a>
+    <a id="nav-blog" onclick="showPage('blog')">The Letters</a>
+    <a id="nav-admin" onclick="showPage('admin')">Edit</a>
+</div>
+
+<div id="shell">
+    <div id="page-home" class="page active">
+        <div id="home-dashboard">
+            <div id="home-main">
+                <div id="intro-text" style="padding:15px; background:#f0f0ff; border-left:4px solid #000080; font-style:italic;">Initializing core...</div>
+                
+                <div id="home-latest-letter" class="latest-letter-preview" onclick="showPage('blog')">
+                    <small style="text-transform:uppercase; color:#999; font-family:Arial; font-size:10px; letter-spacing:1px;">Latest Dispatch</small>
+                    <h2 id="h-lt">—</h2>
+                    <p id="h-lc" style="color:#555; line-height:1.5;"></p>
+                </div>
+
+                <div id="bella-today"></div>
+
+                <div id="apod-win">
+                    <div id="apod-display" style="width:100%;"></div>
+                    <div class="apod-info">
+                        <b id="apod-t"></b> &nbsp; <span id="apod-c" style="opacity:0.7;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="home-sidebar" style="border-left:1px solid #ddd; padding:10px; background:#fafafa;">
+                <div style="background:#000080; color:#fff; font-family:Arial; font-size:11px; padding:5px 10px; margin-bottom:10px;">NASA EARTH (EPIC)</div>
+                <img id="epic-img" style="width:100%; border:1px solid #ccc;" src=""/>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-blog" class="page scrollable">
+        <h2 style="letter-spacing:1px;">THE LETTERS</h2><hr style="margin:15px 0;"><br>
+        <div id="blog-list"></div>
+    </div>
+
+    <div id="page-admin" class="page scrollable">
+        <div id="lock" style="text-align:center; padding-top:100px;">
+            <input type="password" id="pw" placeholder="Developer Access" style="padding:12px; border:1px solid #000; width:250px;">
+            <button class="btn" onclick="checkPw()">UNLOCK</button>
+        </div>
+        <div id="panel" style="display:none;">
+            <div class="adm-form">
+                <h3>Global Metadata</h3>
+                <div class="fr"><label>Intro/Status</label><textarea id="in-i" rows="2"></textarea></div>
+                <div class="fr"><label>Bellissima Fact</label><textarea id="in-bt" rows="2"></textarea></div>
+                <div class="fr"><label>Bellissima Image URL</label><input type="text" id="in-bi"></div>
+                <button class="btn" onclick="saveMain()">Update Site</button>
+            </div>
+            <div class="adm-form">
+                <h3>Daily Image/Video (APOD)</h3>
+                <div class="fr"><label>Media Title</label><input type="text" id="in-nt"></div>
+                <div class="fr"><label>Media URL</label><input type="text" id="in-nu"></div>
+                <div class="fr"><label>Media Type</label>
+                    <select id="in-nv" style="width:100%; padding:8px;">
+                        <option value="false">Image</option>
+                        <option value="true">Video/Embed</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="saveAPOD()">Set & Archive</button>
+            </div>
+            <div class="adm-form">
+                <h3>New Letter Entry</h3>
+                <div class="fr"><label>Title</label><input type="text" id="in-lt"></div>
+                <div class="fr"><label>Body</label><textarea id="in-lc" rows="10"></textarea></div>
+                <button class="btn" onclick="saveLetter()">Publish</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+const conf = { databaseURL: "https://kosmoso-default-rtdb.firebaseio.com" };
+const app = initializeApp(conf);
+const db = getDatabase(app);
+
+window.showPage = (n) => {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('#nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-'+n).classList.add('active');
+    const navLink = document.getElementById('nav-'+n);
+    if(navLink) navLink.classList.add('active');
+    window.scrollTo(0,0);
+};
+
+// Data Listeners
+onValue(ref(db, 'site'), (snapshot) => {
+    const d = snapshot.val(); if(!d) return;
+    document.getElementById('intro-text').textContent = d.intro || "No status set.";
+    if(d.bella) {
+        document.getElementById('bella-today').innerHTML = `
+            <div class="bella-entry">
+                <div style="flex:1">
+                    <b style="font-family:Arial; font-size:11px; color:#000080; text-transform:uppercase;">Bellissima!</b>
+                    <p style="margin-top:8px; line-height:1.6;">${d.bella.text}</p>
+                </div>
+                ${d.bella.img ? `<img src="${d.bella.img}" class="bella-img">` : ''}
+            </div>`;
+    }
+    if(d.apod) {
+        document.getElementById('apod-t').textContent = d.apod.title;
+        const isVid = d.apod.isVideo === "true" || d.apod.isVideo === true;
+        document.getElementById('apod-display').innerHTML = isVid 
+            ? `<iframe src="${d.apod.url}" allowfullscreen></iframe>` 
+            : `<img src="${d.apod.url}">`;
+    }
+});
+
+onValue(ref(db, 'letters'), (snapshot) => {
+    const d = snapshot.val();
+    const list = document.getElementById('blog-list');
+    list.innerHTML = '';
+    if(d) {
+        const entries = Object.values(d).reverse();
+        const latest = entries[0];
+        document.getElementById('h-lt').textContent = latest.title;
+        document.getElementById('h-lc').textContent = latest.content.substring(0, 200) + "...";
+
+        entries.forEach(l => {
+            list.innerHTML += `
+                <div style="margin-bottom:50px;">
+                    <small style="font-family:Arial; color:#999; text-transform:uppercase; font-size:11px;">${l.date}</small>
+                    <h3 style="font-size:28px; color:#000080; margin:10px 0;">${l.title}</h3>
+                    <p style="line-height:1.8; color:#333; white-space: pre-wrap;">${l.content}</p>
+                </div><hr style="border:0; border-top:1px solid #eee; margin:30px 0;">`;
+        });
+    }
+});
+
+// Admin Control
+window.checkPw = () => {
+    if(document.getElementById('pw').value === 'cosmos2026') {
+        document.getElementById('lock').style.display='none';
+        document.getElementById('panel').style.display='block';
+    } else { alert("Incorrect Credentials"); }
+};
+
+window.saveMain = () => {
+    set(ref(db, 'site/intro'), document.getElementById('in-i').value);
+    set(ref(db, 'site/bella'), {
+        text: document.getElementById('in-bt').value,
+        img: document.getElementById('in-bi').value
+    });
+    alert("Metadata Sync Complete");
+};
+
+window.saveAPOD = () => {
+    const data = {
+        title: document.getElementById('in-nt').value,
+        url: document.getElementById('in-nu').value,
+        isVideo: document.getElementById('in-nv').value,
+        timestamp: Date.now()
+    };
+    set(ref(db, 'site/apod'), data);
+    push(ref(db, 'archive/apod'), data);
+    alert("APOD Updated and Archived");
+};
+
+window.saveLetter = () => {
+    const dateStr = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+    push(ref(db, 'letters'), {
+        title: document.getElementById('in-lt').value,
+        content: document.getElementById('in-lc').value,
+        date: dateStr
+    });
+    document.getElementById('in-lt').value = "";
+    document.getElementById('in-lc').value = "";
+    alert("Dispatch Published");
+};
+
+// NASA EPIC API
+fetch('https://epic.gsfc.nasa.gov/api/natural').then(r=>r.json()).then(d=>{
+    const item = d[0]; const date = item.date.split(' ')[0].replaceAll('-','/');
+    document.getElementById('epic-img').src = `https://epic.gsfc.nasa.gov/archive/natural/${date}/png/${item.image}.png`;
+});
+</script>
+</body>
+</html>
