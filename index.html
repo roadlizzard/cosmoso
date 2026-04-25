@@ -5,52 +5,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>KOSMOSO</title>
 <style>
-/* --- CORE STYLING --- */
+/* --- CORE RESET & FONTS --- */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;background:#f5f5f0;color:#000;font-family:"Times New Roman",Times,serif;font-size:18px;}
 a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:underline;color:#cc0000;}
 
-#topbar{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:12px;letter-spacing:1.5px;text-align:center;padding:6px 0;height:30px;}
-#sitetitle{text-align:center;background:#fff;border-bottom:2px solid #000;padding:12px 0;height:85px;}
+/* UI STRUCTURE - Fixed the collision */
+#topbar{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1.5px;text-align:center;padding:8px 0;height:32px;}
+#sitetitle{text-align:center;background:#fff;border-bottom:2px solid #000;padding:15px 0;height:90px;}
 #sitetitle h1{font-size:42px;letter-spacing:10px;font-weight:bold;line-height:1;margin:0;}
 
-#nav{background:#fff;text-align:center;border-bottom:1px solid #000;padding:10px 0;height:40px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;}
-#nav a{margin:0 15px;text-transform:uppercase;color:#000080;cursor:pointer;}
+#nav{background:#fff;text-align:center;border-bottom:1px solid #000;display:flex;justify-content:center;align-items:center;height:50px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;position:relative;z-index:10;}
+#nav a{margin:0 15px;text-transform:uppercase;color:#000080;cursor:pointer;display:inline-block;}
 #nav a.active{color:#cc0000 !important;text-decoration:underline !important;}
 
-#shell{height:calc(100vh - 155px);position:relative;}
+#shell{height:calc(100vh - 172px);position:relative;overflow:hidden;}
 .page{display:none;height:100%;}
 .page.active{display:flex !important;flex-direction:column;}
 .page.scrollable.active{display:block !important; overflow-y:auto; padding:30px; max-width:1100px; margin:0 auto;}
 
-/* --- HOME DASHBOARD --- */
+/* HOME DASHBOARD */
 #home-dashboard{display:grid;grid-template-columns:1fr 340px;height:100%;background:#fff;padding:25px;gap:25px;}
-#home-main{overflow-y:auto;padding-right:20px;display:flex;flex-direction:column;gap:30px;}
+#home-main{overflow-y:auto;padding-right:20px;display:flex;flex-direction:column;gap:35px;}
 
-/* Bellissima Component (Virtuoso Design) */
-.bella-entry { border-bottom: 1px solid #000; border-top: 2px solid #000; padding: 25px; background: #fffff0; display: flex; gap: 30px; align-items: flex-start; margin-bottom: 20px;}
+/* INTRO BOX - Now separate from Nav */
+#intro-text{padding:25px; background:#f0f0ff; border-left:6px solid #000080; font-style:italic; line-height:1.7; margin-bottom:10px; flex-shrink:0;}
+
+/* BELLISSIMA COMPONENT (Header Restored) */
+.bella-label{font-family:Arial,sans-serif; font-size:12px; font-weight:bold; color:#000080; letter-spacing:2px; margin-bottom:10px; text-transform:uppercase;}
+.bella-entry { border-bottom: 1px solid #000; border-top: 2px solid #000; padding: 30px; background: #fffff0; display: flex; gap: 30px; align-items: flex-start; margin-bottom: 25px;}
 .bella-text { flex: 1; }
-.bella-thumb { flex: 0 0 380px; padding: 10px; background: #fffff0; border: 1px solid #888866; box-shadow: 8px 8px 0px rgba(0,0,128,0.1); }
-.bella-thumb img { width: 100%; display: block; border: 1px solid #ccccaa; height: auto; }
+.bella-thumb { flex: 0 0 380px; padding: 12px; background: #fffff0; border: 1px solid #888866; box-shadow: 10px 10px 0px rgba(0,0,128,0.1); }
+.bella-thumb img { width: 100%; display: block; border: 1px solid #ccccaa; background:#eee; min-height:150px; object-fit: cover;}
 
-/* Image of Day (APOD) */
+/* IMAGE OF DAY */
 #apod-win { background:#000; min-height:450px; position:relative; border:1px solid #000; overflow:hidden; display: flex; align-items: center; justify-content: center; }
 #apod-display { width: 100%; height: 100%; }
 #apod-display img { width:100%; height:450px; object-fit:cover; display:block; border:none; }
 #apod-display iframe { width:100%; height:450px; border:none; display:block; }
-.apod-info { position:absolute; bottom:0; width:100%; background:rgba(0,0,0,0.75); color:#fff; padding:15px; font-family:Arial,sans-serif; font-size:13px; }
+.apod-info { position:absolute; bottom:0; width:100%; background:rgba(0,0,0,0.8); color:#fff; padding:15px; font-family:Arial,sans-serif; font-size:13px; }
 
-/* Sidebar & Minibar */
+/* SIDEBAR & ADMIN */
 #home-sidebar { border-left: 1px solid #eee; background: #fafafa; overflow-y: auto; }
-.sb-head { background:#000080; color:#fff; font-family:Arial; font-size:10px; font-weight:bold; padding:6px 12px; letter-spacing:1px; margin-bottom:10px; }
-.mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 10px; }
+.sb-head { background:#000080; color:#fff; font-family:Arial; font-size:10px; font-weight:bold; padding:8px 12px; letter-spacing:1px; margin-bottom:12px; }
+.mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; }
 .mini-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid #ddd; cursor: pointer; }
-
-/* Developer Panel */
-.adm-form { background:#f9f9f9; border:1px solid #ccc; padding:25px; margin-bottom:25px; }
+.adm-form { background:#f9f9f9; border:1px solid #ccc; padding:20px; margin-bottom:20px; }
 .fr { margin-bottom: 15px; }
-.fr label { display: block; font-size: 11px; font-family: Arial; font-weight: bold; margin-bottom: 5px; color:#333; }
-.fr input, .fr textarea, .fr select { width: 100%; padding: 12px; border: 1px solid #bbb; font-size: 16px; font-family: serif; }
+.fr label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 5px; font-family: Arial;}
+.fr input, .fr textarea, .fr select { width: 100%; padding: 10px; border: 1px solid #bbb; font-size: 16px; font-family: serif; }
 .btn { background:#000080; color:#fff; border:none; padding:12px 25px; cursor:pointer; font-family:Arial; font-size:12px; font-weight:bold; }
 </style>
 </head>
@@ -67,16 +70,15 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
 </div>
 
 <div id="shell">
-    
     <div id="page-home" class="page active">
         <div id="home-dashboard">
             <div id="home-main">
-                <div id="intro-text" style="padding:20px; background:#f0f0ff; border-left:5px solid #000080; font-style:italic;">Loading...</div>
+                <div id="intro-text">Syncing with the cosmos...</div>
                 
-                <div id="home-latest-preview" onclick="showPage('blog')" style="cursor:pointer; border-bottom:1px solid #eee; padding-bottom:20px;">
+                <div id="home-latest-preview" onclick="showPage('blog')" style="cursor:pointer; border-bottom:1px solid #eee; padding-bottom:25px;">
                     <small style="color:#999; font-family:Arial; letter-spacing:1px; text-transform:uppercase; font-size:10px;">Latest Dispatch</small>
-                    <h2 id="h-lt">—</h2>
-                    <p id="h-lc" style="color:#555; font-size:17px;"></p>
+                    <h2 id="h-lt" style="margin:8px 0; color:#000080;">—</h2>
+                    <p id="h-lc" style="color:#555; font-size:17px; line-height:1.6;"></p>
                 </div>
 
                 <div id="bella-today-mount"></div>
@@ -84,8 +86,8 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
                 <div id="apod-win">
                     <div id="apod-display"></div>
                     <div class="apod-info">
-                        <b id="apod-t"></b><br>
-                        <span id="apod-c"></span>
+                        <b id="apod-t" style="font-size:15px; letter-spacing:1px;"></b><br>
+                        <span id="apod-c" style="opacity:0.8;"></span>
                     </div>
                 </div>
             </div>
@@ -93,49 +95,48 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
             <div id="home-sidebar">
                 <div class="sb-head">MEDIA MINIBAR</div>
                 <div id="mini-grid" class="mini-grid"></div>
-                
-                <div class="sb-head" style="margin-top:20px;">NASA EPIC &middot; EARTH</div>
-                <img id="epic-img" style="width:100%;" src=""/>
+                <div class="sb-head" style="margin-top:25px;">NASA EPIC &middot; EARTH</div>
+                <img id="epic-img" style="width:100%; display:block;" src=""/>
             </div>
         </div>
     </div>
 
     <div id="page-blog" class="page scrollable">
-        <h2 style="border-bottom:3px solid #000; padding-bottom:10px; margin-bottom:30px;">THE LETTERS</h2>
+        <h2 style="font-size:32px; border-bottom:3px solid #000; padding-bottom:10px; margin-bottom:30px;">THE LETTERS</h2>
         <div id="blog-list"></div>
     </div>
 
     <div id="page-archive-bella" class="page scrollable">
-        <h2 style="border-bottom:3px solid #000; padding-bottom:10px; margin-bottom:30px;">BELLISSIMA ARCHIVE</h2>
+        <h2 style="font-size:32px; border-bottom:3px solid #000; padding-bottom:10px; margin-bottom:30px;">BELLISSIMA ARCHIVE</h2>
         <div id="bella-archive-list"></div>
     </div>
 
     <div id="page-admin" class="page scrollable">
         <div id="lock" style="text-align:center; padding-top:50px;">
-            <input type="password" id="pw" placeholder="Access Code" style="padding:15px; border:2px solid #000;">
-            <button class="btn" onclick="checkPw()">UNLOCK</button>
+            <input type="password" id="pw" placeholder="Access Code" style="padding:15px; width:280px; border:2px solid #000; text-align:center;">
+            <br><br><button class="btn" onclick="checkPw()">UNLOCK</button>
         </div>
         <div id="panel" style="display:none;">
             <div class="adm-form">
                 <h3>Bellissima & Global</h3>
-                <div class="fr"><label>Intro</label><textarea id="in-i"></textarea></div>
+                <div class="fr"><label>Intro Status</label><textarea id="in-i" rows="2"></textarea></div>
                 <div class="fr"><label>Fact Title</label><input type="text" id="in-bt"></div>
-                <div class="fr"><label>Fact Body</label><textarea id="in-bb"></textarea></div>
+                <div class="fr"><label>Fact Body</label><textarea id="in-bb" rows="4"></textarea></div>
                 <div class="fr"><label>Fact Image URL</label><input type="text" id="in-bi"></div>
                 <button class="btn" onclick="window.saveBella()">Update & Archive</button>
             </div>
             <div class="adm-form">
                 <h3>Image of Day</h3>
                 <div class="fr"><label>Title</label><input type="text" id="in-nt"></div>
-                <div class="fr"><label>Media URL</label><input type="text" id="in-nu"></div>
+                <div class="fr"><label>URL</label><input type="text" id="in-nu"></div>
                 <div class="fr"><label>Type</label><select id="in-nv"><option value="false">Image</option><option value="true">Video</option></select></div>
-                <button class="btn" onclick="window.saveAPOD()">Set APOD</button>
+                <button class="btn" onclick="window.saveAPOD()">Set Visual Focus</button>
             </div>
             <div class="adm-form">
-                <h3>Publish Dispatch</h3>
+                <h3>New Dispatch</h3>
                 <div class="fr"><label>Title</label><input type="text" id="in-lt"></div>
-                <div class="fr"><label>Content</label><textarea id="in-lc" rows="5"></textarea></div>
-                <div class="fr"><label>Minibar Image</label><input type="text" id="in-mu"></div>
+                <div class="fr"><label>Content</label><textarea id="in-lc" rows="6"></textarea></div>
+                <div class="fr"><label>Minibar Image URL</label><input type="text" id="in-mu"></div>
                 <button class="btn" onclick="window.saveAll()">Publish</button>
             </div>
         </div>
@@ -143,26 +144,18 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
 </div>
 
 <script>
-/* --- NAVIGATION LOGIC (NON-MODULE) --- */
 function showPage(n) {
-    const pages = document.querySelectorAll('.page');
-    const navs = document.querySelectorAll('#nav a');
-    pages.forEach(p => p.classList.remove('active'));
-    navs.forEach(a => a.classList.remove('active'));
-    
-    const targetPage = document.getElementById('page-' + n);
-    const targetNav = document.getElementById('nav-' + n);
-    
-    if(targetPage) targetPage.classList.add('active');
-    if(targetNav) targetNav.classList.add('active');
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('#nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-'+n).classList.add('active');
+    document.getElementById('nav-'+n).classList.add('active');
     window.scrollTo(0,0);
 }
-
 function checkPw() {
     if(document.getElementById('pw').value === 'cosmos2026') {
         document.getElementById('lock').style.display='none';
         document.getElementById('panel').style.display='block';
-    } else { alert("ACCESS DENIED"); }
+    } else { alert("DENIED"); }
 }
 </script>
 
@@ -174,21 +167,21 @@ const conf = { databaseURL: "https://kosmoso-default-rtdb.firebaseio.com" };
 const app = initializeApp(conf);
 const db = getDatabase(app);
 
-// Helper for Bellissima Styling
 function makeBellaEntry(data, isToday = false) {
     if(!data) return '';
     return `
+    <div class="bella-label">Bellissima!</div>
     <div class="bella-entry">
         <div class="bella-text">
-            <small style="font-family:Arial; color:#000080; font-weight:bold;">${isToday ? 'TODAY' : (data.date || '')}</small>
-            <h2 style="font-size:28px; margin:10px 0;">${data.title || 'Untitled'}</h2>
-            <p style="line-height:1.7; font-size:19px;">${data.text || ''}</p>
+            <small style="font-family:Arial; color:#000080; font-weight:bold;">${isToday ? 'TODAY' : data.date}</small>
+            <h2 style="font-size:32px; margin:10px 0; font-weight:bold;">${data.title}</h2>
+            <p style="line-height:1.8; font-size:19px;">${data.text}</p>
         </div>
-        ${data.img ? `<div class="bella-thumb"><img src="${data.img}"></div>` : ''}
+        ${data.img ? `<div class="bella-thumb"><img src="${data.img.trim()}" alt="Bella Image"></div>` : ''}
     </div>`;
 }
 
-// Database Listeners
+// DATA SYNC
 onValue(ref(db, 'site'), (s) => {
     const d = s.val(); if(!d) return;
     document.getElementById('intro-text').textContent = d.intro || "...";
@@ -196,8 +189,7 @@ onValue(ref(db, 'site'), (s) => {
     if(d.apod) {
         document.getElementById('apod-t').textContent = d.apod.title;
         const display = document.getElementById('apod-display');
-        const isVid = (d.apod.isVideo === "true" || d.apod.isVideo === true);
-        display.innerHTML = isVid ? `<iframe src="${d.apod.url}"></iframe>` : `<img src="${d.apod.url}">`;
+        display.innerHTML = d.apod.isVideo === "true" ? `<iframe src="${d.apod.url}"></iframe>` : `<img src="${d.apod.url}">`;
     }
 });
 
@@ -205,13 +197,9 @@ onValue(ref(db, 'letters'), (s) => {
     const d = s.val(); const list = document.getElementById('blog-list'); list.innerHTML = '';
     if(d) {
         const entries = Object.values(d).reverse();
-        if(entries[0]) {
-            document.getElementById('h-lt').textContent = entries[0].title;
-            document.getElementById('h-lc').textContent = entries[0].content.substring(0, 180) + "...";
-        }
-        entries.forEach(l => {
-            list.innerHTML += `<div style="margin-bottom:50px;"><h3>${l.title}</h3><p style="white-space:pre-wrap;">${l.content}</p><small>${l.date}</small></div><hr>`;
-        });
+        document.getElementById('h-lt').textContent = entries[0].title;
+        document.getElementById('h-lc').textContent = entries[0].content.substring(0, 150) + "...";
+        entries.forEach(l => list.innerHTML += `<div style="margin-bottom:60px;"><h3>${l.title}</h3><p style="white-space:pre-wrap;">${l.content}</p><small>${l.date}</small></div><hr>`);
     }
 });
 
@@ -225,26 +213,31 @@ onValue(ref(db, 'minibar'), (s) => {
     if(s.val()) Object.values(s.val()).reverse().slice(0, 10).forEach(url => grid.innerHTML += `<img src="${url}" onclick="window.open('${url}')">`);
 });
 
-// Admin Functions
+// ADMIN ACTIONS
 window.saveBella = () => {
-    const b = { title: document.getElementById('in-bt').value, text: document.getElementById('in-bb').value, img: document.getElementById('in-bi').value, date: new Date().toLocaleDateString() };
+    const b = { 
+        title: document.getElementById('in-bt').value, 
+        text: document.getElementById('in-bb').value, 
+        img: document.getElementById('in-bi').value, 
+        date: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short'}) 
+    };
     set(ref(db, 'site/intro'), document.getElementById('in-i').value);
     set(ref(db, 'site/bellaToday'), b);
     push(ref(db, 'bellaArchive'), b);
-    alert("Bellissima Updated.");
+    alert("Updated.");
 };
 
 window.saveAPOD = () => {
     set(ref(db, 'site/apod'), { title: document.getElementById('in-nt').value, url: document.getElementById('in-nu').value, isVideo: document.getElementById('in-nv').value });
-    alert("APOD Updated.");
+    alert("APOD Saved.");
 };
 
 window.saveAll = () => {
     const lt = document.getElementById('in-lt').value;
+    if(lt) push(ref(db, 'letters'), { title: lt, content: document.getElementById('in-lc').value, date: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short'}) });
     const mu = document.getElementById('in-mu').value;
-    if(lt) push(ref(db, 'letters'), { title: lt, content: document.getElementById('in-lc').value, date: new Date().toLocaleDateString() });
     if(mu) push(ref(db, 'minibar'), mu);
-    alert("Content Published.");
+    alert("Published.");
 };
 
 fetch('https://epic.gsfc.nasa.gov/api/natural').then(r=>r.json()).then(d=>{
