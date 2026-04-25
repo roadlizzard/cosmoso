@@ -31,34 +31,44 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
 #home-dashboard{display:grid;grid-template-columns:1fr 320px;height:100%;background:#fff;gap:20px;padding:20px;}
 #home-main{display:grid;grid-template-rows:auto auto auto 1fr;border-right:1px solid #ccc;overflow-y:auto;padding-right:15px;gap:20px;}
 
-/* --- BELLISSIMA UNIFIED STYLE --- */
+/* --- BELLISSIMA & MEDIA --- */
 .bella-entry { border-bottom: 1px solid #000; border-top: 2px solid #000; padding: 25px; background: #fffff0; margin-bottom: 30px; }
 .bella-content-wrapper { display: flex; gap: 30px; align-items: flex-start; }
 .bella-text-column { flex: 1; }
 .bella-thumb-wrap { flex: 0 0 450px; }
 .bella-thumb-inner { padding: 10px; background: #fffff0; border: 1px solid #888866; box-shadow: 6px 6px 0px rgba(0,0,128,0.1); }
 .bella-thumb-img { width: 100%; height: auto; display: block; border: 1px solid #ccccaa; }
-.bella-head { font-family: "Times New Roman", serif; font-size: 16px; font-style: italic; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px;}
 
-/* Grid for Letters */
-.cube-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
-.content-cube { border: 1px solid #ccc; background: #fffff0; aspect-ratio: 1 / 1; position: relative; overflow: hidden; }
-.cube-inner { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 18px; overflow-y: auto; scrollbar-width: none; }
+#apod-win { position: relative; min-height: 400px; background: #000; overflow: hidden; border: 1px solid #000; }
+#apod-media-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+#apod-media-container img, #apod-media-container iframe { width: 100%; height: 100%; object-fit: cover; border: none; }
+#apod-overlay { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); color: #fff; padding: 15px; font-family: Arial, sans-serif; }
 
-/* Sidebar */
+/* Sidebar Gallery (Minibar) */
 #home-sidebar{display:flex;flex-direction:column;overflow-y:auto;background:#fafafa;gap:20px;padding-right:10px;}
 .sb-head{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 10px;font-weight:bold;}
+#minibar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 10px; }
+#minibar-grid img, #minibar-grid video { width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid #ccc; cursor: pointer; }
 
-/* Admin / Developer Styles */
+/* Admin Panel */
 .adm-form{border:1px solid #ccc;padding:20px;margin-bottom:24px;background:#fafafa;}
-.retro-btn{background:#000080;color:#fff;border:2px outset #8888cc;padding:8px 16px;cursor:pointer;font-weight:bold;font-family:Arial;font-size:12px;}
+.retro-btn{background:#000080;color:#fff;border:2px outset #8888cc;padding:8px 16px;cursor:pointer;font-weight:bold;font-family:Arial;font-size:12px; margin-top: 10px;}
 .fr { margin-bottom: 12px; }
 .fr label { display: block; font-size: 12px; font-family: Arial; font-weight: bold; margin-bottom: 4px; }
-.fr input, .fr textarea { width: 100%; padding: 8px; border: 1px solid #ccc; font-family: serif; font-size: 16px;}
+.fr input, .fr textarea, .fr select { width: 100%; padding: 8px; border: 1px solid #ccc; font-family: serif; font-size: 16px;}
 #admin-lock-wrap { text-align: center; padding: 100px 20px; }
+.del-btn { background: #cc0000; color: #fff; border: none; padding: 2px 5px; font-size: 10px; cursor: pointer; }
+
+/* Lightbox */
+#lightbox { display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.9); align-items:center; justify-content:center; }
+#lightbox img, #lightbox video { max-width: 90%; max-height: 90%; border: 2px solid #fff; }
 </style>
 </head>
 <body>
+
+<div id="lightbox" onclick="this.style.display='none'">
+  <div id="lb-content"></div>
+</div>
 
 <div id="topbar"><span class="live-dot"></span>KOSMOSO &nbsp;&middot;&nbsp; A PERSONAL RECORD OF THE UNIVERSE</div>
 
@@ -83,19 +93,25 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
           <div id="intro-text">loading...</div>
         </div>
         
-        <div id="latest-strip" onclick="showPage('blog')" style="cursor:pointer; border-bottom: 1px solid #ccc; padding: 15px 20px;">
-          <div style="font-family:Arial; font-size:11px; text-transform:uppercase; color:#555;">Latest Letter</div>
-          <div id="latest-title" style="font-size:22px; font-weight:bold; color:#000080;">—</div>
-          <div id="latest-snip" style="color:#444; font-size:16px; margin-top:5px;"></div>
-        </div>
-
         <div id="bella-today-container"></div>
+
+        <div id="apod-win">
+          <div id="apod-media-container"></div>
+          <div id="apod-overlay">
+            <div id="apod-title" style="font-weight:bold; font-size:16px;"></div>
+            <div id="apod-caption" style="font-size:12px; opacity:0.8;"></div>
+          </div>
+        </div>
       </div>
 
       <div id="home-sidebar">
         <div class="sb-sec">
-          <div class="sb-head">EARTH — NASA EPIC</div>
-          <img id="epic-img" style="width:100%; display:block;" />
+          <div class="sb-head">MEDIA MINIBAR</div>
+          <div id="minibar-grid"></div>
+        </div>
+        <div class="sb-sec">
+          <div class="sb-head">NASA EPIC — EARTH</div>
+          <img id="epic-img" style="width:100%; display:block;" src=""/>
         </div>
       </div>
     </div>
@@ -103,7 +119,7 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
 
   <div id="page-blog" class="page scrollable">
     <div class="section-head" style="font-family:Arial; font-weight:bold; border-bottom:2px solid #000; margin-bottom:20px;">THE LETTERS</div>
-    <div id="blog-list" class="cube-grid"></div>
+    <div id="blog-list"></div>
   </div>
 
   <div id="page-archive-bella" class="page scrollable">
@@ -113,27 +129,37 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
 
   <div id="page-admin" class="page scrollable">
     <div id="admin-lock-wrap">
-      <p style="margin-bottom:15px;">ENTER DEVELOPER PASSWORD</p>
+      <p>ENTER DEVELOPER PASSWORD</p>
       <input type="password" id="pw-input" onkeydown="if(event.key==='Enter')checkPw()" style="padding:10px; border:1px solid #000;"/>
       <button class="retro-btn" onclick="checkPw()">UNLOCK</button>
     </div>
 
     <div id="admin-panel" style="display:none;">
       <div class="adm-form">
-        <h3>Intro & Bellissima!</h3>
-        <div class="fr"><label>Global Introduction</label><textarea id="edit-intro" rows="3"></textarea></div>
-        <div class="fr"><label>Fact Title</label><input type="text" id="bt"/></div>
-        <div class="fr"><label>Fact Text</label><textarea id="bb" rows="4"></textarea></div>
-        <div class="fr"><label>Image URL</label><input type="url" id="bi"/></div>
-        <div class="fr"><label>Wiki Link</label><input type="url" id="bw"/></div>
-        <button class="retro-btn" onclick="saveBella()">PUBLISH FACT & INTRO</button>
+        <h3>Main Page Content</h3>
+        <div class="fr"><label>Global Intro</label><textarea id="edit-intro" rows="2"></textarea></div>
+        <div class="fr"><label>Bellissima Title</label><input type="text" id="bt"/></div>
+        <div class="fr"><label>Bellissima Fact</label><textarea id="bb" rows="3"></textarea></div>
+        <div class="fr"><label>Bellissima Image URL</label><input type="url" id="bi"/></div>
+        <button class="retro-btn" onclick="saveMain()">UPDATE MAIN CONTENT</button>
       </div>
 
       <div class="adm-form">
-        <h3>New Letter</h3>
-        <div class="fr"><label>Title</label><input type="text" id="lt"/></div>
-        <div class="fr"><label>Content</label><textarea id="lb" rows="6"></textarea></div>
-        <button class="retro-btn" onclick="pubLetter()">PUBLISH LETTER</button>
+        <h3>Image / Video of the Day</h3>
+        <div class="fr"><label>Media Title</label><input type="text" id="nt"/></div>
+        <div class="fr"><label>Media Caption</label><input type="text" id="nc"/></div>
+        <div class="fr"><label>URL (Img or Youtube Embed)</label><input type="url" id="nu"/></div>
+        <div class="fr"><label>Type</label>
+          <select id="ntp"><option value="image">Image</option><option value="video">Video/Embed</option></select>
+        </div>
+        <button class="retro-btn" onclick="saveAPOD()">UPDATE IMAGE OF DAY</button>
+      </div>
+
+      <div class="adm-form">
+        <h3>Add to Minibar</h3>
+        <div class="fr"><label>Image/Video URL</label><input type="url" id="mu"/></div>
+        <button class="retro-btn" onclick="addMinibar()">ADD TO GALLERY</button>
+        <div id="minibar-manage" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:5px;"></div>
       </div>
     </div>
   </div>
@@ -142,7 +168,7 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import{getDatabase,ref,set,push,onValue}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import{getDatabase,ref,set,push,onValue,remove}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig={apiKey:"AIzaSyAxFfLgoXqHh6vkS788YCK0HmV5JuDlrEo",authDomain:"kosmoso.firebaseapp.com",databaseURL:"https://kosmoso-default-rtdb.firebaseio.com",projectId:"kosmoso",storageBucket:"kosmoso.firebasestorage.app",messagingSenderId:"907090872412",appId:"1:907090872412:web:e8f4d4044c3a2726cafe99"};
 const app=initializeApp(firebaseConfig);
@@ -155,107 +181,90 @@ window.showPage=function(n){
     document.getElementById('nav-'+n).classList.add('active');
 };
 
-function createBellaHTML(data, isToday = false) {
-    if (!data) return '';
-    const dateStr = data.date ? new Date(data.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) : '';
-    return `
+// Data Rendering
+onValue(ref(db,'siteData/intro'), s => document.getElementById('intro-text').textContent = s.val() || "");
+onValue(ref(db,'siteData/bellissima'), s => {
+    const data = s.val();
+    if(!data) return;
+    document.getElementById('bella-today-container').innerHTML = `
         <div class="bella-entry">
-            <div class="bella-head">
-                <span>bellissima! &mdash; ${isToday ? "today's fact" : "archived fact"}</span>
-                <span style="font-family:Arial; font-size:11px; color:#888;">${dateStr}</span>
-            </div>
             <div class="bella-content-wrapper">
                 <div class="bella-text-column">
                     <div style="font-size:24px; font-weight:bold; color:#000080; margin-bottom:10px;">${data.title}</div>
                     <div style="font-size:18px; line-height:1.7;">${data.text}</div>
-                    ${data.wiki ? `<div style="font-size:14px; font-style:italic; margin-top:15px;">&rarr; <a href="${data.wiki}" target="_blank">Full Wikipedia Entry</a></div>` : ''}
                 </div>
-                ${data.img ? `
-                <div class="bella-thumb-wrap">
-                    <div class="bella-thumb-inner">
-                        <img src="${data.img}" class="bella-thumb-img" />
-                    </div>
-                </div>` : ''}
+                ${data.img ? `<div class="bella-thumb-wrap"><div class="bella-thumb-inner"><img src="${data.img}" class="bella-thumb-img" /></div></div>` : ''}
             </div>
         </div>`;
-}
-
-// Syncing Site Data
-onValue(ref(db,'siteData/intro'), s => { 
-  const val = s.val() || "";
-  document.getElementById('intro-text').textContent = val; 
-  document.getElementById('edit-intro').value = val;
 });
 
-onValue(ref(db,'siteData/bellissima'), s => {
-    document.getElementById('bella-today-container').innerHTML = createBellaHTML(s.val(), true);
-});
-
-onValue(ref(db,'archives/bellissima'), s => {
+// APOD Rendering
+onValue(ref(db,'siteData/apod'), s => {
     const d = s.val();
-    if (!d) return;
-    const sorted = Object.values(d).sort((a,b) => (b.date || "").localeCompare(a.date || ""));
-    document.getElementById('bella-archive-list').innerHTML = sorted.map(item => createBellaHTML(item, false)).join('');
-});
-
-onValue(ref(db,'siteData/letters'), s => {
-    const d = s.val();
-    const container = document.getElementById('blog-list');
     if(!d) return;
-    const entries = Object.entries(d).sort((a,b) => b[1].date.localeCompare(a[1].date));
-    
-    // Update Latest Letter on Home
-    const latest = entries[0][1];
-    document.getElementById('latest-title').textContent = latest.title;
-    document.getElementById('latest-snip').textContent = latest.content.slice(0, 150) + "...";
-
-    container.innerHTML = entries.map(([k, p]) => `
-        <article class="content-cube">
-            <div class="cube-inner">
-                <span style="font-family:Arial; font-size:11px; color:#888;">${new Date(p.date).toLocaleDateString('en-GB')}</span>
-                <div style="font-weight:bold; margin: 5px 0;">${p.title}</div>
-                <div style="font-size:14px;">${p.content.slice(0, 100)}...</div>
-            </div>
-        </article>
-    `).join('');
+    const container = document.getElementById('apod-media-container');
+    document.getElementById('apod-title').textContent = d.title;
+    document.getElementById('apod-caption').textContent = d.caption;
+    container.innerHTML = d.type === 'video' 
+        ? `<iframe src="${d.url}" allowfullscreen></iframe>` 
+        : `<img src="${d.url}" onclick="openLB('${d.url}', 'image')"/>`;
 });
 
-// Admin Panel Logic
+// Minibar Rendering
+onValue(ref(db,'siteData/minibar'), s => {
+    const d = s.val();
+    const grid = document.getElementById('minibar-grid');
+    const manage = document.getElementById('minibar-manage');
+    grid.innerHTML = ''; manage.innerHTML = '';
+    if(!d) return;
+    Object.entries(d).forEach(([id, url]) => {
+        grid.innerHTML += `<img src="${url}" onclick="openLB('${url}')">`;
+        manage.innerHTML += `<div style="position:relative"><img src="${url}" width="40"><button class="del-btn" onclick="deleteMini('${id}')">X</button></div>`;
+    });
+});
+
+// Admin Functions
 window.checkPw = () => {
     if(document.getElementById('pw-input').value === 'cosmos2026') {
         document.getElementById('admin-lock-wrap').style.display='none';
         document.getElementById('admin-panel').style.display='block';
-    } else {
-        alert("Incorrect Password");
     }
 };
 
-window.saveBella = function() {
-    const b = { 
-      title: document.getElementById('bt').value, 
-      text: document.getElementById('bb').value, 
-      img: document.getElementById('bi').value, 
-      wiki: document.getElementById('bw').value, 
-      date: new Date().toISOString() 
-    };
+window.saveMain = () => {
     set(ref(db, 'siteData/intro'), document.getElementById('edit-intro').value);
-    set(ref(db, 'siteData/bellissima'), b).then(() => push(ref(db, 'archives/bellissima'), b));
-    alert("Updated Fact and Intro.");
-};
-
-window.pubLetter = () => {
-    push(ref(db, 'siteData/letters'), { 
-      title: document.getElementById('lt').value, 
-      content: document.getElementById('lb').value, 
-      date: new Date().toISOString() 
-    }).then(() => {
-      document.getElementById('lt').value = "";
-      document.getElementById('lb').value = "";
-      alert("Letter Published.");
+    set(ref(db, 'siteData/bellissima'), {
+        title: document.getElementById('bt').value,
+        text: document.getElementById('bb').value,
+        img: document.getElementById('bi').value
     });
+    alert("Main content updated.");
 };
 
-// NASA EPIC fetch for sidebar
+window.saveAPOD = () => {
+    set(ref(db, 'siteData/apod'), {
+        title: document.getElementById('nt').value,
+        caption: document.getElementById('nc').value,
+        url: document.getElementById('nu').value,
+        type: document.getElementById('ntp').value
+    });
+    alert("Image of the Day updated.");
+};
+
+window.addMinibar = () => {
+    push(ref(db, 'siteData/minibar'), document.getElementById('mu').value);
+    document.getElementById('mu').value = '';
+};
+
+window.deleteMini = (id) => remove(ref(db, `siteData/minibar/${id}`));
+
+window.openLB = (url) => {
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lb-content').innerHTML = `<img src="${url}">`;
+    lb.style.display = 'flex';
+};
+
+// NASA EPIC Earth Image
 fetch('https://epic.gsfc.nasa.gov/api/natural').then(r=>r.json()).then(d=>{
     const item = d[0];
     const date = item.date.split(' ')[0].replaceAll('-','/');
