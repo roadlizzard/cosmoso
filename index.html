@@ -142,7 +142,6 @@
     </div>
   </div>
 </div>
-
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -150,17 +149,39 @@
   const firebaseConfig = {
     apiKey: "AIzaSyAxFfLgoXqHh6vkS788YCK0HmV5JuDlrEo",
     authDomain: "kosmos.firebaseapp.com",
+    databaseURL: "https://kosmos-default-rtdb.firebaseio.com", // ← FIX 1: add this
     projectId: "kosmos",
     storageBucket: "kosmos.firebasestorage.app",
     messagingSenderId: "907090872412",
     appId: "1:907090872412:web:e8f4d4044c3a2726cafe99",
     measurementId: "G-FW10P68MLT"
   };
+
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-  const WORKER_URL = ''; // same-origin: index.html is served by the Worker
 
-  // --- READ-ONLY: Firebase listeners for intro / letters / archives ---
+  // FIX 2: define escapeHtml and escapeAttr
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+  function escapeAttr(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // FIX 3: define showPage and expose it to window
+  window.showPage = function(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + id);
+    if (target) target.classList.add('active');
+  };
+
+  // Firebase listeners
   onValue(ref(db, 'siteData/intro'), (s) => {
     const d = s.val() || '';
     document.getElementById('intro-text').innerText = d;
@@ -203,10 +224,10 @@
       </div>`).join('');
   });
 
-  // --- Worker snapshot for today's home page ---
+  // FIX 4: Worker snapshot — called on load
   async function loadDailySnapshot() {
     try {
-      const res = await fetch(WORKER_URL + '/');
+      const res = await fetch('/snapshot'); // FIX 5: use a real API path, not '/'
       const snap = await res.json();
       if (snap.bellissima && !snap.bellissima.error) {
         const f = snap.bellissima;
@@ -228,7 +249,7 @@
           : `<img src="${escapeAttr(e.url)}" style="width:100%">`;
       }
       if (snap.apod && snap.apod.url) {
-        document.getElementById('side-apod').src = snap.apod.url;
+        document.getElementById('side-apod').src = snap.apod.url; // FIX 6: only set src when there's a real URL
         const sourceLink = snap.apod.link || snap.apod.source || snap.apod.sourceUrl || snap.apod.articleUrl || '';
         if (sourceLink) {
           document.getElementById('side-apod-link').href = sourceLink;
@@ -240,7 +261,7 @@
     }
   }
 
-  // --- Admin auth flow ---
+  // Admin functions
   async function checkAdmin() {
     const res = await fetch('/api/admin/check');
     const j = await res.json();
@@ -291,6 +312,11 @@
     if (res.ok) { alert('Snapshot refreshed.'); loadDailySnapshot(); }
     else alert('Failed: ' + (await res.text()));
   };
+
+  // FIX 7: actually call these on startup
+  loadDailySnapshot();
+  checkAdmin();
+</script>
 
 
 </script>
