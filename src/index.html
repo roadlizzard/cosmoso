@@ -121,3 +121,86 @@
 
             if(data.bellissima) renderLatest(data.bellissima, 'bella-display', 'bella');
             if(data.media) renderLatest(data.media, 'media-display', 'media');
+            if(data.letters) renderLetters(data.letters);
+
+            renderArchive(data.bellissima, 'bella-archive');
+            renderArchive(data.media, 'media-archive');
+        } catch(e) { console.error("Sync Error", e); }
+    }
+
+    function renderLatest(obj, id, type) {
+        const entries = Object.values(obj);
+        const item = entries[entries.length - 1];
+        let html = `<h3>${item.title}</h3><small>${item.date}</small>`;
+        if(type === 'bella') {
+            if(item.img) html += `<img src="${item.img}" style="float:right; width:200px; margin-left:15px;">`;
+            html += `<p>${item.text}</p>`;
+        } else {
+            html += item.type === 'video' ? `<video src="${item.url}" controls></video>` : `<img src="${item.url}">`;
+        }
+        document.getElementById(id).innerHTML = html;
+    }
+
+    function renderLetters(obj) {
+        document.getElementById('letters-list').innerHTML = Object.values(obj).reverse().map(i => `
+            <div class="letter-entry">
+                <h2>${i.title}</h2>
+                <small>${i.date}</small>
+                <p style="white-space: pre-wrap;">${i.content}</p>
+            </div>
+        `).join('');
+    }
+
+    function renderArchive(obj, id) {
+        if(!obj) return;
+        document.getElementById(id).innerHTML = Object.values(obj).reverse().map(i => `
+            <div class="archive-card"><strong>${i.date}</strong> — ${i.title}</div>
+        `).join('');
+    }
+
+    // UPDATE FUNCTIONS
+    async function saveIntro() {
+        await sendUpdate('intro.json', document.getElementById('inp-intro').value, 'PUT');
+    }
+
+    async function pubBlog() {
+        const data = {
+            title: document.getElementById('blog-title').value,
+            content: document.getElementById('blog-content').value,
+            date: new Date().toLocaleDateString()
+        };
+        await sendUpdate('letters.json', data, 'POST');
+    }
+
+    async function pubBella() {
+        const data = {
+            title: document.getElementById('bell-title').value,
+            text: document.getElementById('bell-text').value,
+            img: document.getElementById('bell-img').value,
+            date: new Date().toLocaleDateString()
+        };
+        await sendUpdate('bellissima.json', data, 'POST');
+    }
+
+    async function pubMedia() {
+        const data = {
+            title: document.getElementById('med-title').value,
+            url: document.getElementById('med-url').value,
+            type: document.getElementById('med-type').value,
+            date: new Date().toLocaleDateString()
+        };
+        await sendUpdate('media.json', data, 'POST');
+    }
+
+    async function sendUpdate(path, data, method) {
+        await fetch('/api/update', {
+            method: 'POST',
+            body: JSON.stringify({ path, data, method })
+        });
+        location.reload();
+    }
+
+    loadData();
+</script>
+</body>
+</html>
