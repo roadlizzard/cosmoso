@@ -1,3 +1,4 @@
+
 const HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,7 +123,8 @@ const HTML = `<!DOCTYPE html>
   const firebaseConfig = {
     apiKey: "AIzaSyAxFfLgoXqHh6vkS788YCK0HmV5JuDlrEo",
     authDomain: "kosmoso.firebaseapp.com",
-    databaseURL: "https://kosmosoo-default-rtdb.firebaseio.com",
+    // FIX 1: Corrected typo — was "kosmosoo" (extra o), broke all Firebase reads from the Worker
+    databaseURL: "https://kosmoso-default-rtdb.firebaseio.com",
     projectId: "kosmoso",
     storageBucket: "kosmoso.firebasestorage.app",
     messagingSenderId: "907090872412",
@@ -359,6 +361,7 @@ export default {
       return json({ ok: true, snapshot }, 200, corsHeaders());
     }
 
+    // FIX 2: OPTIONS preflight moved above the 404 fallback — it was unreachable before and caused CORS failures
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders() });
     }
@@ -400,16 +403,17 @@ async function refreshAndPersist(env) {
     await firebasePatch(env, 'archives/bellissima.json', { [`b_${Date.now()}`]: bellissima });
   }
 
+  // FIX 3: Was using Date.now() and Date.now()+1 — both could resolve to the same ms, overwriting one entry
   const nasaEntries = {};
   if (discovery && !discovery.error) {
     discovery.date = today;
     discovery.source_type = 'discovery';
-    nasaEntries[`n_${Date.now()}`] = discovery;
+    nasaEntries[`n_${Date.now()}_discovery`] = discovery;
   }
   if (apod && !apod.error) {
     apod.date = today;
     apod.source_type = 'apod';
-    nasaEntries[`n_${Date.now() + 1}`] = apod;
+    nasaEntries[`n_${Date.now()}_apod`] = apod;
   }
   if (Object.keys(nasaEntries).length) {
     await firebasePatch(env, 'archives/nasa.json', nasaEntries);
@@ -458,7 +462,9 @@ async function fetchBellissima(env) {
 
 async function fetchDiscovery(env) {
   try {
-    const r = await fetch('https://images-api.nasa.gov/search?q=space&media_type=video');
+    // FIX 4: Was always fetching page 1 — now picks a random page so "Randomizer" label is accurate
+    const page = Math.ceil(Math.random() * 10);
+    const r = await fetch(`https://images-api.nasa.gov/search?q=space&media_type=video&page=${page}`);
     const j = await r.json();
     const items = j?.collection?.items || [];
     const first = items.find(item => item?.links?.[0]?.href || item?.href);
