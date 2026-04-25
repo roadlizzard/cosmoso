@@ -31,66 +31,39 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
 #home-dashboard{display:grid;grid-template-columns:1fr 320px;height:100%;background:#fff;gap:20px;padding:20px;}
 #home-main{display:grid;grid-template-rows:auto auto auto 1fr;border-right:1px solid #ccc;overflow-y:auto;padding-right:15px;gap:20px;}
 
-/* --- BELISSIMA STANDOFF --- */
-#bella-strip {
+/* --- BELLISSIMA UNIFIED STYLE (Home & Archive) --- */
+.bella-entry {
     border-bottom: 1px solid #000;
     border-top: 2px solid #000;
     padding: 20px;
     background: #fffff0;
-    clear: both;
-    min-height: 250px; /* Ensures space for the larger image */
+    margin-bottom: 30px;
 }
-.bella-head{font-family:"Times New Roman",serif;font-size:16px;font-style:italic;font-weight:bold;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.bella-content-wrapper { display: flex; gap: 30px; align-items: flex-start; }
+.bella-text-column { flex: 1; }
+.bella-thumb-wrap { flex: 0 0 450px; }
+.bella-thumb-inner { padding: 10px; background: #fffff0; border: 1px solid #888866; box-shadow: 6px 6px 0px rgba(0,0,128,0.1); position: relative;}
+.bella-thumb-img { width: 100%; height: auto; display: block; border: 1px solid #ccccaa; }
+.bella-head { font-family: "Times New Roman", serif; font-size: 16px; font-style: italic; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 12px; }
+.bella-date { font-family: Arial; font-size: 11px; text-transform: uppercase; color: #888; }
 
-/* --- UPDATED: LARGER THUMBNAIL --- */
-#bella-thumb-wrap{float:right;margin:0 0 15px 20px; display:none;}
-#bella-thumb-inner{position:relative;display:inline-block;padding:10px;background:#fffff0;border:1px solid #888866; box-shadow: 4px 4px 0px rgba(0,0,128,0.1);}
-#bella-thumb-img{
-    max-width: 450px;  /* Significantly increased */
-    max-height: 400px; /* Significantly increased */
-    display:block;
-    border:1px solid #ccccaa;
-    object-fit: contain;
-}
+/* Grid for Letters */
+.cube-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+.content-cube { border: 1px solid #ccc; background: #fffff0; aspect-ratio: 1 / 1; position: relative; overflow: hidden; }
+.cube-inner { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 18px; overflow-y: auto; scrollbar-width: none; }
 
-/* --- GRID SYSTEM (Archives/Letters) --- */
-.cube-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-    margin-top: 20px;
-}
-.content-cube {
-    border: 1px solid #ccc;
-    background: #fffff0;
-    aspect-ratio: 1 / 1;
-    position: relative;
-    overflow: hidden;
-}
-.cube-inner {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    padding: 18px;
-    overflow-y: auto;
-    scrollbar-width: none;
-}
-.cube-inner::-webkit-scrollbar { display: none; }
-.cube-date { font-family: Arial; font-size: 11px; text-transform: uppercase; color: #888; display: block; margin-bottom: 6px; }
-.cube-title { font-size: 17px; font-weight: bold; margin-bottom: 8px; color: #000080; }
-.cube-body { font-size: 15px; line-height: 1.5; color: #222; }
-
-/* Sidebar & Admin Styles */
+/* Sidebar */
 #home-sidebar{display:flex;flex-direction:column;overflow-y:auto;background:#fafafa;gap:20px;padding-right:10px;}
 .sb-head{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 10px;font-weight:bold;}
 #apod-win{position:relative;overflow:hidden;background:#000;min-height:350px;}
 #apod-win img.am{width:100%;height:100%;object-fit:cover;display:block;}
+
+/* Admin */
 .adm-form{border:1px solid #ccc;padding:20px;margin-bottom:24px;background:#fafafa;}
 .retro-btn{background:#000080;color:#fff;border:2px outset #8888cc;padding:8px 16px;cursor:pointer;font-weight:bold;font-family:Arial;font-size:12px;}
 .fr { margin-bottom: 12px; }
 .fr label { display: block; font-size: 12px; font-family: Arial; font-weight: bold; margin-bottom: 4px; }
 .fr input, .fr textarea { width: 100%; padding: 8px; border: 1px solid #ccc; font-family: serif; font-size: 16px;}
-.adm-row { display: flex; align-items: center; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee; background: #fff; margin-bottom: 4px; }
-.del-btn { background: #cc0000; color: #fff; border: none; padding: 4px 8px; cursor: pointer; font-size: 10px; }
 </style>
 </head>
 <body>
@@ -124,24 +97,11 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
           <div id="latest-snip" style="color:#444; font-size:16px; margin-top:5px;"></div>
         </div>
 
-        <div id="bella-strip">
-          <div class="bella-head">
-            bellissima! &mdash; today's physics fact
-            <a href="#" onclick="showPage('archive-bella');return false;">[ archive ]</a>
-          </div>
-          <div id="bella-thumb-wrap">
-            <div id="bella-thumb-inner"><img id="bella-thumb-img" alt=""/></div>
-          </div>
-          <div id="bella-title-d" style="font-size:22px; font-weight:bold; color:#000080;"></div>
-          <div id="bella-text-d" style="font-size:18px; line-height:1.6; margin-top:10px;"></div>
-          <div id="bella-wiki-d" style="font-size:14px; font-style:italic; margin-top:10px;"></div>
-          <div style="clear:both;"></div>
-        </div>
+        <div id="bella-today-container"></div>
 
         <div id="apod-win">
           <div id="apod-overlay" style="position:absolute; bottom:0; width:100%; background:rgba(0,0,0,0.75); color:#fff; padding:15px; font-family:Arial;">
             <div id="apod-overlay-title" style="font-weight:bold; font-size:14px; margin-bottom:2px;"></div>
-            <div id="apod-overlay-credit" style="font-size:11px; opacity:0.8;"></div>
           </div>
         </div>
       </div>
@@ -150,72 +110,30 @@ a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:u
         <div class="sb-sec">
           <div class="sb-head">EARTH — NASA EPIC</div>
           <img id="epic-img" style="width:100%; display:block;" />
-          <div id="epic-counter" style="font-size:11px; text-align:center; padding:5px; background:#111; color:#eee;"></div>
-        </div>
-        <div class="sb-sec">
-          <div class="sb-head">MARS — CURIOSITY</div>
-          <div id="mars-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:2px;"></div>
-          <div id="mars-lbl" style="font-size:11px; color:#888; padding:6px; text-align:center;"></div>
-        </div>
-        <div class="sb-sec">
-          <div class="sb-head">IMAGE GALLERY</div>
-          <div id="sb-img-grid" style="padding:2px;"></div>
         </div>
       </div>
     </div>
   </div>
 
   <div id="page-blog" class="page scrollable">
-    <div style="font-family:Arial; font-size:13px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:20px;">The Letters</div>
+    <div class="section-head" style="font-family:Arial; font-weight:bold; border-bottom:2px solid #000; margin-bottom:20px;">THE LETTERS</div>
     <div id="blog-list" class="cube-grid"></div>
   </div>
 
   <div id="page-archive-bella" class="page scrollable">
-    <div style="font-family:Arial; font-size:13px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:20px;">Bellissima Archive</div>
-    <div id="bella-archive-list" class="cube-grid"></div>
+    <div class="section-head" style="font-family:Arial; font-weight:bold; border-bottom:2px solid #000; margin-bottom:20px;">BELLISSIMA ARCHIVE</div>
+    <div id="bella-archive-list"></div>
   </div>
 
   <div id="page-admin" class="page scrollable">
-    <div id="admin-lock-wrap" style="text-align:center; padding:40px;">
-      <p style="font-family:Arial; font-size:14px; margin-bottom:10px;">ENTER PASSWORD TO ACCESS DEV TOOLS</p>
-      <input type="password" id="pw-input" onkeydown="if(event.key==='Enter')checkPw()" style="padding:10px; border:1px solid #000080;"/>
-      <button class="retro-btn" onclick="checkPw()">ENTER</button>
-      <div id="pw-error" style="color:red; margin-top:10px; font-size:14px;"></div>
-    </div>
-
-    <div id="admin-panel" style="display:none;">
+    <div id="admin-panel">
       <div class="adm-form">
         <h3>Bellissima! — Fact of the Day</h3>
         <div class="fr"><label>Title</label><input type="text" id="bt"/></div>
         <div class="fr"><label>Fact Text</label><textarea id="bb" rows="4"></textarea></div>
-        <div class="fr"><label>Image URL</label><input type="url" id="bi" placeholder="Paste image link here"/></div>
+        <div class="fr"><label>Image URL</label><input type="url" id="bi"/></div>
         <div class="fr"><label>Wiki Link</label><input type="url" id="bw"/></div>
         <button class="retro-btn" onclick="saveBella()">PUBLISH FACT</button>
-      </div>
-
-      <div class="adm-form">
-        <h3>The Letters — New Entry</h3>
-        <div class="fr"><label>Title</label><input type="text" id="lt"/></div>
-        <div class="fr"><label>Letter Content</label><textarea id="lb" rows="8"></textarea></div>
-        <button class="retro-btn" onclick="pubLetter()">PUBLISH LETTER</button>
-      </div>
-
-      <div class="adm-form">
-        <h3>Sidebar Media Overrides</h3>
-        <div class="fr"><label>Earth Override (EPIC URL)</label><input type="url" id="eu"/></div>
-        <button class="retro-btn" onclick="saveEpic()">SAVE EARTH</button>
-        <hr style="margin:20px 0; border:0; border-top:1px solid #ccc;">
-        <div class="fr"><label>Mars Image 1 URL</label><input type="url" id="mu1"/></div>
-        <div class="fr"><label>Mars Image 2 URL</label><input type="url" id="mu2"/></div>
-        <button class="retro-btn" onclick="saveMars()">SAVE MARS IMAGES</button>
-      </div>
-
-      <div class="adm-form">
-        <h3>Sidebar Gallery List</h3>
-        <div class="fr"><label>New Image URL</label><input type="url" id="si"/></div>
-        <div class="fr"><label>Short Caption</label><input type="text" id="sc"/></div>
-        <button class="retro-btn" onclick="addSbImg()">ADD TO GALLERY</button>
-        <div id="sb-admin-list" style="margin-top:20px; border-top:1px solid #ccc; padding-top:10px;"></div>
       </div>
     </div>
   </div>
@@ -237,96 +155,65 @@ window.showPage=function(n){
     document.getElementById('nav-'+n).classList.add('active');
 };
 
-function renderCubes(data, containerId, isLetter = false) {
-    const container = document.getElementById(containerId);
-    if (!data) { container.innerHTML = "<p style='padding:20px;'>No entries found.</p>"; return; }
-    const entries = Object.entries(data).sort((a,b) => (b[1].date||'').localeCompare(a[1].date||''));
-    container.innerHTML = entries.map(([k, p]) => `
-        <article class="content-cube">
-            <div class="cube-inner">
-                <span class="cube-date">${new Date(p.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'})}</span>
-                <div class="cube-title">${p.title}</div>
-                <div class="cube-body">${isLetter ? p.content.replace(/\n/g, '<br>') : p.text}</div>
+function createBellaHTML(data, isToday = false) {
+    if (!data) return '';
+    const dateStr = data.date ? new Date(data.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) : '';
+    return `
+        <div class="bella-entry">
+            <div class="bella-head">
+                <span>bellissima! &mdash; ${isToday ? "today's physics fact" : "archived fact"}</span>
+                <span class="bella-date">${dateStr}</span>
             </div>
-        </article>
-    `).join('');
+            <div class="bella-content-wrapper">
+                <div class="bella-text-column">
+                    <div style="font-size:24px; font-weight:bold; color:#000080; margin-bottom:10px;">${data.title}</div>
+                    <div style="font-size:18px; line-height:1.7;">${data.text}</div>
+                    ${data.wiki ? `<div style="font-size:14px; font-style:italic; margin-top:15px;">&rarr; <a href="${data.wiki}" target="_blank">Full Wikipedia Entry</a></div>` : ''}
+                </div>
+                ${data.img ? `
+                <div class="bella-thumb-wrap">
+                    <div class="bella-thumb-inner">
+                        <img src="${data.img}" class="bella-thumb-img" />
+                    </div>
+                </div>` : ''}
+            </div>
+        </div>`;
 }
 
 onValue(ref(db,'siteData/intro'), s => { if(s.val()) document.getElementById('intro-text').textContent = s.val(); });
 
 onValue(ref(db,'siteData/bellissima'), s => {
-    const b = s.val();
-    if(b) {
-        document.getElementById('bella-title-d').textContent = b.title;
-        document.getElementById('bella-text-d').textContent = b.text;
-        document.getElementById('bella-wiki-d').innerHTML = b.wiki ? `→ <a href="${b.wiki}" target="_blank">Full Wikipedia Entry</a>` : '';
-        if(b.img) { 
-            document.getElementById('bella-thumb-img').src=b.img; 
-            document.getElementById('bella-thumb-wrap').style.display='block'; 
-        } else {
-            document.getElementById('bella-thumb-wrap').style.display='none';
-        }
-    }
+    document.getElementById('bella-today-container').innerHTML = createBellaHTML(s.val(), true);
 });
 
-onValue(ref(db,'archives/bellissima'), s => renderCubes(s.val(), 'bella-archive-list'));
+onValue(ref(db,'archives/bellissima'), s => {
+    const d = s.val();
+    const container = document.getElementById('bella-archive-list');
+    if (!d) { container.innerHTML = "<p>No archive available.</p>"; return; }
+    const sorted = Object.values(d).sort((a,b) => b.date.localeCompare(a.date));
+    container.innerHTML = sorted.map(item => createBellaHTML(item, false)).join('');
+});
+
 onValue(ref(db,'siteData/letters'), s => {
     const d = s.val();
-    renderCubes(d, 'blog-list', true);
-    if(d) {
-        const latest = Object.values(d).sort((a,b) => b.date.localeCompare(a.date))[0];
-        document.getElementById('latest-title').textContent = latest.title;
-        document.getElementById('latest-snip').textContent = latest.content.slice(0, 160) + "...";
-    }
-});
-
-onValue(ref(db,'siteData/epic'), s => {
-    const d = s.val(); if(d) { document.getElementById('epic-img').src = d.url; document.getElementById('epic-counter').textContent = d.date || 'LATEST'; }
-});
-
-onValue(ref(db,'siteData/mars'), s => {
-    const d = s.val(); if(d) {
-        document.getElementById('mars-grid').innerHTML = (d.img1 ? `<img src="${d.img1}" style="width:100%;">` : '') + (d.img2 ? `<img src="${d.img2}" style="width:100%;">` : '');
-        document.getElementById('mars-lbl').textContent = d.label || 'Curiosity Rover';
-    }
-});
-
-onValue(ref(db,'siteData/gallery'), s => {
-    const d = s.val();
-    const grid = document.getElementById('sb-img-grid');
-    const adm = document.getElementById('sb-admin-list');
-    if(!d) { grid.innerHTML = ''; adm.innerHTML = ''; return; }
-    grid.innerHTML = Object.values(d).map(v => `<img src="${v.url}" title="${v.caption}" style="width:100%; margin-bottom:8px; border:1px solid #ccc; display:block;">`).join('');
-    adm.innerHTML = Object.entries(d).map(([k,v]) => `
-        <div class="adm-row">
-            <span style="font-size:12px;">${v.caption || 'Untitled Image'}</span>
-            <button class="del-btn" onclick="handleRemove('siteData/gallery/${k}')">DELETE</button>
-        </div>
+    const container = document.getElementById('blog-list');
+    if(!d) return;
+    const entries = Object.entries(d).sort((a,b) => b[1].date.localeCompare(a[1].date));
+    container.innerHTML = entries.map(([k, p]) => `
+        <article class="content-cube">
+            <div class="cube-inner">
+                <span class="cube-date">${new Date(p.date).toLocaleDateString('en-GB')}</span>
+                <div class="cube-title">${p.title}</div>
+                <div class="cube-body">${p.content.slice(0, 100)}...</div>
+            </div>
+        </article>
     `).join('');
 });
-
-window.checkPw = function() {
-    if(document.getElementById('pw-input').value === 'cosmos2026') {
-        document.getElementById('admin-lock-wrap').style.display='none';
-        document.getElementById('admin-panel').style.display='block';
-    } else { document.getElementById('pw-error').textContent = "Incorrect password."; }
-};
 
 window.saveBella = function() {
     const b = { title: document.getElementById('bt').value, text: document.getElementById('bb').value, img: document.getElementById('bi').value, wiki: document.getElementById('bw').value, date: new Date().toISOString() };
     set(ref(db, 'siteData/bellissima'), b).then(() => push(ref(db, 'archives/bellissima'), b));
 };
-
-window.pubLetter = function() {
-    const l = { title: document.getElementById('lt').value, content: document.getElementById('lb').value, date: new Date().toISOString() };
-    push(ref(db, 'siteData/letters'), l).then(() => { alert('Letter Published'); });
-};
-
-window.saveEpic = () => set(ref(db, 'siteData/epic'), {url: document.getElementById('eu').value, date: new Date().toISOString().split('T')[0]});
-window.saveMars = () => set(ref(db, 'siteData/mars'), {img1: document.getElementById('mu1').value, img2: document.getElementById('mu2').value, label: 'CURIOSITY - UPDATED'});
-window.addSbImg = () => push(ref(db, 'siteData/gallery'), {url: document.getElementById('si').value, caption: document.getElementById('sc').value});
-
-window.handleRemove = (path) => { if(confirm('Delete this entry?')) remove(ref(db, path)); };
 </script>
 </body>
 </html>
