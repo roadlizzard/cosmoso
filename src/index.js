@@ -1,10 +1,5 @@
 // =============================================================
-// KOSMOSO — Static Cloudflare Worker
-// Manually updated via Developer Panel. Archives intact.
-// =============================================================
-// =============================================================
-// KOSMOSO — Static & Manual Worker
-// Updated: 2026-04-25
+// KOSMOSO — Static & Manual Worker (Final Stable Build)
 // =============================================================
 
 const HTML = `<!DOCTYPE html>
@@ -105,14 +100,15 @@ const HTML = `<!DOCTYPE html>
 
 <script>
   function showPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    var pages = document.querySelectorAll('.page');
+    for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); }
     document.getElementById('page-'+id).classList.add('active');
   }
 
   async function loadData() {
     try {
-      const res = await fetch('/api/data');
-      const data = await res.json();
+      var res = await fetch('/api/data');
+      var data = await res.json();
       document.getElementById('intro-display').innerText = data.intro || "Welcome.";
       document.getElementById('inp-intro').value = data.intro || "";
       if(data.bellissima) renderLatest(data.bellissima, 'bella-display', 'bella');
@@ -124,30 +120,40 @@ const HTML = `<!DOCTYPE html>
   }
 
   function renderLatest(obj, id, type) {
-    const entries = Object.values(obj);
-    const item = entries[entries.length - 1];
-    let html = "<b>"+item.date+"</b><br><h3>"+item.title+"</h3>";
+    var entries = Object.values(obj);
+    var item = entries[entries.length - 1];
+    var html = "<b>" + item.date + "</b><br><h3>" + item.title + "</h3>";
     if(type === 'bella') {
-      if(item.img) html += '<img src="'+item.img+'" style="max-width:200px; float:right;">';
-      html += "<p>"+item.text+"</p>";
+      if(item.img) html += '<img src="' + item.img + '" style="max-width:200px; float:right;">';
+      html += "<p>" + item.text + "</p>";
     } else {
-      html += item.type === 'video' ? '<video src="'+item.url+'" controls style="width:100%"></video>' : '<img src="'+item.url+'" style="width:100%">';
+      html += item.type === 'video' ? '<video src="' + item.url + '" controls style="width:100%"></video>' : '<img src="' + item.url + '" style="width:100%">';
     }
     document.getElementById(id).innerHTML = html;
   }
 
   function renderArchive(obj, id) {
     if(!obj) return;
-    document.getElementById(id).innerHTML = Object.values(obj).reverse().map(i => '<div class="archive-card"><b>'+i.date+'</b> - '+i.title+'</div>').join('');
+    var keys = Object.values(obj).reverse();
+    var html = "";
+    for (var i = 0; i < keys.length; i++) {
+       html += '<div class="archive-card"><b>' + keys[i].date + '</b> - ' + keys[i].title + '</div>';
+    }
+    document.getElementById(id).innerHTML = html;
   }
 
   function renderLetters(obj) {
-    document.getElementById('letters-list').innerHTML = Object.values(obj).reverse().map(i => '<div style="margin-bottom:40px;"><h3>'+i.title+'</h3><small>'+i.date+'</small><p>'+i.content+'</p></div>').join('');
+    var letters = Object.values(obj).reverse();
+    var html = "";
+    for (var i = 0; i < letters.length; i++) {
+       html += '<div style="margin-bottom:40px;"><h3>' + letters[i].title + '</h3><small>' + letters[i].date + '</small><p>' + letters[i].content + '</p></div>';
+    }
+    document.getElementById('letters-list').innerHTML = html;
   }
 
   async function login() {
-    const pass = document.getElementById('pass').value;
-    const res = await fetch('/api/admin/login', { method:'POST', body: JSON.stringify({password:pass}) });
+    var pass = document.getElementById('pass').value;
+    var res = await fetch('/api/admin/login', { method:'POST', body: JSON.stringify({password:pass}) });
     if(res.ok) {
        document.getElementById('admin-login').style.display='none';
        document.getElementById('admin-auth').style.display='block';
@@ -200,6 +206,4 @@ export default {
       let path = '';
       if(url.pathname === '/api/admin/update-intro') path = 'intro.json';
       if(url.pathname === '/api/admin/pub-bella') path = 'bellissima.json';
-      if(url.pathname === '/api/admin/pub-media') path = 'media.json';
-      await fetch(env.FIREBASE_DB_URL + '/' + path + '?auth=' + env.FIREBASE_DB_SECRET, {
-        method: path.includes('intro') ? 'PUT
+      if(url.pathname === '/api
