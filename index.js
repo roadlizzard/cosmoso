@@ -83,8 +83,10 @@ async function buildSnapshot(env) {
 
   const latestBellissima = latestObjectValue(bellissimaArchive);
   const nasaItems = nasaArchive ? Object.values(nasaArchive) : [];
-  const latestApod = latestByType(nasaItems, 'image', item => isLikelyApod(item));
-  const latestDiscovery = latestByType(nasaItems, null, item => !isLikelyApod(item));
+
+  // FIX: use source_type tag instead of guessing from title
+  const latestApod = latestByType(nasaItems, null, item => item.source_type === 'apod');
+  const latestDiscovery = latestByType(nasaItems, null, item => item.source_type === 'discovery');
 
   return {
     bellissima: latestBellissima || { error: 'No bellissima data' },
@@ -107,10 +109,12 @@ async function refreshAndPersist(env) {
   const nasaEntries = {};
   if (discovery && !discovery.error) {
     discovery.date = today;
+    discovery.source_type = 'discovery';
     nasaEntries[`n_${Date.now()}`] = discovery;
   }
   if (apod && !apod.error) {
     apod.date = today;
+    apod.source_type = 'apod';
     nasaEntries[`n_${Date.now() + 1}`] = apod;
   }
   if (Object.keys(nasaEntries).length) {
@@ -122,14 +126,43 @@ async function refreshAndPersist(env) {
 
 async function fetchBellissima(env) {
   try {
-    const res = await fetch('https://www.bellissimafacts.com/');
+    const res = await fetch('https://www.bellissimafacts.com/', {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; kosmos-bot/1.0)' }
+    });
     const html = await res.text();
+
+    // Get page title, strip site name suffix
     const titleMatch = html.match(/<title>(.*?)<\/title>/i);
-    const textMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)/i);
+    const title = clean(titleMatch?.[1]?.replace(/\s*[|\-–]\s*.*$/, '')) || 'Bellissima';
+
+    // Try multiple patterns to find the actual fact text
+    let factText = '';
+
+    // 1. og:description (often has the actual fact)
+    const ogDesc = html.match(/<meta[^>]*property=["']og:description["'][^>]*content=["']([^"']{30,})/i)
+      || html.match(/<meta[^>]*content=["']([^"']{30,})["'][^>]*property=["']og:description["']/i);
+    if (ogDesc) factText = clean(ogDesc[1]);
+
+    // 2. Fall back to name=description
+    if (!factText) {
+      const metaDesc = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']{30,})/i);
+      if (metaDesc) factText = clean(metaDesc[1]);
+    }
+
+    // 3. Try to find a paragraph with substantial text
+    if (!factText) {
+      const pMatches = [...html.matchAll(/<p[^>]*>([\s\S]{60,400}?)<\/p>/gi)];
+      for (const m of pMatches) {
+        const stripped = clean(m[1].replace(/<[^>]+>/g, ''));
+        if (stripped.length > 60) { factText = stripped; break; }
+      }
+    }
+
     return {
-      title: clean(titleMatch?.[1]) || 'Bellissima fact',
-      text: clean(textMatch?.[1]) || 'Visit the source article for today\'s fact.',
-      link: 'https://www.bellissimafacts.com/'
+      title,
+      text: factText || 'Visit the source article for today\'s fact.',
+      link: 'https://www.bellissimafacts.com/',
+      caption: title
     };
   } catch (e) {
     return { error: 'Bellissima fetch failed' };
@@ -145,12 +178,16 @@ async function fetchDiscovery(env) {
     if (!first) return { error: 'No NASA discovery item found' };
     const data = first.data?.[0] || {};
     const mediaUrl = first.links?.[0]?.href || '';
+    const nasaId = data.nasa_id || '';
+    const link = nasaId ? `https://images.nasa.gov/details/${nasaId}` : 'https://images.nasa.gov/';
     return {
       title: data.title || 'NASA Discovery',
       type: mediaUrl.match(/\.(mp4|mov|webm)$/i) ? 'video' : 'image',
       url: mediaUrl,
-      link: data.nasa_id ? `https://images.nasa.gov/details-${data.nasa_id}` : 'https://images.nasa.gov/',
-      description: data.description || ''
+      link,
+      caption: data.title || 'NASA Discovery',
+      description: (data.description || '').slice(0, 200),
+      source_type: 'discovery'
     };
   } catch (e) {
     return { error: 'NASA discovery fetch failed' };
@@ -162,12 +199,17 @@ async function fetchApod(env) {
     const key = env.NASA_API_KEY || 'DEMO_KEY';
     const r = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${encodeURIComponent(key)}`);
     const j = await r.json();
+    // If today's APOD is a video (e.g. YouTube), use thumbnail if available
+    const isVideo = j.media_type === 'video';
+    const imageUrl = isVideo ? (j.thumbnail_url || '') : (j.url || j.hdurl || '');
     return {
       title: j.title || 'NASA APOD',
       type: j.media_type || 'image',
-      url: j.url || j.hdurl || '',
+      url: imageUrl,
       link: j.hdurl || j.url || 'https://apod.nasa.gov/apod/astropix.html',
-      explanation: j.explanation || ''
+      caption: j.title || 'NASA Astronomy Picture of the Day',
+      explanation: (j.explanation || '').slice(0, 300),
+      source_type: 'apod'
     };
   } catch (e) {
     return { error: 'APOD fetch failed' };
@@ -183,10 +225,6 @@ function latestObjectValue(obj) {
 function latestByType(items, type, predicate) {
   const filtered = [...items].filter(item => (!type || item.type === type) && (!predicate || predicate(item)));
   return filtered.length ? filtered[filtered.length - 1] : null;
-}
-
-function isLikelyApod(item) {
-  return /apod/i.test(item.title || '') || /astronomy picture/i.test(item.title || '');
 }
 
 function clean(s) {
