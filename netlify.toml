@@ -1,0 +1,5 @@
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; img-src 'self' https: data: blob:; media-src 'self' https: blob:; frame-src 'self' https:; connect-src 'self' https:;"
+    X-Frame-Options = "SAMEORIGIN"
