@@ -859,6 +859,7 @@ window.saveIntro=function(){
 const LETTERS_PER_PAGE = 8;
 let _allLetters = [];
 let _lettersPage = 0;
+const _letterMap = {}; // key → letter object
 
 onValue(ref(db,'letters'),s=>{
   const d=s.val();
@@ -867,6 +868,7 @@ onValue(ref(db,'letters'),s=>{
     renderLatest(null);renderAdmLetters([]);return;
   }
   _allLetters=Object.entries(d).sort((a,b)=>(b[1].date||'').localeCompare(a[1].date||''));
+  _allLetters.forEach(([k,p])=>{_letterMap[k]=p;});
   renderLatest(_allLetters[0]?_allLetters[0][1]:null);
   _lettersPage=0;
   renderLetterPage();
@@ -878,18 +880,22 @@ function renderLetterPage(){
   const total=_allLetters.length;
   const pages=Math.ceil(total/perPage);
   const slice=_allLetters.slice(_lettersPage*perPage,(_lettersPage+1)*perPage);
-  document.getElementById('blog-list').innerHTML=slice.map(([k,p])=>{
+  const list=document.getElementById('blog-list');
+  list.innerHTML='';
+  slice.forEach(([k,p])=>{
     const snip=(p.content||'').slice(0,160)+'…';
-    const imgHtml=p.img?`<div class="lc-img"><img src="${esc(p.img)}" alt=""/></div>`:'';
-    return `<div class="letter-card" onclick="openLetter(${JSON.stringify(JSON.stringify(p))})">
-      ${imgHtml}
+    const card=document.createElement('div');
+    card.className='letter-card';
+    card.innerHTML=`
+      ${p.img?`<div class="lc-img"><img src="${esc(p.img)}" alt=""/></div>`:''}
       <div style="flex:1;min-width:0;">
         <div class="lc-meta">${fmt(p.date)}</div>
         <div class="lc-title">${esc(p.title)}</div>
         <div class="lc-snip">${esc(snip)}</div>
-      </div>
-    </div>`;
-  }).join('');
+      </div>`;
+    card.addEventListener('click',()=>openLetter(k));
+    list.appendChild(card);
+  });
   const ctrl=document.getElementById('blog-pg-ctrl');
   if(pages<=1){ctrl.style.display='none';return;}
   ctrl.style.display='flex';
@@ -901,8 +907,8 @@ function renderLetterPage(){
 }
 window.lettersGoPage=function(n){_lettersPage=n;renderLetterPage();document.getElementById('page-blog').scrollTop=0;};
 
-window.openLetter=function(pJson){
-  const p=JSON.parse(pJson);
+window.openLetter=function(k){
+  const p=_letterMap[k];
   const paras=(p.content||'').split(/\n\s*\n/).filter(Boolean);
   const body=paras.map(t=>`<p>${esc(t).replace(/\n/g,'<br/>')}</p>`).join('');
   const img=p.img?`<img src="${esc(p.img)}" class="letter-img" alt="" onclick="openLB('${esc(p.img)}','image')"/>`:'';
