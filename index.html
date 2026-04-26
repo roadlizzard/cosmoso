@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,173 +6,682 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>KOSMOSO</title>
 <style>
-/* --- CORE RESET --- */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;background:#f5f5f0;color:#000;font-family:"Times New Roman",Times,serif;font-size:18px;}
-a{color:#000080;text-decoration:none;font-weight:bold;}a:hover{text-decoration:underline;color:#cc0000;}
+html,body{height:100%;overflow:hidden;background:#fff;color:#000;font-family:"Times New Roman",Times,serif;font-size:16px;}
+a{color:#000080;text-decoration:none;font-weight:bold;}
+a:hover{color:#cc0000;text-decoration:underline;}
 
-/* UI STRUCTURE */
-#topbar{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1.5px;text-align:center;padding:8px 0;height:32px;}
-#sitetitle{text-align:center;background:#fff;border-bottom:2px solid #000;padding:15px 0;height:90px;}
-#sitetitle h1{font-size:42px;letter-spacing:10px;font-weight:bold;line-height:1;margin:0;}
+/* ── CHROME ── */
+#topbar{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-align:center;padding:7px 0;height:30px;}
+.ldot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#00cc00;margin-right:5px;animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+#sitetitle{text-align:center;background:#fff;border-bottom:2px solid #000;padding:10px 0 6px;height:68px;}
+#sitetitle h1{font-size:40px;letter-spacing:10px;font-weight:bold;line-height:1;}
+#sitetitle .sub{font-size:11px;font-style:italic;color:#666;margin-top:2px;}
+#nav{background:#fff;border-bottom:1px solid #000;display:flex;justify-content:center;align-items:center;height:34px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;gap:30px;}
+#nav a{text-transform:uppercase;color:#000080;font-weight:bold;cursor:pointer;}
+#nav a.active{color:#cc0000!important;text-decoration:underline!important;}
+#nav a:hover{color:#cc0000;}
 
-#nav{background:#fff;text-align:center;border-bottom:1px solid #000;display:flex;justify-content:center;align-items:center;height:50px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;}
-#nav a{margin:0 15px;text-transform:uppercase;color:#000080;cursor:pointer;}
-#nav a.active{color:#cc0000 !important;text-decoration:underline !important;}
-
-#shell{height:calc(100vh - 172px);position:relative;overflow:hidden;}
+/* ── SHELL ── */
+#shell{height:calc(100vh - 132px);overflow:hidden;}
 .page{display:none;height:100%;}
-.page.active{display:flex !important;flex-direction:column;}
-.page.scrollable.active{display:block !important; overflow-y:auto; padding:30px; max-width:1100px; margin:0 auto;}
+.page.active{display:block;}
+.page.scroll.active{overflow-y:auto;padding:28px 36px 60px;max-width:900px;margin:0 auto;}
 
-/* HOME DASHBOARD */
-#home-dashboard{display:grid;grid-template-columns:1fr 340px;height:100%;background:#fff;padding:25px;gap:25px;}
-#home-main{overflow-y:auto;padding-right:20px;display:flex;flex-direction:column;gap:35px;}
+/* ── HOME ── */
+#home-grid{display:grid;grid-template-columns:1fr 310px;height:100%;}
+#home-main{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #ccc;}
 
-/* INTRO */
-#intro-text{padding:25px; background:#f0f0ff; border-left:6px solid #000080; font-style:italic; line-height:1.7;}
+/* intro bar */
+#intro-bar{padding:10px 20px;background:#f0f0ff;border-left:5px solid #000080;border-bottom:1px solid #ddd;flex-shrink:0;}
+.blbl{font-family:Arial,sans-serif;font-size:9px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#000080;margin-bottom:3px;}
+#intro-text{font-size:13px;line-height:1.6;color:#333;font-style:italic;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
 
-/* BELLISSIMA (Enhanced Image Logic) */
-.bella-label{font-family:Arial,sans-serif; font-size:12px; font-weight:bold; color:#000080; letter-spacing:2px; margin-bottom:10px; text-transform:uppercase;}
-.bella-entry { border-bottom: 1px solid #000; border-top: 2px solid #000; padding: 30px; background: #fffff0; display: flex; gap: 30px; align-items: flex-start; margin-bottom: 25px;}
-.bella-text { flex: 1; }
-.bella-thumb { flex: 0 0 380px; position:relative; min-height: 250px; background: #eee; border: 1px solid #888866; box-shadow: 10px 10px 0px rgba(0,0,128,0.1); overflow:hidden;}
-.bella-thumb img { width:100%; height:100%; object-fit:cover; display:block; position:absolute; top:0; left:0;}
+/* latest letter bar */
+#latest-bar{padding:10px 20px;border-bottom:1px solid #ddd;cursor:pointer;flex-shrink:0;background:#fff;}
+#latest-bar:hover{background:#f8f8ff;}
+#lat-title{font-size:17px;font-weight:bold;color:#000080;margin-bottom:2px;}
+#lat-snip{font-size:12px;color:#666;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-/* SIDEBAR & ADMIN */
-#home-sidebar { border-left: 1px solid #eee; background: #fafafa; overflow-y: auto; }
-.sb-head { background:#000080; color:#fff; font-family:Arial; font-size:10px; font-weight:bold; padding:8px 12px; letter-spacing:1px; margin-bottom:12px; }
-.mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; }
-.mini-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid #ddd; }
-.adm-form { background:#f9f9f9; border:1px solid #ccc; padding:20px; margin-bottom:20px; }
-.fr { margin-bottom: 12px; }
-.fr label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 4px; font-family: Arial;}
-.fr input, .fr textarea { width: 100%; padding: 10px; border: 1px solid #bbb; font-size: 15px; font-family: serif; }
-.btn { background:#000080; color:#fff; border:none; padding:10px 20px; cursor:pointer; font-size:11px; font-weight:bold; font-family:Arial;}
+/* bellissima block */
+#bella-bar{border-top:2px solid #000;border-bottom:2px solid #000;background:#fffff0;flex-shrink:0;display:flex;flex-direction:column;}
+.bella-hdr{display:flex;align-items:baseline;justify-content:space-between;padding:8px 20px 0;}
+.bella-hdr-title{font-family:"Times New Roman",serif;font-size:14px;font-style:italic;font-weight:bold;}
+.bella-hdr a{font-size:10px;font-style:normal;font-weight:normal;color:#000080;}
+.bella-body{display:flex;flex:1;overflow:hidden;}
+.bella-text{flex:1;padding:8px 20px 10px;overflow:hidden;}
+#bella-title-d{font-size:20px;font-weight:bold;margin-bottom:5px;line-height:1.2;}
+#bella-text-d{font-size:13px;line-height:1.65;color:#333;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
+#bella-wiki-d{font-size:11px;font-style:italic;margin-top:5px;}
+.bella-img{flex:0 0 280px;position:relative;background:#f0f0e0;border-left:1px solid #ccccaa;overflow:hidden;}
+.bella-img img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;}
+.bella-img .no-img{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:#aaa;font-style:italic;}
+.bella-img::before,.bella-img::after{content:'❧';position:absolute;font-size:18px;color:rgba(136,136,102,0.8);z-index:3;background:rgba(255,255,240,0.7);line-height:1;padding:2px 4px;}
+.bella-img::before{top:6px;left:6px;}
+.bella-img::after{bottom:6px;right:6px;transform:rotate(180deg);}
+
+/* APOD big window */
+#apod-win{flex:1;position:relative;background:#000;overflow:hidden;}
+#apod-win .am{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:none;}
+.apod-badge{position:absolute;top:10px;left:10px;background:rgba(0,0,128,0.88);color:#fff;font-family:Arial,sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;font-weight:bold;z-index:3;display:none;}
+#apod-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));padding:14px 18px 10px;color:#fff;z-index:3;display:none;pointer-events:none;}
+#apod-t{font-size:14px;font-weight:bold;display:block;margin-bottom:2px;}
+#apod-cr{font-size:11px;color:rgba(255,255,255,0.55);}
+#apod-loader{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:"Courier New",monospace;font-size:12px;color:#888;}
+
+/* ── SIDEBAR ── */
+#home-sidebar{display:flex;flex-direction:column;overflow:hidden;background:#fafafa;}
+.sb-head{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:9px;font-weight:bold;padding:5px 10px;letter-spacing:1.5px;text-transform:uppercase;flex-shrink:0;}
+.sb-sec{border-bottom:1px solid #ddd;flex-shrink:0;}
+
+/* epic */
+#epic-wrap{background:#000;position:relative;}
+#epic-img{width:100%;display:block;aspect-ratio:1;object-fit:cover;display:none;}
+#epic-loading{font-family:"Courier New",monospace;font-size:11px;color:#888;padding:12px;text-align:center;}
+#epic-controls{display:flex;align-items:center;justify-content:center;gap:4px;padding:4px;background:#111;border-top:1px solid #333;}
+.ebtn{background:#000080;color:#fff;border:1px outset #8888cc;font-size:10px;padding:2px 7px;cursor:pointer;font-family:Arial,sans-serif;}
+.ebtn:hover{background:#0000aa;}.ebtn.pl{background:#880000;}
+#epic-ctr{font-family:"Courier New",monospace;font-size:10px;color:#aaa;}
+#epic-date{font-size:9px;font-family:Arial,sans-serif;border:1px solid #444;background:#111;color:#fff;padding:1px 3px;width:90px;}
+#epic-time{font-family:Arial,sans-serif;font-size:9px;color:#888;text-align:center;padding:2px 0 3px;background:#111;}
+
+/* mars */
+#mars-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:5px;}
+#mars-grid img{width:100%;aspect-ratio:1;object-fit:cover;border:1px solid #ccc;display:block;cursor:zoom-in;}
+#mars-grid img:hover{opacity:0.8;}
+#mars-lbl{font-family:Arial,sans-serif;font-size:10px;color:#888;padding:0 6px 5px;}
+
+/* sidebar gallery */
+#sb-gallery{flex:1;overflow-y:auto;}
+#sb-gallery-grid{display:flex;flex-direction:column;gap:3px;padding:5px;}
+.gal-item{cursor:pointer;border:1px solid #ccc;overflow:hidden;}
+.gal-item img{width:100%;height:72px;object-fit:cover;display:block;}
+.gal-item:hover img{opacity:0.8;}
+.gal-cap{font-size:10px;font-family:Arial,sans-serif;color:#444;padding:2px 5px;background:#f0f0f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ── SCROLLABLE PAGES ── */
+.sec-head{font-family:Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #000;padding-bottom:4px;margin-bottom:20px;}
+.letter{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid #e5e5e5;}
+.letter:last-child{border-bottom:none;}
+.letter-date{font-family:Arial,sans-serif;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.letter-title{font-size:26px;font-weight:bold;margin-bottom:12px;line-height:1.2;}
+.letter-body{font-size:15px;line-height:1.85;color:#222;}
+.letter-body p{margin-bottom:12px;}
+.letter-img{max-width:100%;border:1px solid #ccc;margin:12px 0;display:block;cursor:zoom-in;}
+.letter-link{font-size:13px;font-style:italic;margin-top:10px;}
+.arc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.arc-card{border:1px solid #ccc;padding:10px;background:#fffff0;}
+.arc-card img{width:100%;height:72px;object-fit:cover;border:1px solid #ccccaa;margin-bottom:6px;display:block;cursor:zoom-in;}
+.arc-card-empty{width:100%;height:72px;background:#f0f0e0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#bbb;border:1px solid #ccccaa;margin-bottom:6px;font-style:italic;}
+.arc-date{font-family:Arial,sans-serif;font-size:10px;color:#888;margin-bottom:3px;}
+.arc-title{font-size:13px;font-weight:bold;margin-bottom:4px;}
+.nas-card{border:1px solid #ccc;padding:12px;background:#f8f8ff;margin-bottom:12px;}
+.nas-card img,.nas-card video,.nas-card iframe{max-width:100%;margin:8px 0;display:block;border:1px solid #ccc;}
+.nas-card iframe{width:100%;height:320px;border:1px solid #ccc;}
+.nas-date{font-family:Arial,sans-serif;font-size:10px;color:#888;margin-bottom:4px;}
+
+/* ── ADMIN ── */
+#lock-wrap{max-width:340px;margin:50px auto;border:2px solid #000;padding:26px;background:#fffff0;text-align:center;}
+#lock-wrap p{font-size:14px;margin-bottom:12px;}
+#pw-in{font-family:"Courier New",monospace;font-size:14px;padding:5px 9px;border:1px solid #999;width:170px;margin-right:6px;}
+.rb{background:#000080;color:#fff;border:2px outset #8888cc;padding:6px 15px;cursor:pointer;font-size:12px;font-weight:bold;font-family:Arial,sans-serif;}
+.rb:hover{background:#0000aa;}
+.rb.red{background:#880000;border-color:#cc8888;}
+.rb.grey{background:#555;border-color:#888;}
+#pw-err{color:#cc0000;font-size:12px;margin-top:8px;font-style:italic;}
+#adm-panel{display:none;}
+#adm-panel.open{display:block;}
+.af{border:1px solid #ccc;padding:18px;margin-bottom:18px;background:#fafafa;}
+.af h3{font-family:Arial,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #ccc;padding-bottom:6px;margin-bottom:14px;}
+.fr{margin-bottom:11px;}
+.fr label{display:block;font-family:Arial,sans-serif;font-size:11px;font-weight:bold;margin-bottom:3px;color:#333;}
+.fr input[type=text],.fr input[type=url],.fr input[type=password],.fr textarea,.fr select{width:100%;font-family:"Times New Roman",serif;font-size:14px;padding:5px 8px;border:1px solid #999;background:#fff;}
+.fr textarea{min-height:90px;resize:vertical;line-height:1.6;}
+.fn{font-size:11px;color:#888;margin-top:3px;font-style:italic;}
+.ok{color:#006600;font-size:12px;font-style:italic;margin-left:8px;}
+.adm-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid #eee;font-size:13px;}
+.adm-row:last-child{border-bottom:none;}
+.delbtn{background:#cc0000;color:#fff;border:2px outset #ee8888;font-size:11px;padding:2px 8px;cursor:pointer;font-family:Arial,sans-serif;flex-shrink:0;margin-left:8px;}
+.delbtn:hover{background:#aa0000;}
+.ip{margin-top:6px;display:none;}
+.ip img{max-width:150px;border:1px solid #ccc;}
+.rl{font-family:"Courier New",monospace;font-size:12px;color:#888;}
+
+/* ── LIGHTBOX ── */
+#lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;}
+#lb.open{display:flex;}
+#lb img,#lb video,#lb iframe{max-width:92vw;max-height:90vh;border:2px solid #fff;}
+#lb iframe{width:80vw;height:80vh;}
+#lb-x{position:fixed;top:14px;right:20px;color:#fff;font-size:32px;cursor:pointer;background:none;border:none;font-family:Arial,sans-serif;line-height:1;}
 </style>
 </head>
 <body>
 
-<div id="topbar">KOSMOSO &middot; A PERSONAL RECORD OF THE UNIVERSE</div>
-<div id="sitetitle"><h1>KOSMOSO</h1></div>
+<!-- Lightbox -->
+<div id="lb" onclick="if(event.target===this)closeLB()">
+  <button id="lb-x" onclick="closeLB()">&#x2715;</button>
+  <img id="lb-img" src="" alt="" style="display:none;"/>
+  <video id="lb-vid" controls style="display:none;"></video>
+  <iframe id="lb-ifr" src="" style="display:none;" allowfullscreen></iframe>
+</div>
 
+<div id="topbar"><span class="ldot"></span>KOSMOSO &nbsp;&middot;&nbsp; A PERSONAL RECORD OF THE UNIVERSE</div>
+<div id="sitetitle"><h1>KOSMOSO</h1><div class="sub">a personal record of the universe</div></div>
 <div id="nav">
-    <a id="nav-home" class="active" onclick="showPage('home')">HOME</a>
-    <a id="nav-blog" onclick="showPage('blog')">THE LETTERS</a>
-    <a id="nav-archive-bella" onclick="showPage('archive-bella')">BELLISSIMA ARCHIVE</a>
-    <a id="nav-admin" onclick="showPage('admin')">DEVELOPER</a>
+  <a id="nav-home" class="active" onclick="showPage('home')">HOME</a>
+  <a id="nav-blog" onclick="showPage('blog')">THE LETTERS</a>
+  <a id="nav-archive-bella" onclick="showPage('archive-bella')">BELLISSIMA ARCHIVE</a>
+  <a id="nav-archive-nasa" onclick="showPage('archive-nasa')">NASA ARCHIVE</a>
+  <a id="nav-admin" onclick="showPage('admin')">EDIT</a>
 </div>
 
 <div id="shell">
-    <div id="page-home" class="page active">
-        <div id="home-dashboard">
-            <div id="home-main">
-                <div id="intro-text">Establishing connection...</div>
-                <div id="home-latest-preview" onclick="showPage('blog')" style="cursor:pointer; border-bottom:1px solid #eee; padding-bottom:25px;">
-                    <small style="color:#999; font-family:Arial; letter-spacing:1px; text-transform:uppercase; font-size:10px;">Latest Dispatch</small>
-                    <h2 id="h-lt" style="margin:8px 0; color:#000080;">—</h2>
-                    <p id="h-lc" style="color:#555; font-size:17px;"></p>
-                </div>
-                <div id="bella-today-mount"></div>
-                <div id="apod-win" style="background:#000; height:450px; position:relative;">
-                    <div id="apod-display"></div>
-                    <div style="position:absolute; bottom:0; width:100%; background:rgba(0,0,0,0.7); color:#fff; padding:15px; font-size:13px;">
-                        <b id="apod-t"></b>
-                    </div>
-                </div>
-            </div>
-            <div id="home-sidebar">
-                <div class="sb-head">MEDIA MINIBAR</div>
-                <div id="mini-grid" class="mini-grid"></div>
-            </div>
+
+  <!-- HOME -->
+  <div id="page-home" class="page active">
+    <div id="home-grid">
+      <div id="home-main">
+
+        <div id="intro-bar">
+          <div class="blbl">introduction</div>
+          <div id="intro-text">loading...</div>
         </div>
+
+        <div id="latest-bar" onclick="showPage('blog')">
+          <div class="blbl">latest letter</div>
+          <div id="lat-title">—</div>
+          <div id="lat-snip"></div>
+        </div>
+
+        <div id="bella-bar">
+          <div class="bella-hdr">
+            <span class="bella-hdr-title">bellissima! &mdash; today's physics fact</span>
+            <a onclick="showPage('archive-bella')">[ archive ]</a>
+          </div>
+          <div class="bella-body">
+            <div class="bella-text">
+              <div id="bella-title-d"></div>
+              <div id="bella-text-d"></div>
+              <div id="bella-wiki-d"></div>
+            </div>
+            <div class="bella-img" id="bella-img-col">
+              <div class="no-img" id="bella-no-img">no image</div>
+              <img id="bella-img-d" src="" alt="" style="display:none;" onclick="openLB(this.src,'image')"/>
+            </div>
+          </div>
+        </div>
+
+        <div id="apod-win">
+          <div id="apod-loader">[ image of the day ]</div>
+          <div class="apod-badge" id="apod-badge"></div>
+          <div id="apod-overlay"><span id="apod-t"></span><span id="apod-cr"></span></div>
+        </div>
+
+      </div>
+
+      <div id="home-sidebar">
+
+        <div class="sb-sec">
+          <div class="sb-head"><span class="ldot"></span>EARTH — NASA EPIC</div>
+          <div id="epic-wrap">
+            <img id="epic-img" alt="Earth from space"/>
+            <div id="epic-loading">[ contacting EPIC... ]</div>
+          </div>
+          <div id="epic-controls">
+            <button class="ebtn" onclick="epicStep(-1)">&#9664;</button>
+            <span id="epic-ctr">&#8212;</span>
+            <button class="ebtn" onclick="epicStep(1)">&#9654;</button>
+            <button class="ebtn" id="epic-play" onclick="epicToggle()">&#9654;&#9654;</button>
+            <input type="date" id="epic-date" onchange="epicDate(this.value)"/>
+          </div>
+          <div id="epic-time"></div>
+        </div>
+
+        <div class="sb-sec">
+          <div class="sb-head">MARS &mdash; CURIOSITY ROVER</div>
+          <div id="mars-grid"><div class="rl" style="padding:8px;grid-column:1/-1;">[ loading... ]</div></div>
+          <div id="mars-lbl"></div>
+        </div>
+
+        <div id="sb-gallery">
+          <div class="sb-head">IMAGE GALLERY</div>
+          <div id="sb-gallery-grid"><div class="rl" style="padding:8px;font-size:11px;">[ no images added yet ]</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOG -->
+  <div id="page-blog" class="page scroll">
+    <div class="sec-head">THE LETTERS</div>
+    <div style="font-style:italic;color:#555;font-size:14px;border-left:3px solid #000080;padding:8px 14px;margin-bottom:28px;background:#f8f8ff;line-height:1.65;">Letters written to no one in particular and everyone at once. About space, physics, cricket, boxing, and the strangeness of being alive on a rock hurtling through a universe we barely understand.</div>
+    <div id="blog-list"><div class="rl">[ loading... ]</div></div>
+  </div>
+
+  <!-- BELLISSIMA ARCHIVE -->
+  <div id="page-archive-bella" class="page scroll">
+    <div class="sec-head">BELLISSIMA ARCHIVE</div>
+    <p style="font-size:13px;color:#666;font-style:italic;margin-bottom:20px;">Every physics fact, every day. The accumulation of wonder.</p>
+    <div class="arc-grid" id="bella-arc"><div class="rl" style="grid-column:1/-1;">[ loading... ]</div></div>
+  </div>
+
+  <!-- NASA ARCHIVE -->
+  <div id="page-archive-nasa" class="page scroll">
+    <div class="sec-head">NASA ARCHIVE</div>
+    <p style="font-size:13px;color:#666;font-style:italic;margin-bottom:20px;">Every image and video of the day, archived.</p>
+    <div id="nasa-arc"><div class="rl">[ loading... ]</div></div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="page-admin" class="page scroll">
+    <div class="sec-head">EDIT &mdash; KOSMOSO</div>
+
+    <div id="lock-wrap">
+      <p><strong>enter password to edit</strong></p>
+      <input type="password" id="pw-in" placeholder="password" onkeydown="if(event.key==='Enter')checkPw()"/>
+      <button class="rb" onclick="checkPw()">ENTER</button>
+      <div id="pw-err"></div>
     </div>
 
-    <div id="page-blog" class="page scrollable"><div id="blog-list"></div></div>
-    <div id="page-archive-bella" class="page scrollable"><div id="bella-archive-list"></div></div>
-    
-    <div id="page-admin" class="page scrollable">
-        <div id="lock" style="text-align:center; padding-top:50px;">
-            <input type="password" id="pw" placeholder="Code" style="padding:10px; border:1px solid #000;">
-            <button class="btn" onclick="checkPw()">UNLOCK</button>
-        </div>
-        <div id="panel" style="display:none;">
-            <div class="adm-form">
-                <h3>Update Home Content</h3>
-                <div class="fr"><label>Intro Text</label><textarea id="in-i"></textarea></div>
-                <div class="fr"><label>Bellissima Title</label><input type="text" id="in-bt"></div>
-                <div class="fr"><label>Bellissima Text</label><textarea id="in-bb"></textarea></div>
-                <div class="fr"><label>Bellissima Image URL (Full link)</label><input type="text" id="in-bi" placeholder="https://..."></div>
-                <button class="btn" onclick="window.saveBella()">Save & Push</button>
-            </div>
-        </div>
-    </div>
-</div>
+    <div id="adm-panel">
 
-<script>
-function showPage(n){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.querySelectorAll('#nav a').forEach(a=>a.classList.remove('active'));
-    document.getElementById('page-'+n).classList.add('active');
-    document.getElementById('nav-'+n).classList.add('active');
-}
-function checkPw(){ if(document.getElementById('pw').value === 'cosmos2026'){ document.getElementById('lock').style.display='none'; document.getElementById('panel').style.display='block'; } }
-</script>
+      <!-- 1. INTRO -->
+      <div class="af">
+        <h3>Introduction (home page)</h3>
+        <div class="fr"><label>Text — shown as italic intro strip (keep to 1–2 sentences)</label><textarea id="a-intro" rows="3"></textarea></div>
+        <button class="rb" onclick="saveIntro()">SAVE</button><span class="ok" id="ok-intro"></span>
+      </div>
+
+      <!-- 2. BELLISSIMA -->
+      <div class="af">
+        <h3>Bellissima! &mdash; Physics Fact of the Day</h3>
+        <div class="fr"><label>Title</label><input type="text" id="a-bt" placeholder="e.g. The Casimir Effect"/></div>
+        <div class="fr"><label>Fact text (2–3 sentences shown on home; full text shown in archive)</label><textarea id="a-bb" rows="5"></textarea></div>
+        <div class="fr">
+          <label>Image — paste URL (Wikipedia, NASA, Wikimedia…)</label>
+          <input type="url" id="a-bi" placeholder="https://upload.wikimedia.org/..."/>
+        </div>
+        <div class="fr">
+          <label>— OR — upload image from computer</label>
+          <input type="file" id="a-bf" accept="image/*" onchange="prevFile('a-bf','a-bfp-img','a-bfp')" style="font-size:13px;"/>
+          <div class="ip" id="a-bfp"><img id="a-bfp-img" alt=""/></div>
+        </div>
+        <div class="fr"><label>Wikipedia link</label><input type="url" id="a-bw" placeholder="https://en.wikipedia.org/wiki/..."/></div>
+        <button class="rb" onclick="saveBella()">PUBLISH FACT</button><span class="ok" id="ok-bella"></span>
+      </div>
+
+      <!-- 3. IMAGE / VIDEO OF THE DAY -->
+      <div class="af">
+        <h3>Image / Video of the Day (main window)</h3>
+        <p style="font-size:12px;color:#666;margin-bottom:12px;">This is the large image filling the bottom of the home page. Also saved to NASA Archive automatically.</p>
+        <div class="fr"><label>Title</label><input type="text" id="a-nt" placeholder="e.g. Pillars of Creation"/></div>
+        <div class="fr">
+          <label>Image or video URL</label>
+          <input type="url" id="a-nu" placeholder="https://apod.nasa.gov/apod/image/..."/>
+          <div class="fn">For YouTube paste the embed URL: https://www.youtube.com/embed/VIDEOID</div>
+        </div>
+        <div class="fr"><label>Type</label><select id="a-ntype"><option value="image">Image</option><option value="video">Video (YouTube embed or .mp4)</option></select></div>
+        <div class="fr"><label>Credit / caption</label><input type="text" id="a-nc" placeholder="Credit: NASA / ESA / Hubble..."/></div>
+        <button class="rb" onclick="saveNASA()">SET AS TODAY'S IMAGE</button><span class="ok" id="ok-nasa"></span>
+        <div style="margin-top:10px;">
+          <button class="rb grey" onclick="clearNASA()">CLEAR MANUAL — USE AUTO APOD</button><span class="ok" id="ok-nasa2"></span>
+        </div>
+      </div>
+
+      <!-- 4. SIDEBAR GALLERY -->
+      <div class="af">
+        <h3>Sidebar Image Gallery</h3>
+        <p style="font-size:12px;color:#666;margin-bottom:12px;">Images appear in the right-side panel. Click any to open full size.</p>
+        <div class="fr"><label>Image URL</label><input type="url" id="a-si" placeholder="https://..."/></div>
+        <div class="fr">
+          <label>— OR — upload image</label>
+          <input type="file" id="a-sf" accept="image/*" onchange="prevFile('a-sf','a-sfp-img','a-sfp')" style="font-size:13px;"/>
+          <div class="ip" id="a-sfp"><img id="a-sfp-img" alt=""/></div>
+        </div>
+        <div class="fr"><label>Caption (optional)</label><input type="text" id="a-sc" placeholder="Short label"/></div>
+        <button class="rb" onclick="addGallery()">ADD TO GALLERY</button><span class="ok" id="ok-gal"></span>
+        <div id="gal-adm-list" style="margin-top:14px;"></div>
+      </div>
+
+      <!-- 5. NEW LETTER -->
+      <div class="af">
+        <h3>New Letter</h3>
+        <div class="fr"><label>Title</label><input type="text" id="a-lt" placeholder="Letter title"/></div>
+        <div class="fr"><label>Body — separate paragraphs with a blank line</label><textarea id="a-lb" rows="10"></textarea></div>
+        <div class="fr"><label>Image URL (optional)</label><input type="url" id="a-li" placeholder="https://..."/></div>
+        <div class="fr"><label>External link (optional)</label><input type="url" id="a-ll" placeholder="https://..."/></div>
+        <div class="fr"><label>Link label</label><input type="text" id="a-llb" placeholder="e.g. Read the full paper"/></div>
+        <button class="rb" onclick="pubLetter()">PUBLISH LETTER</button><span class="ok" id="ok-letter"></span>
+      </div>
+
+      <!-- 6. MANAGE LETTERS -->
+      <div class="af">
+        <h3>Manage Letters</h3>
+        <div id="adm-letters"><div class="rl">[ loading... ]</div></div>
+      </div>
+
+      <!-- 7. CHANGE PASSWORD -->
+      <div class="af">
+        <h3>Change Password</h3>
+        <div class="fr"><label>New password</label><input type="password" id="a-np1" placeholder="new password"/></div>
+        <div class="fr"><label>Confirm</label><input type="password" id="a-np2" placeholder="confirm"/></div>
+        <button class="rb" onclick="changePw()">CHANGE PASSWORD</button><span class="ok" id="ok-pw"></span>
+      </div>
+
+      <button class="rb grey" onclick="lockAdmin()">LOCK &amp; EXIT</button>
+
+    </div>
+  </div>
+
+</div><!-- /shell -->
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import{getDatabase,ref,set,push,get,onValue,remove}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-const conf = { databaseURL: "https://kosmoso-default-rtdb.firebaseio.com" };
-const app = initializeApp(conf);
-const db = getDatabase(app);
+const FB={apiKey:"AIzaSyAxFfLgoXqHh6vkS788YCK0HmV5JuDlrEo",authDomain:"kosmoso.firebaseapp.com",databaseURL:"https://kosmoso-default-rtdb.firebaseio.com",projectId:"kosmoso",storageBucket:"kosmoso.firebasestorage.app",messagingSenderId:"907090872412",appId:"1:907090872412:web:e8f4d4044c3a2726cafe99"};
+const app=initializeApp(FB);
+const db=getDatabase(app);
+const NK='TKBivYAGaBGI8eMexg23ORunenoeAHvZOlwqoWLh';
 
-function makeBellaEntry(data, isToday = false) {
-    if(!data) return '';
-    // Ensure image URL is clean and valid
-    const imgHtml = data.img && data.img.length > 5 
-        ? `<div class="bella-thumb"><img src="${data.img.trim()}" crossorigin="anonymous" onerror="this.src='https://via.placeholder.com/400x300?text=Image+Load+Error'"></div>`
-        : `<div class="bella-thumb"><div style="padding:20px; text-align:center; color:#999;">No Image Provided</div></div>`;
+/* ── utils ── */
+function ls(k,fb){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):fb;}catch{return fb;}}
+function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+function flash(id,msg){const el=document.getElementById(id);if(!el)return;el.textContent=msg;setTimeout(()=>el.textContent='',3000);}
+function fmt(iso){try{return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});}catch{return iso||'';}}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-    return `
-    <div class="bella-label">Bellissima!</div>
-    <div class="bella-entry">
-        <div class="bella-text">
-            <small style="color:#000080; font-weight:bold;">${isToday ? 'TODAY' : (data.date || '')}</small>
-            <h2 style="font-size:32px; margin:10px 0;">${data.title || 'Untitled'}</h2>
-            <p style="line-height:1.8;">${data.text || ''}</p>
-        </div>
-        ${imgHtml}
-    </div>`;
+/* ── nav ── */
+window.showPage=function(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.remove('active'));
+  const pg=document.getElementById('page-'+n);if(pg)pg.classList.add('active');
+  const nv=document.getElementById('nav-'+n);if(nv)nv.classList.add('active');
+};
+
+/* ── lightbox ── */
+window.openLB=function(src,type){
+  document.getElementById('lb-img').style.display='none';
+  document.getElementById('lb-vid').style.display='none';
+  document.getElementById('lb-ifr').style.display='none';
+  const lb=document.getElementById('lb');lb.classList.add('open');
+  if(type==='video-embed'){const ifr=document.getElementById('lb-ifr');ifr.src=src;ifr.style.display='block';}
+  else if(type==='video'){const v=document.getElementById('lb-vid');v.src=src;v.style.display='block';}
+  else{const img=document.getElementById('lb-img');img.src=src;img.style.display='block';}
+};
+window.closeLB=function(){
+  document.getElementById('lb').classList.remove('open');
+  try{document.getElementById('lb-vid').pause();}catch(e){}
+  document.getElementById('lb-ifr').src='';
+};
+
+/* ── password ── */
+function getPw(){return ls('kosmoso_pw','cosmos2026');}
+window.checkPw=function(){
+  const v=document.getElementById('pw-in').value;
+  if(v===getPw()){
+    document.getElementById('lock-wrap').style.display='none';
+    document.getElementById('adm-panel').classList.add('open');
+    document.getElementById('pw-in').value='';
+    document.getElementById('pw-err').textContent='';
+    get(ref(db,'site/intro')).then(s=>{if(s.val())document.getElementById('a-intro').value=s.val();});
+    get(ref(db,'site/bellaToday')).then(s=>{
+      const b=s.val();if(!b)return;
+      document.getElementById('a-bt').value=b.title||'';
+      document.getElementById('a-bb').value=b.text||'';
+      document.getElementById('a-bi').value=b.imgUrl||'';
+      document.getElementById('a-bw').value=b.wiki||'';
+    });
+  } else document.getElementById('pw-err').textContent='Incorrect password.';
+};
+window.lockAdmin=function(){
+  document.getElementById('lock-wrap').style.display='block';
+  document.getElementById('adm-panel').classList.remove('open');
+  window.showPage('home');
+};
+window.changePw=function(){
+  const p1=document.getElementById('a-np1').value,p2=document.getElementById('a-np2').value;
+  if(!p1||p1!==p2){alert('Passwords do not match.');return;}
+  lss('kosmoso_pw',p1);
+  document.getElementById('a-np1').value='';document.getElementById('a-np2').value='';
+  flash('ok-pw','Password changed.');
+};
+
+/* ── file upload helper ── */
+window.prevFile=function(fid,iid,did){
+  const file=document.getElementById(fid).files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    document.getElementById(iid).src=ev.target.result;
+    document.getElementById(did).style.display='block';
+    if(fid==='a-bf')window._bUp=ev.target.result;
+    if(fid==='a-sf')window._sUp=ev.target.result;
+  };
+  r.readAsDataURL(file);
+};
+
+/* ── INTRO ── */
+onValue(ref(db,'site/intro'),s=>{
+  const v=s.val();
+  if(v){document.getElementById('intro-text').textContent=v;}
+  else document.getElementById('intro-text').textContent='Welcome to Kosmoso.';
+});
+window.saveIntro=function(){
+  const v=document.getElementById('a-intro').value.trim();if(!v)return;
+  set(ref(db,'site/intro'),v).then(()=>flash('ok-intro','Saved.'));
+};
+
+/* ── LETTERS ── */
+let _letters=[];
+onValue(ref(db,'letters'),s=>{
+  const d=s.val();
+  const list=document.getElementById('blog-list');
+  if(!d){list.innerHTML='<p style="color:#888;font-style:italic;">No letters yet.</p>';renderLatest(null);renderAdmLetters([]);return;}
+  _letters=Object.entries(d).sort((a,b)=>(b[1].date||'').localeCompare(a[1].date||''));
+  renderLatest(_letters[0]?_letters[0][1]:null);
+  list.innerHTML=_letters.map(([k,p])=>{
+    const paras=(p.content||'').split(/\n\s*\n/).filter(Boolean);
+    const body=paras.map(t=>`<p>${esc(t).replace(/\n/g,'<br/>')}</p>`).join('');
+    const img=p.img?`<img src="${esc(p.img)}" class="letter-img" alt="" onclick="openLB('${esc(p.img)}','image')"/>` :'';
+    const lnk=p.link?`<div class="letter-link">&#8594; <a href="${esc(p.link)}" target="_blank">${esc(p.linkLabel||p.link)}</a></div>`:'';
+    return `<div class="letter"><div class="letter-date">${fmt(p.date)}</div><div class="letter-title">${esc(p.title)}</div><div class="letter-body">${body}${img}${lnk}</div></div>`;
+  }).join('');
+  renderAdmLetters(_letters);
+});
+function renderLatest(p){
+  document.getElementById('lat-title').textContent=p?p.title:'No letters yet';
+  document.getElementById('lat-snip').textContent=p?(p.content||'').slice(0,90)+'…':'';
+}
+function renderAdmLetters(entries){
+  const el=document.getElementById('adm-letters');if(!el)return;
+  if(!entries.length){el.innerHTML='<div class="rl">[ no letters yet ]</div>';return;}
+  el.innerHTML=entries.map(([k,p])=>`
+    <div class="adm-row">
+      <div><strong>${esc(p.title)}</strong><div style="font-size:11px;color:#888;">${fmt(p.date)}</div></div>
+      <button class="delbtn" onclick="delLetter('${k}')">DELETE</button>
+    </div>`).join('');
+}
+window.pubLetter=function(){
+  const t=document.getElementById('a-lt').value.trim(),b=document.getElementById('a-lb').value.trim();
+  if(!t||!b){alert('Title and body required.');return;}
+  push(ref(db,'letters'),{title:t,content:b,date:new Date().toISOString(),img:document.getElementById('a-li').value.trim()||null,link:document.getElementById('a-ll').value.trim()||null,linkLabel:document.getElementById('a-llb').value.trim()||null})
+  .then(()=>{['a-lt','a-lb','a-li','a-ll','a-llb'].forEach(id=>document.getElementById(id).value='');flash('ok-letter','Published.');});
+};
+window.delLetter=function(k){if(!confirm('Delete this letter permanently?'))return;remove(ref(db,'letters/'+k));};
+
+/* ── BELLISSIMA ── */
+onValue(ref(db,'site/bellaToday'),s=>{
+  const b=s.val();
+  const td=document.getElementById('bella-title-d');
+  if(!b){td.textContent='No fact yet — add one in EDIT.';return;}
+  td.textContent=b.title||'';
+  document.getElementById('bella-text-d').textContent=b.text||'';
+  document.getElementById('bella-wiki-d').innerHTML=b.wiki?`&#8594; <a href="${esc(b.wiki)}" target="_blank" style="font-weight:normal;font-size:12px;">Read on Wikipedia</a>`:'';
+  const img=document.getElementById('bella-img-d');
+  const noImg=document.getElementById('bella-no-img');
+  if(b.img){img.src=b.img;img.style.display='block';noImg.style.display='none';}
+  else{img.style.display='none';noImg.style.display='flex';}
+});
+onValue(ref(db,'bellaArchive'),s=>{
+  const d=s.val();const el=document.getElementById('bella-arc');
+  if(!d){el.innerHTML='<div class="rl" style="grid-column:1/-1;">[ no archive entries yet ]</div>';return;}
+  el.innerHTML=Object.values(d).reverse().map(b=>`
+    <div class="arc-card">
+      ${b.img?`<img src="${esc(b.img)}" alt="" onclick="openLB('${esc(b.img)}','image')"/>`:`<div class="arc-card-empty">no image</div>`}
+      <div class="arc-date">${fmt(b.date)}</div>
+      <div class="arc-title">${esc(b.title)}</div>
+      ${b.wiki?`<a href="${esc(b.wiki)}" target="_blank" style="font-size:11px;font-weight:normal;">Wikipedia &#8599;</a>`:''}
+    </div>`).join('');
+});
+window.saveBella=function(){
+  const t=document.getElementById('a-bt').value.trim(),tx=document.getElementById('a-bb').value.trim();
+  if(!t||!tx){alert('Title and text required.');return;}
+  const img=window._bUp||document.getElementById('a-bi').value.trim()||null;
+  const b={title:t,text:tx,img,imgUrl:document.getElementById('a-bi').value.trim()||null,wiki:document.getElementById('a-bw').value.trim()||null,date:new Date().toISOString()};
+  set(ref(db,'site/bellaToday'),b)
+  .then(()=>{push(ref(db,'bellaArchive'),b);window._bUp=null;flash('ok-bella','Published & archived.');});
+};
+
+/* ── NASA IMAGE OF THE DAY ── */
+onValue(ref(db,'site/nasaDay'),s=>{const d=s.val();if(d)renderNASA(d);else autoAPOD();});
+function renderNASA(d){
+  const win=document.getElementById('apod-win');
+  win.querySelectorAll('.am').forEach(el=>el.remove());
+  const loader=document.getElementById('apod-loader');if(loader)loader.style.display='none';
+  const isYT=d.url&&(d.url.includes('youtube')||d.url.includes('youtu.be'));
+  if(d.type==='video'||isYT){
+    const ifr=document.createElement('iframe');
+    ifr.className='am';ifr.src=d.url;ifr.allowFullscreen=true;
+    ifr.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:none;display:block;';
+    win.insertBefore(ifr,document.getElementById('apod-badge'));
+    document.getElementById('apod-badge').style.display='block';
+    document.getElementById('apod-badge').textContent='video of the day';
+  } else {
+    const img=document.createElement('img');
+    img.className='am';img.src=(d.url||'').replace('http://','https://');img.alt=d.title||'';
+    img.style.cssText='cursor:zoom-in;';
+    img.onclick=()=>openLB(d.url.replace('http://','https://'),'image');
+    win.insertBefore(img,document.getElementById('apod-badge'));
+    document.getElementById('apod-badge').style.display='block';
+    document.getElementById('apod-badge').textContent='image of the day';
+  }
+  document.getElementById('apod-overlay').style.display='block';
+  document.getElementById('apod-t').textContent=d.title||'';
+  document.getElementById('apod-cr').textContent=d.credit||'';
+}
+async function autoAPOD(){
+  try{
+    const r=await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NK}`);
+    const d=await r.json();
+    const url=(d.url||'').replace('http://','https://');
+    renderNASA({title:d.title,url,type:d.media_type==='video'?'video':'image',credit:d.copyright?'Credit: '+d.copyright.replace(/\n/g,' '):'Credit: NASA'});
+    document.getElementById('apod-badge').textContent='nasa apod';
+  }catch(e){const l=document.getElementById('apod-loader');if(l)l.textContent='[ could not load image ]';}
+}
+window.saveNASA=function(){
+  const t=document.getElementById('a-nt').value.trim(),u=document.getElementById('a-nu').value.trim();
+  if(!t||!u){alert('Title and URL required.');return;}
+  const d={title:t,url:u,type:document.getElementById('a-ntype').value,credit:document.getElementById('a-nc').value.trim()||null,date:new Date().toISOString()};
+  set(ref(db,'site/nasaDay'),d).then(()=>{push(ref(db,'nasaArchive'),d);flash('ok-nasa','Set & archived.');});
+};
+window.clearNASA=function(){
+  if(!confirm('Remove manual image and use NASA APOD automatically?'))return;
+  remove(ref(db,'site/nasaDay')).then(()=>{flash('ok-nasa2','Cleared. Auto-APOD active.');autoAPOD();});
+};
+onValue(ref(db,'nasaArchive'),s=>{
+  const d=s.val();const el=document.getElementById('nasa-arc');
+  if(!d){el.innerHTML='<div class="rl">[ no archive yet ]</div>';return;}
+  el.innerHTML=Object.values(d).reverse().map(e=>{
+    const isYT=e.url&&(e.url.includes('youtube')||e.url.includes('youtu.be'));
+    const media=e.type==='video'||isYT
+      ?`<iframe src="${esc(e.url)}" allowfullscreen style="width:100%;height:300px;border:1px solid #ccc;margin:8px 0;display:block;"></iframe>`
+      :`<img src="${esc(e.url)}" alt="${esc(e.title)}" style="max-width:100%;border:1px solid #ccc;margin:8px 0;display:block;cursor:zoom-in;" onclick="openLB('${esc(e.url)}','image')"/>`;
+    return `<div class="nas-card"><div class="nas-date">${fmt(e.date)}</div><strong>${esc(e.title)}</strong>${media}${e.credit?`<div style="font-size:11px;color:#888;">${esc(e.credit)}</div>`:''}</div>`;
+  }).join('');
+});
+
+/* ── SIDEBAR GALLERY ── */
+onValue(ref(db,'sidebarImages'),s=>{
+  const d=s.val();
+  const grid=document.getElementById('sb-gallery-grid');
+  const adm=document.getElementById('gal-adm-list');
+  if(!d){
+    grid.innerHTML='<div class="rl" style="padding:8px;font-size:11px;">[ no images yet ]</div>';
+    if(adm)adm.innerHTML='<div class="rl" style="font-size:11px;">[ none yet ]</div>';
+    return;
+  }
+  grid.innerHTML=Object.entries(d).map(([k,item])=>`
+    <div class="gal-item" onclick="openLB('${esc(item.src)}','image')">
+      <img src="${esc(item.src)}" alt="${esc(item.cap||'')}"/>
+      ${item.cap?`<div class="gal-cap">${esc(item.cap)}</div>`:''}
+    </div>`).join('');
+  if(adm){adm.innerHTML=Object.entries(d).map(([k,item])=>`
+    <div class="adm-row">
+      <img src="${esc(item.src)}" style="width:36px;height:36px;object-fit:cover;border:1px solid #ccc;flex-shrink:0;"/>
+      <div style="flex:1;margin:0 8px;font-size:12px;">${esc(item.cap||'(no caption)')}</div>
+      <button class="delbtn" onclick="delGal('${k}')">REMOVE</button>
+    </div>`).join('');}
+});
+window.delGal=function(k){if(!confirm('Remove?'))return;remove(ref(db,'sidebarImages/'+k));};
+window.addGallery=function(){
+  const src=window._sUp||document.getElementById('a-si').value.trim();
+  if(!src){alert('Provide URL or upload a file.');return;}
+  push(ref(db,'sidebarImages'),{src,cap:document.getElementById('a-sc').value.trim()||null})
+  .then(()=>{document.getElementById('a-si').value='';document.getElementById('a-sc').value='';document.getElementById('a-sfp').style.display='none';window._sUp=null;flash('ok-gal','Added.');});
+};
+
+/* ── EPIC ── */
+let eP=[],eI=0,ePl=false,eTm=null;
+async function fetchEPIC(date){
+  const url=date?`https://api.nasa.gov/EPIC/api/natural/date/${date}?api_key=${NK}`:`https://api.nasa.gov/EPIC/api/natural/latest?api_key=${NK}`;
+  try{
+    document.getElementById('epic-loading').style.display='block';
+    document.getElementById('epic-img').style.display='none';
+    const res=await fetch(url);const data=await res.json();
+    if(!data||!data.length){document.getElementById('epic-loading').textContent='[ no images for this date ]';return;}
+    eP=data;eI=0;
+    document.getElementById('epic-date').value=data[0].date.slice(0,10);
+    eShow(0);
+  }catch(e){document.getElementById('epic-loading').textContent='[ EPIC unavailable ]';}
+}
+function eShow(i){
+  if(!eP.length)return;
+  eI=Math.max(0,Math.min(i,eP.length-1));
+  const p=eP[eI];const d=p.date.slice(0,10).replace(/-/g,'/');
+  const src=`https://epic.gsfc.nasa.gov/archive/natural/${d}/jpg/${p.image}.jpg`;
+  const img=document.getElementById('epic-img');
+  img.src=src;img.style.display='none';
+  img.onload=()=>{document.getElementById('epic-loading').style.display='none';img.style.display='block';};
+  document.getElementById('epic-ctr').textContent=`${eI+1}/${eP.length}`;
+  document.getElementById('epic-time').textContent=p.date?p.date.slice(11,16)+' UTC':'';
+}
+window.epicStep=i=>eShow(eI+i);
+window.epicToggle=function(){
+  const btn=document.getElementById('epic-play');
+  ePl=!ePl;
+  if(ePl){btn.classList.add('pl');btn.innerHTML='&#9646;&#9646;';eTm=setInterval(()=>eShow((eI+1)%eP.length),1400);}
+  else{btn.classList.remove('pl');btn.innerHTML='&#9654;&#9654;';clearInterval(eTm);}
+};
+window.epicDate=d=>{if(ePl)epicToggle();fetchEPIC(d);};
+
+/* ── MARS ── */
+async function fetchMars(){
+  try{
+    const res=await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?api_key=${NK}`);
+    const d=await res.json();const photos=(d.latest_photos||[]).slice(0,4);
+    const grid=document.getElementById('mars-grid');
+    if(!photos.length){grid.innerHTML='<span class="rl" style="font-size:11px;padding:8px;grid-column:1/-1;">No photos.</span>';return;}
+    grid.innerHTML=photos.map(p=>{const src=p.img_src.replace('http://','https://');return`<img src="${src}" alt="Mars" loading="lazy" onclick="openLB('${src}','image')" title="${p.camera?.full_name||''}"/>`;}).join('');
+    document.getElementById('mars-lbl').textContent=`Sol ${photos[0].sol} · Curiosity`;
+  }catch(e){document.getElementById('mars-grid').innerHTML='<span class="rl" style="font-size:11px;padding:8px;grid-column:1/-1;">Unavailable.</span>';}
 }
 
-// LISTENERS
-onValue(ref(db, 'site'), (s) => {
-    const d = s.val(); if(!d) return;
-    document.getElementById('intro-text').textContent = d.intro || "...";
-    if(d.bellaToday) document.getElementById('bella-today-mount').innerHTML = makeBellaEntry(d.bellaToday, true);
-});
-
-onValue(ref(db, 'letters'), (s) => {
-    const d = s.val(); if(!d) return;
-    const entries = Object.values(d).reverse();
-    document.getElementById('h-lt').textContent = entries[0].title;
-    document.getElementById('h-lc').textContent = entries[0].content.substring(0, 150) + "...";
-});
-
-// ADMIN
-window.saveBella = () => {
-    const b = { 
-        title: document.getElementById('in-bt').value, 
-        text: document.getElementById('in-bb').value, 
-        img: document.getElementById('in-bi').value.trim(), 
-        date: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short'}) 
-    };
-    set(ref(db, 'site/intro'), document.getElementById('in-i').value);
-    set(ref(db, 'site/bellaToday'), b);
-    push(ref(db, 'bellaArchive'), b);
-    alert("Updated Successfully");
-};
+/* ── INIT ── */
+fetchEPIC();
+fetchMars();
 </script>
+
 </body>
 </html>
