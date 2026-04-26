@@ -82,8 +82,7 @@ a:hover{color:#cc0000;text-decoration:underline;}
 /* ── HOME ── */
 #home-grid{
   display:grid;
-  /* Main column capped at 640px so content isn't stretched across huge screens */
-  grid-template-columns:minmax(0,640px) 340px;
+  grid-template-columns:minmax(0,640px) 340px 1fr;
   height:100%;
   overflow:hidden;
 }
@@ -302,6 +301,66 @@ a:hover{color:#cc0000;text-decoration:underline;}
   padding:5px 8px;background:#f0f0f0;line-height:1.4;
 }
 
+/* ── HOME PHOTO COLUMN ── */
+#home-photo{
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  border-left:1px solid #ccc;
+  background:#111;
+  position:relative;
+}
+#home-photo-img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+}
+#home-photo-empty{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;
+  color:#555;font-family:Arial,sans-serif;font-size:13px;font-style:italic;
+}
+
+/* ── PAGINATION ── */
+.pg-controls{
+  display:flex;align-items:center;justify-content:center;
+  gap:14px;padding:22px 0 10px;
+  font-family:Arial,sans-serif;font-size:13px;
+}
+.pg-btn{
+  background:#000080;color:#fff;border:2px outset #8888cc;
+  padding:5px 14px;cursor:pointer;font-size:13px;font-weight:bold;font-family:Arial,sans-serif;
+}
+.pg-btn:hover{background:#0000aa;}
+.pg-btn:disabled{background:#ccc;border-color:#aaa;cursor:default;color:#999;}
+.pg-info{color:#666;letter-spacing:0.5px;}
+
+/* ── LETTER LIST & DETAIL ── */
+#letter-list-wrap{}
+.letter-card{
+  border:1px solid #ddd;padding:18px 20px;margin-bottom:14px;cursor:pointer;
+  background:#fff;display:flex;gap:18px;align-items:flex-start;
+}
+.letter-card:hover{background:#f8f8ff;border-color:#000080;}
+.lc-meta{font-family:Arial,sans-serif;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.lc-title{font-size:22px;font-weight:bold;color:#000080;margin-bottom:7px;line-height:1.2;}
+.lc-snip{font-size:14px;color:#555;line-height:1.6;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.lc-img{flex:0 0 120px;height:80px;border:1px solid #ccc;overflow:hidden;background:#f5f5f5;}
+.lc-img img{width:100%;height:100%;object-fit:contain;background:#f0f0f0;}
+#letter-detail-wrap{display:none;}
+#letter-back{
+  font-family:Arial,sans-serif;font-size:13px;font-weight:bold;
+  color:#000080;cursor:pointer;margin-bottom:25px;display:inline-block;letter-spacing:0.5px;
+}
+#letter-back:hover{color:#cc0000;}
+
+/* ── ARC CARD — full text in archive ── */
+.arc-card{border:1px solid #ccc;padding:18px;background:#fffff0;}
+.arc-card img{width:100%;max-height:200px;object-fit:contain;background:#f5f5ee;border:1px solid #ccccaa;margin-bottom:10px;display:block;cursor:zoom-in;}
+.arc-card-empty{width:100%;height:100px;background:#f0f0e0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#bbb;border:1px solid #ccccaa;margin-bottom:10px;font-style:italic;}
+.arc-full-text{font-size:14px;line-height:1.7;color:#333;margin-top:8px;}
+
 /* ── SCROLLABLE PAGES ── */
 .sec-head{font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #000;padding-bottom:6px;margin-bottom:25px;}
 .letter{margin-bottom:45px;padding-bottom:35px;border-bottom:1px solid #e5e5e5;}
@@ -313,9 +372,6 @@ a:hover{color:#cc0000;text-decoration:underline;}
 .letter-img{max-width:100%;border:1px solid #ccc;margin:15px 0;display:block;cursor:zoom-in;}
 .letter-link{font-size:15px;font-style:italic;margin-top:15px;}
 .arc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.arc-card{border:1px solid #ccc;padding:15px;background:#fffff0;}
-.arc-card img{width:100%;height:100px;object-fit:contain;background:#f5f5ee;border:1px solid #ccccaa;margin-bottom:10px;display:block;cursor:zoom-in;}
-.arc-card-empty{width:100%;height:100px;background:#f0f0e0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#bbb;border:1px solid #ccccaa;margin-bottom:10px;font-style:italic;}
 .arc-date{font-family:Arial,sans-serif;font-size:12px;color:#888;margin-bottom:5px;}
 .arc-title{font-size:16px;font-weight:bold;margin-bottom:6px;}
 .nas-card{border:1px solid #ccc;padding:18px;background:#f8f8ff;margin-bottom:18px;}
@@ -485,6 +541,11 @@ a:hover{color:#cc0000;text-decoration:underline;}
 
       </div><!-- /home-sidebar -->
 
+      <div id="home-photo">
+        <img id="home-photo-img" src="" alt="" style="display:none;" onclick="openLB(this.src,'image')"/>
+        <div id="home-photo-empty"><span>[ no photo set ]</span><span style="font-size:11px;">add one in EDIT</span></div>
+      </div>
+
     </div>
   </div>
 
@@ -492,7 +553,16 @@ a:hover{color:#cc0000;text-decoration:underline;}
   <div id="page-blog" class="page scroll">
     <div class="sec-head">THE LETTERS</div>
     <div style="font-style:italic;color:#555;font-size:16px;border-left:3px solid #000080;padding:10px 16px;margin-bottom:32px;background:#f8f8ff;line-height:1.65;">Letters written to no one in particular and everyone at once. About space, physics, cricket, boxing, and the strangeness of being alive on a rock hurtling through a universe we barely understand.</div>
-    <div id="blog-list"><div class="rl">[ loading... ]</div></div>
+    <!-- List view -->
+    <div id="letter-list-wrap">
+      <div id="blog-list"><div class="rl">[ loading... ]</div></div>
+      <div class="pg-controls" id="blog-pg-ctrl" style="display:none;"></div>
+    </div>
+    <!-- Detail view -->
+    <div id="letter-detail-wrap">
+      <div id="letter-back" onclick="closeLetter()">&#8592; Back to all letters</div>
+      <div id="letter-detail-inner"></div>
+    </div>
   </div>
 
   <!-- BELLISSIMA ARCHIVE -->
@@ -500,6 +570,7 @@ a:hover{color:#cc0000;text-decoration:underline;}
     <div class="sec-head">BELLISSIMA ARCHIVE</div>
     <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:25px;">Every physics fact, every day. The accumulation of wonder.</p>
     <div class="arc-grid" id="bella-arc"><div class="rl" style="grid-column:1/-1;">[ loading... ]</div></div>
+    <div class="pg-controls" id="bella-pg-ctrl" style="display:none;"></div>
   </div>
 
   <!-- NASA ARCHIVE -->
@@ -507,6 +578,7 @@ a:hover{color:#cc0000;text-decoration:underline;}
     <div class="sec-head">NASA ARCHIVE</div>
     <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:25px;">Every image and video of the day, archived.</p>
     <div id="nasa-arc"><div class="rl">[ loading... ]</div></div>
+    <div class="pg-controls" id="nasa-pg-ctrl" style="display:none;"></div>
   </div>
 
   <!-- ION ARCHIVE -->
@@ -514,6 +586,7 @@ a:hover{color:#cc0000;text-decoration:underline;}
     <div class="sec-head">ION ARCHIVE &mdash; IN OTHER NEWS</div>
     <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:25px;">Everything that has appeared in the sidebar's <em>In Other News</em> panel, accumulated.</p>
     <div class="ion-arc-grid" id="ion-arc"><div class="rl" style="grid-column:1/-1;">[ loading... ]</div></div>
+    <div class="pg-controls" id="ion-pg-ctrl" style="display:none;"></div>
   </div>
 
   <!-- ADMIN -->
@@ -528,6 +601,20 @@ a:hover{color:#cc0000;text-decoration:underline;}
     </div>
 
     <div id="adm-panel">
+
+      <div class="af">
+        <h3>Home — Big Photo (right column)</h3>
+        <p style="font-size:14px;color:#666;margin-bottom:15px;">A single large photo shown in the third column of the home page.</p>
+        <div class="fr"><label>Image URL</label><input type="url" id="a-hpi" placeholder="https://..."/></div>
+        <div class="fr">
+          <label>— OR — upload image</label>
+          <input type="file" id="a-hpf" accept="image/*" onchange="prevFile('a-hpf','a-hpfp-img','a-hpfp')" style="font-size:15px;"/>
+          <div class="ip" id="a-hpfp"><img id="a-hpfp-img" alt=""/></div>
+        </div>
+        <button class="rb" onclick="saveHeroPhoto()">SET PHOTO</button>
+        <button class="rb grey" style="margin-left:10px;" onclick="clearHeroPhoto()">CLEAR</button>
+        <span class="ok" id="ok-hp"></span>
+      </div>
 
       <div class="af">
         <h3>Introduction (home page)</h3>
@@ -754,6 +841,7 @@ window.prevFile=function(fid,iid,did){
     if(fid==='a-bf')window._bUp=ev.target.result;
     if(fid==='a-sf')window._sUp=ev.target.result;
     if(fid==='a-if')window._iUp=ev.target.result;
+    if(fid==='a-hpf')window._hpUp=ev.target.result;
   };
   r.readAsDataURL(file);
 };
@@ -768,21 +856,71 @@ window.saveIntro=function(){
 };
 
 /* LETTERS */
+const LETTERS_PER_PAGE = 8;
+let _allLetters = [];
+let _lettersPage = 0;
+
 onValue(ref(db,'letters'),s=>{
   const d=s.val();
-  const list=document.getElementById('blog-list');
-  if(!d){list.innerHTML='<p style="color:#888;font-style:italic;">No letters yet.</p>';renderLatest(null);renderAdmLetters([]);return;}
-  const letters=Object.entries(d).sort((a,b)=>(b[1].date||'').localeCompare(a[1].date||''));
-  renderLatest(letters[0]?letters[0][1]:null);
-  list.innerHTML=letters.map(([k,p])=>{
-    const paras=(p.content||'').split(/\n\s*\n/).filter(Boolean);
-    const body=paras.map(t=>`<p>${esc(t).replace(/\n/g,'<br/>')}</p>`).join('');
-    const img=p.img?`<img src="${esc(p.img)}" class="letter-img" alt="" onclick="openLB('${esc(p.img)}','image')"/>`:'';
-    const lnk=p.link?`<div class="letter-link">&#8594; <a href="${esc(p.link)}" target="_blank">${esc(p.linkLabel||p.link)}</a></div>`:'';
-    return `<div class="letter"><div class="letter-date">${fmt(p.date)}</div><div class="letter-title">${esc(p.title)}</div><div class="letter-body">${body}${img}${lnk}</div></div>`;
-  }).join('');
-  renderAdmLetters(letters);
+  if(!d){
+    document.getElementById('blog-list').innerHTML='<p style="color:#888;font-style:italic;">No letters yet.</p>';
+    renderLatest(null);renderAdmLetters([]);return;
+  }
+  _allLetters=Object.entries(d).sort((a,b)=>(b[1].date||'').localeCompare(a[1].date||''));
+  renderLatest(_allLetters[0]?_allLetters[0][1]:null);
+  _lettersPage=0;
+  renderLetterPage();
+  renderAdmLetters(_allLetters);
 });
+
+function renderLetterPage(){
+  const perPage=LETTERS_PER_PAGE;
+  const total=_allLetters.length;
+  const pages=Math.ceil(total/perPage);
+  const slice=_allLetters.slice(_lettersPage*perPage,(_lettersPage+1)*perPage);
+  document.getElementById('blog-list').innerHTML=slice.map(([k,p])=>{
+    const snip=(p.content||'').slice(0,160)+'…';
+    const imgHtml=p.img?`<div class="lc-img"><img src="${esc(p.img)}" alt=""/></div>`:'';
+    return `<div class="letter-card" onclick="openLetter(${JSON.stringify(JSON.stringify(p))})">
+      ${imgHtml}
+      <div style="flex:1;min-width:0;">
+        <div class="lc-meta">${fmt(p.date)}</div>
+        <div class="lc-title">${esc(p.title)}</div>
+        <div class="lc-snip">${esc(snip)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  const ctrl=document.getElementById('blog-pg-ctrl');
+  if(pages<=1){ctrl.style.display='none';return;}
+  ctrl.style.display='flex';
+  ctrl.innerHTML=`
+    <button class="pg-btn" onclick="lettersGoPage(${_lettersPage-1})" ${_lettersPage===0?'disabled':''}>&#8592; PREV</button>
+    <span class="pg-info">Page ${_lettersPage+1} of ${pages}</span>
+    <button class="pg-btn" onclick="lettersGoPage(${_lettersPage+1})" ${_lettersPage>=pages-1?'disabled':''}>NEXT &#8594;</button>
+  `;
+}
+window.lettersGoPage=function(n){_lettersPage=n;renderLetterPage();document.getElementById('page-blog').scrollTop=0;};
+
+window.openLetter=function(pJson){
+  const p=JSON.parse(pJson);
+  const paras=(p.content||'').split(/\n\s*\n/).filter(Boolean);
+  const body=paras.map(t=>`<p>${esc(t).replace(/\n/g,'<br/>')}</p>`).join('');
+  const img=p.img?`<img src="${esc(p.img)}" class="letter-img" alt="" onclick="openLB('${esc(p.img)}','image')"/>`:'';
+  const lnk=p.link?`<div class="letter-link">&#8594; <a href="${esc(p.link)}" target="_blank">${esc(p.linkLabel||p.link)}</a></div>`:'';
+  document.getElementById('letter-detail-inner').innerHTML=`
+    <div class="letter">
+      <div class="letter-date">${fmt(p.date)}</div>
+      <div class="letter-title">${esc(p.title)}</div>
+      <div class="letter-body">${body}${img}${lnk}</div>
+    </div>`;
+  document.getElementById('letter-list-wrap').style.display='none';
+  document.getElementById('letter-detail-wrap').style.display='block';
+  document.getElementById('page-blog').scrollTop=0;
+};
+window.closeLetter=function(){
+  document.getElementById('letter-list-wrap').style.display='block';
+  document.getElementById('letter-detail-wrap').style.display='none';
+};
 function renderLatest(p){
   document.getElementById('lat-title').textContent=p?p.title:'No letters yet';
   document.getElementById('lat-snip').textContent=p?(p.content||'').slice(0,180)+'…':'';
@@ -807,6 +945,11 @@ window.pubLetter=function(){
 window.delLetter=function(k){if(!confirm('Delete this letter?'))return;remove(ref(db,'letters/'+k));};
 
 /* BELLISSIMA */
+/* BELLISSIMA */
+const BELLA_PER_PAGE=6;
+let _allBella=[];
+let _bellaPage=0;
+
 onValue(ref(db,'site/bellaToday'),s=>{
   const b=s.val();
   if(!b){document.getElementById('bella-title-d').textContent='No fact yet — add one in EDIT.';return;}
@@ -819,16 +962,37 @@ onValue(ref(db,'site/bellaToday'),s=>{
   else{img.style.display='none';noImg.style.display='flex';}
 });
 onValue(ref(db,'bellaArchive'),s=>{
-  const d=s.val();const el=document.getElementById('bella-arc');
-  if(!d){el.innerHTML='<div class="rl" style="grid-column:1/-1;">[ no archive entries yet ]</div>';return;}
-  el.innerHTML=Object.values(d).reverse().map(b=>`
+  const d=s.val();
+  if(!d){
+    document.getElementById('bella-arc').innerHTML='<div class="rl" style="grid-column:1/-1;">[ no archive entries yet ]</div>';
+    document.getElementById('bella-pg-ctrl').style.display='none';return;
+  }
+  _allBella=Object.values(d).reverse();
+  _bellaPage=0;
+  renderBellaPage();
+});
+function renderBellaPage(){
+  const perPage=BELLA_PER_PAGE;
+  const pages=Math.ceil(_allBella.length/perPage);
+  const slice=_allBella.slice(_bellaPage*perPage,(_bellaPage+1)*perPage);
+  document.getElementById('bella-arc').innerHTML=slice.map(b=>`
     <div class="arc-card">
       ${b.img?`<img src="${esc(b.img)}" alt="" onclick="openLB('${esc(b.img)}','image')"/>`:`<div class="arc-card-empty">no image</div>`}
       <div class="arc-date">${fmt(b.date)}</div>
       <div class="arc-title">${esc(b.title)}</div>
-      ${b.wiki?`<a href="${esc(b.wiki)}" target="_blank" style="font-size:13px;font-weight:normal;">Wikipedia &#8599;</a>`:''}
+      ${b.text?`<div class="arc-full-text">${esc(b.text)}</div>`:''}
+      ${b.wiki?`<div style="margin-top:8px;"><a href="${esc(b.wiki)}" target="_blank" style="font-size:13px;font-weight:normal;">Wikipedia &#8599;</a></div>`:''}
     </div>`).join('');
-});
+  const ctrl=document.getElementById('bella-pg-ctrl');
+  if(pages<=1){ctrl.style.display='none';return;}
+  ctrl.style.display='flex';
+  ctrl.innerHTML=`
+    <button class="pg-btn" onclick="bellaGoPage(${_bellaPage-1})" ${_bellaPage===0?'disabled':''}>&#8592; PREV</button>
+    <span class="pg-info">Page ${_bellaPage+1} of ${pages}</span>
+    <button class="pg-btn" onclick="bellaGoPage(${_bellaPage+1})" ${_bellaPage>=pages-1?'disabled':''}>NEXT &#8594;</button>
+  `;
+}
+window.bellaGoPage=function(n){_bellaPage=n;renderBellaPage();document.getElementById('page-archive-bella').scrollTop=0;};
 window.saveBella=function(){
   const t=document.getElementById('a-bt').value.trim(),tx=document.getElementById('a-bb').value.trim();
   if(!t||!tx){alert('Title and text required.');return;}
@@ -901,10 +1065,26 @@ window.clearNASA=function(){
     autoAPOD();
   });
 };
+/* IN OTHER NEWS */
+const NASA_PER_PAGE=5;
+let _allNasa=[];
+let _nasaPage=0;
+
 onValue(ref(db,'nasaArchive'),s=>{
-  const d=s.val();const el=document.getElementById('nasa-arc');
-  if(!d){el.innerHTML='<div class="rl">[ no archive yet ]</div>';return;}
-  el.innerHTML=Object.values(d).reverse().map(e=>{
+  const d=s.val();
+  if(!d){
+    document.getElementById('nasa-arc').innerHTML='<div class="rl">[ no archive yet ]</div>';
+    document.getElementById('nasa-pg-ctrl').style.display='none';return;
+  }
+  _allNasa=Object.values(d).reverse();
+  _nasaPage=0;
+  renderNasaPage();
+});
+function renderNasaPage(){
+  const perPage=NASA_PER_PAGE;
+  const pages=Math.ceil(_allNasa.length/perPage);
+  const slice=_allNasa.slice(_nasaPage*perPage,(_nasaPage+1)*perPage);
+  document.getElementById('nasa-arc').innerHTML=slice.map(e=>{
     const isYT=e.url&&(e.url.includes('youtube')||e.url.includes('youtu.be'));
     const media=e.type==='video'||isYT
       ?`<iframe src="${esc(e.url)}" allowfullscreen style="width:100%;height:360px;border:1px solid #ccc;margin:12px 0;display:block;"></iframe>`
@@ -916,17 +1096,30 @@ onValue(ref(db,'nasaArchive'),s=>{
       ${e.link?`<div style="margin-top:5px;font-size:12px;font-style:italic;">&#8594; <a href="${esc(e.link)}" target="_blank">${esc(e.link)}</a></div>`:''}
     </div>`;
   }).join('');
-});
+  const ctrl=document.getElementById('nasa-pg-ctrl');
+  if(pages<=1){ctrl.style.display='none';return;}
+  ctrl.style.display='flex';
+  ctrl.innerHTML=`
+    <button class="pg-btn" onclick="nasaGoPage(${_nasaPage-1})" ${_nasaPage===0?'disabled':''}>&#8592; PREV</button>
+    <span class="pg-info">Page ${_nasaPage+1} of ${pages}</span>
+    <button class="pg-btn" onclick="nasaGoPage(${_nasaPage+1})" ${_nasaPage>=pages-1?'disabled':''}>NEXT &#8594;</button>
+  `;
+}
+window.nasaGoPage=function(n){_nasaPage=n;renderNasaPage();document.getElementById('page-archive-nasa').scrollTop=0;};
 
-/* IN OTHER NEWS */
+/* IN OTHER NEWS — sidebar + archive */
+const ION_PER_PAGE=9;
+let _allION=[];
+let _ionPage=0;
+
 onValue(ref(db,'ionEntries'),s=>{
   const d=s.val();
   const grid=document.getElementById('ion-grid');
-  const arc=document.getElementById('ion-arc');
   const admList=document.getElementById('ion-adm-list');
   if(!d){
     grid.innerHTML='<div class="ion-empty">[ nothing yet ]</div>';
-    if(arc)arc.innerHTML='<div class="rl" style="grid-column:1/-1;">[ no ION entries yet ]</div>';
+    if(document.getElementById('ion-arc'))document.getElementById('ion-arc').innerHTML='<div class="rl" style="grid-column:1/-1;">[ no ION entries yet ]</div>';
+    document.getElementById('ion-pg-ctrl').style.display='none';
     if(admList)admList.innerHTML='<div class="rl" style="font-size:13px;">[ none yet ]</div>';
     return;
   }
@@ -948,17 +1141,10 @@ onValue(ref(db,'ionEntries'),s=>{
   while(cells.length<2) cells.push(`<div class="ion-card"><div class="ion-placeholder"><span>—</span></div></div>`);
   grid.innerHTML=cells.join('');
 
-  if(arc){
-    arc.innerHTML=entries.map(([k,item])=>`
-      <div class="ion-arc-card">
-        ${item.src?`<img src="${esc(item.src)}" alt="${esc(item.cap||'')}" onclick="openLB('${esc(item.src)}','image')"/>`:`<div class="ion-arc-no-img"><span>no image</span></div>`}
-        <div class="ion-arc-card-body">
-          <div class="ion-arc-date">${fmt(item.date)}</div>
-          ${item.cap?`<div class="ion-arc-cap">${esc(item.cap)}</div>`:''}
-          ${item.link?`<a class="ion-arc-link" href="${esc(item.link)}" target="_blank">&#8594; ${esc(item.linkLabel||item.link)}</a>`:''}
-        </div>
-      </div>`).join('');
-  }
+  _allION=entries;
+  _ionPage=0;
+  renderIONPage();
+
   if(admList){
     admList.innerHTML=`<div style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:8px;">existing entries</div>`+
     entries.map(([k,item])=>`
@@ -972,6 +1158,48 @@ onValue(ref(db,'ionEntries'),s=>{
       </div>`).join('');
   }
 });
+
+function renderIONPage(){
+  const arc=document.getElementById('ion-arc');if(!arc)return;
+  const perPage=ION_PER_PAGE;
+  const pages=Math.ceil(_allION.length/perPage);
+  const slice=_allION.slice(_ionPage*perPage,(_ionPage+1)*perPage);
+  arc.innerHTML=slice.map(([k,item])=>`
+    <div class="ion-arc-card">
+      ${item.src?`<img src="${esc(item.src)}" alt="${esc(item.cap||'')}" onclick="openLB('${esc(item.src)}','image')"/>`:`<div class="ion-arc-no-img"><span>no image</span></div>`}
+      <div class="ion-arc-card-body">
+        <div class="ion-arc-date">${fmt(item.date)}</div>
+        ${item.cap?`<div class="ion-arc-cap">${esc(item.cap)}</div>`:''}
+        ${item.link?`<a class="ion-arc-link" href="${esc(item.link)}" target="_blank">&#8594; ${esc(item.linkLabel||item.link)}</a>`:''}
+      </div>
+    </div>`).join('');
+  const ctrl=document.getElementById('ion-pg-ctrl');
+  if(pages<=1){ctrl.style.display='none';return;}
+  ctrl.style.display='flex';
+  ctrl.innerHTML=`
+    <button class="pg-btn" onclick="ionGoPage(${_ionPage-1})" ${_ionPage===0?'disabled':''}>&#8592; PREV</button>
+    <span class="pg-info">Page ${_ionPage+1} of ${pages}</span>
+    <button class="pg-btn" onclick="ionGoPage(${_ionPage+1})" ${_ionPage>=pages-1?'disabled':''}>NEXT &#8594;</button>
+  `;
+}
+window.ionGoPage=function(n){_ionPage=n;renderIONPage();document.getElementById('page-archive-ion').scrollTop=0;};
+
+/* HERO PHOTO */
+onValue(ref(db,'site/heroPhoto'),s=>{
+  const d=s.val();
+  const img=document.getElementById('home-photo-img');
+  const empty=document.getElementById('home-photo-empty');
+  if(d&&d.src){img.src=d.src;img.style.display='block';empty.style.display='none';}
+  else{img.style.display='none';empty.style.display='flex';}
+});
+window.saveHeroPhoto=function(){
+  const src=window._hpUp||document.getElementById('a-hpi').value.trim();
+  if(!src){alert('Provide a URL or upload a file.');return;}
+  set(ref(db,'site/heroPhoto'),{src}).then(()=>{window._hpUp=null;flash('ok-hp','Photo set.');});
+};
+window.clearHeroPhoto=function(){
+  remove(ref(db,'site/heroPhoto')).then(()=>flash('ok-hp','Cleared.'));
+};
 window.pubION=function(){
   const src=window._iUp||document.getElementById('a-ii').value.trim();
   if(!src){alert('An image is required.');return;}
@@ -1016,4 +1244,3 @@ window.addGallery=function(){
 </script>
 </body>
 </html>
-
