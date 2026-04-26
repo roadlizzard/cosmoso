@@ -70,4 +70,684 @@ a:hover{color:#cc0000;text-decoration:underline;}
 #apod-win .am{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:none;}
 .apod-badge{position:absolute;top:15px;left:15px;background:rgba(0,0,128,0.88);color:#fff;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;font-weight:bold;z-index:3;display:none;}
 #apod-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));padding:20px 25px 15px;color:#fff;z-index:3;display:none;pointer-events:none;}
-#apod-
+#apod-t{font-size:18px;font-weight:bold;display:block;margin-bottom:4px;}
+#apod-cr{font-size:13px;color:rgba(255,255,255,0.6);}
+#apod-loader{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:"Courier New",monospace;font-size:14px;color:#888;}
+
+/* ── SIDEBAR ── */
+#home-sidebar{display:flex;flex-direction:column;overflow:hidden;background:#fafafa;}
+.sb-head{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:11px;font-weight:bold;padding:8px 12px;letter-spacing:1.5px;text-transform:uppercase;flex-shrink:0;}
+.sb-sec{border-bottom:1px solid #ddd;flex-shrink:0;}
+
+/* ── IN OTHER NEWS ── */
+#ion-sec{border-bottom:1px solid #ddd;flex-shrink:0;}
+#ion-head{display:flex;align-items:center;justify-content:space-between;background:#000080;padding:8px 12px;}
+#ion-head span{color:#fff;font-family:Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;}
+#ion-head a{color:#aaaaff;font-family:Arial,sans-serif;font-size:11px;font-weight:normal;cursor:pointer;letter-spacing:0;text-transform:none;}
+#ion-head a:hover{color:#fff;}
+#ion-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:8px;background:#eee;}
+.ion-card{background:#fff;border:1px solid #ccc;overflow:hidden;position:relative;}
+.ion-card-img{width:100%;height:110px;object-fit:cover;display:block;cursor:zoom-in;}
+.ion-card-img:hover{opacity:0.85;}
+.ion-card-body{padding:6px 8px 8px;}
+.ion-card-cap{font-family:Arial,sans-serif;font-size:11px;color:#333;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.ion-card-link{font-family:Arial,sans-serif;font-size:11px;color:#000080;display:block;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ion-card-link:hover{color:#cc0000;}
+.ion-card-date{font-family:"Courier New",monospace;font-size:10px;color:#aaa;margin-top:4px;}
+.ion-empty{font-size:12px;color:#aaa;font-style:italic;padding:15px;text-align:center;font-family:Arial,sans-serif;grid-column:1/-1;background:#fff;}
+.ion-placeholder{background:#f5f5f5;border:1px dashed #ccc;height:110px;display:flex;align-items:center;justify-content:center;}
+.ion-placeholder span{font-size:11px;color:#bbb;font-family:Arial,sans-serif;font-style:italic;}
+
+/* sidebar gallery */
+#sb-gallery{flex:1;overflow-y:auto;}
+#sb-gallery-grid{display:flex;flex-direction:column;gap:5px;padding:8px;}
+.gal-item{cursor:pointer;border:1px solid #ccc;overflow:hidden;}
+.gal-item img{width:100%;height:100px;object-fit:cover;display:block;}
+.gal-item:hover img{opacity:0.8;}
+.gal-cap{font-size:12px;font-family:Arial,sans-serif;color:#444;padding:4px 8px;background:#f0f0f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ── SCROLLABLE PAGES ── */
+.sec-head{font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #000;padding-bottom:6px;margin-bottom:25px;}
+.letter{margin-bottom:45px;padding-bottom:35px;border-bottom:1px solid #e5e5e5;}
+.letter:last-child{border-bottom:none;}
+.letter-date{font-family:Arial,sans-serif;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.letter-title{font-size:30px;font-weight:bold;margin-bottom:15px;line-height:1.2;}
+.letter-body{font-size:18px;line-height:1.85;color:#222;}
+.letter-body p{margin-bottom:15px;}
+.letter-img{max-width:100%;border:1px solid #ccc;margin:15px 0;display:block;cursor:zoom-in;}
+.letter-link{font-size:15px;font-style:italic;margin-top:15px;}
+.arc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.arc-card{border:1px solid #ccc;padding:15px;background:#fffff0;}
+.arc-card img{width:100%;height:100px;object-fit:cover;border:1px solid #ccccaa;margin-bottom:10px;display:block;cursor:zoom-in;}
+.arc-card-empty{width:100%;height:100px;background:#f0f0e0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#bbb;border:1px solid #ccccaa;margin-bottom:10px;font-style:italic;}
+.arc-date{font-family:Arial,sans-serif;font-size:12px;color:#888;margin-bottom:5px;}
+.arc-title{font-size:16px;font-weight:bold;margin-bottom:6px;}
+.nas-card{border:1px solid #ccc;padding:18px;background:#f8f8ff;margin-bottom:18px;}
+.nas-card img,.nas-card video,.nas-card iframe{max-width:100%;margin:12px 0;display:block;border:1px solid #ccc;}
+.nas-card iframe{width:100%;height:360px;border:1px solid #ccc;}
+.nas-date{font-family:Arial,sans-serif;font-size:12px;color:#888;margin-bottom:6px;}
+
+/* ── ION ARCHIVE PAGE ── */
+.ion-arc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.ion-arc-card{border:1px solid #ccc;background:#fff;overflow:hidden;}
+.ion-arc-card img{width:100%;height:140px;object-fit:cover;display:block;cursor:zoom-in;border-bottom:1px solid #ddd;}
+.ion-arc-card-body{padding:12px 15px 15px;}
+.ion-arc-date{font-family:Arial,sans-serif;font-size:12px;color:#888;margin-bottom:6px;}
+.ion-arc-cap{font-size:15px;line-height:1.5;color:#222;margin-bottom:6px;}
+.ion-arc-link{font-size:13px;color:#000080;font-style:italic;}
+.ion-arc-link:hover{color:#cc0000;}
+.ion-arc-no-img{width:100%;height:140px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #ddd;}
+.ion-arc-no-img span{font-size:13px;color:#bbb;font-style:italic;}
+
+/* ── ADMIN ── */
+#lock-wrap{max-width:380px;margin:60px auto;border:2px solid #000;padding:30px;background:#fffff0;text-align:center;}
+#lock-wrap p{font-size:16px;margin-bottom:15px;}
+#pw-in{font-family:"Courier New",monospace;font-size:16px;padding:8px 12px;border:1px solid #999;width:200px;margin-right:8px;}
+.rb{background:#000080;color:#fff;border:2px outset #8888cc;padding:8px 18px;cursor:pointer;font-size:14px;font-weight:bold;font-family:Arial,sans-serif;}
+.rb:hover{background:#0000aa;}
+.rb.red{background:#880000;border-color:#cc8888;}
+.rb.grey{background:#555;border-color:#888;}
+#pw-err{color:#cc0000;font-size:14px;margin-top:10px;font-style:italic;}
+#adm-panel{display:none;}
+#adm-panel.open{display:block;}
+.af{border:1px solid #ccc;padding:22px;margin-bottom:22px;background:#fafafa;}
+.af h3{font-family:Arial,sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #ccc;padding-bottom:8px;margin-bottom:16px;}
+.fr{margin-bottom:14px;}
+.fr label{display:block;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;margin-bottom:5px;color:#333;}
+.fr input[type=text],.fr input[type=url],.fr input[type=password],.fr textarea,.fr select{width:100%;font-family:"Times New Roman",serif;font-size:16px;padding:8px 10px;border:1px solid #999;background:#fff;}
+.fr textarea{min-height:110px;resize:vertical;line-height:1.6;}
+.fn{font-size:13px;color:#888;margin-top:5px;font-style:italic;}
+.ok{color:#006600;font-size:14px;font-style:italic;margin-left:10px;}
+.adm-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid #eee;font-size:15px;}
+.adm-row:last-child{border-bottom:none;}
+.delbtn{background:#cc0000;color:#fff;border:2px outset #ee8888;font-size:13px;padding:4px 10px;cursor:pointer;font-family:Arial,sans-serif;flex-shrink:0;margin-left:10px;}
+.delbtn:hover{background:#aa0000;}
+.ip{margin-top:8px;display:none;}
+.ip img{max-width:180px;border:1px solid #ccc;}
+.rl{font-family:"Courier New",monospace;font-size:14px;color:#888;}
+
+/* ── LIGHTBOX ── */
+#lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;}
+#lb.open{display:flex;}
+#lb img,#lb video,#lb iframe{max-width:92vw;max-height:90vh;border:2px solid #fff;}
+#lb iframe{width:80vw;height:80vh;}
+#lb-x{position:fixed;top:18px;right:25px;color:#fff;font-size:36px;cursor:pointer;background:none;border:none;font-family:Arial,sans-serif;line-height:1;}
+</style>
+</head>
+<body>
+
+<div id="lb" onclick="if(event.target===this)closeLB()">
+  <button id="lb-x" onclick="closeLB()">&#x2715;</button>
+  <img id="lb-img" src="" alt="" style="display:none;"/>
+  <video id="lb-vid" controls style="display:none;"></video>
+  <iframe id="lb-ifr" src="" style="display:none;" allowfullscreen></iframe>
+</div>
+
+<div id="topbar"><span class="ldot"></span>KOSMOSO &nbsp;&middot;&nbsp; A PERSONAL RECORD OF THE UNIVERSE</div>
+<div id="sitetitle"><h1>KOSMOSO</h1><div class="sub">a personal record of the universe</div></div>
+<div id="nav">
+  <a id="nav-home" class="active" onclick="showPage('home')">HOME</a>
+  <a id="nav-blog" onclick="showPage('blog')">THE LETTERS</a>
+  <a id="nav-archive-bella" onclick="showPage('archive-bella')">BELLISSIMA ARCHIVE</a>
+  <a id="nav-archive-nasa" onclick="showPage('archive-nasa')">NASA ARCHIVE</a>
+  <a id="nav-archive-ion" onclick="showPage('archive-ion')">ION ARCHIVE</a>
+  <a id="nav-admin" onclick="showPage('admin')">EDIT</a>
+</div>
+
+<div id="shell">
+
+  <div id="page-home" class="page active">
+    <div id="home-grid">
+      <div id="home-main">
+
+        <div id="intro-bar">
+          <div class="blbl">introduction</div>
+          <div id="intro-text">loading...</div>
+        </div>
+
+        <div id="latest-bar" onclick="showPage('blog')">
+          <div id="lat-text-wrap">
+            <div class="blbl">latest dispatch</div>
+            <div id="lat-title">—</div>
+            <div id="lat-snip"></div>
+          </div>
+          <div id="lat-img-wrap">
+            <img id="lat-img-d" src="" alt=""/>
+          </div>
+        </div>
+
+        <div id="bella-bar">
+          <div class="bella-hdr">
+            <span class="bella-hdr-title">bellissima! &mdash; today's physics fact</span>
+            <a onclick="showPage('archive-bella')">[ archive ]</a>
+          </div>
+          <div class="bella-body">
+            <div class="bella-text">
+              <div id="bella-title-d"></div>
+              <div id="bella-text-d"></div>
+              <div id="bella-wiki-d"></div>
+            </div>
+            <div class="bella-img" id="bella-img-col">
+              <div class="no-img" id="bella-no-img">no image</div>
+              <img id="bella-img-d" src="" alt="" style="display:none;" onclick="openLB(this.src,'image')"/>
+            </div>
+          </div>
+        </div>
+
+        <div id="apod-win">
+          <div id="apod-loader"></div>
+          <div class="apod-badge" id="apod-badge"></div>
+          <div id="apod-overlay"><span id="apod-t"></span><span id="apod-cr"></span></div>
+        </div>
+
+      </div>
+
+      <div id="home-sidebar">
+
+        <div id="ion-sec" class="sb-sec">
+          <div id="ion-head">
+            <span><span class="ldot"></span>IN OTHER NEWS...</span>
+            <a onclick="showPage('archive-ion')">[ archive ]</a>
+          </div>
+          <div id="ion-grid">
+            <div class="ion-empty">[ nothing yet ]</div>
+          </div>
+        </div>
+
+        <div id="sb-gallery">
+          <div class="sb-head">IMAGE GALLERY</div>
+          <div id="sb-gallery-grid"><div class="rl" style="padding:10px;font-size:13px;">[ no images added yet ]</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="page-blog" class="page scroll">
+    <div class="sec-head">THE LETTERS</div>
+    <div style="font-style:italic;color:#555;font-size:16px;border-left:3px solid #000080;padding:10px 16px;margin-bottom:32px;background:#f8f8ff;line-height:1.65;">Letters written to no one in particular and everyone at once. About space, physics, cricket, boxing, and the strangeness of being alive on a rock hurtling through a universe we barely understand.</div>
+    <div id="blog-list"><div class="rl">[ loading... ]</div></div>
+  </div>
+
+  <div id="page-archive-bella" class="page scroll">
+    <div class="sec-head">BELLISSIMA ARCHIVE</div>
+    <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:25px;">Every physics fact, every day. The accumulation of wonder.</p>
+    <div class="arc-grid" id="bella-arc"><div class="rl" style="grid-column:1/-1;">[ loading... ]</div></div>
+  </div>
+
+  <div id="page-archive-nasa" class="page scroll">
+    <div class="sec-head">NASA ARCHIVE</div>
+    <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:25px;">Every image and video of the day, archived.</p>
+    <div id="nasa-arc"><div class="rl">[ loading... ]</div></div>
+  </div>
+
+  <div id="page-archive-ion" class="page scroll">
+    <div class="sec-head">ION ARCHIVE &mdash; IN OTHER NEWS</div>
+    <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:25px;">Everything that has appeared in the sidebar's <em>In Other News</em> panel, accumulated.</p>
+    <div class="ion-arc-grid" id="ion-arc"><div class="rl" style="grid-column:1/-1;">[ loading... ]</div></div>
+  </div>
+
+  <div id="page-admin" class="page scroll">
+    <div class="sec-head">EDIT &mdash; KOSMOSO</div>
+
+    <div id="lock-wrap">
+      <p><strong>enter password to edit</strong></p>
+      <input type="password" id="pw-in" placeholder="password" onkeydown="if(event.key==='Enter')checkPw()"/>
+      <button class="rb" onclick="checkPw()">ENTER</button>
+      <div id="pw-err"></div>
+    </div>
+
+    <div id="adm-panel">
+
+      <div class="af">
+        <h3>Introduction (home page)</h3>
+        <div class="fr"><label>Text — shown as italic intro strip (keep to 1–2 sentences)</label><textarea id="a-intro" rows="3"></textarea></div>
+        <button class="rb" onclick="saveIntro()">SAVE</button><span class="ok" id="ok-intro"></span>
+      </div>
+
+      <div class="af">
+        <h3>Bellissima! &mdash; Physics Fact of the Day</h3>
+        <div class="fr"><label>Title</label><input type="text" id="a-bt" placeholder="e.g. The Casimir Effect"/></div>
+        <div class="fr"><label>Fact text (2–3 sentences shown on home; full text shown in archive)</label><textarea id="a-bb" rows="5"></textarea></div>
+        <div class="fr">
+          <label>Image — paste URL (Wikipedia, NASA, Wikimedia…)</label>
+          <input type="url" id="a-bi" placeholder="https://upload.wikimedia.org/..."/>
+        </div>
+        <div class="fr">
+          <label>— OR — upload image from computer</label>
+          <input type="file" id="a-bf" accept="image/*" onchange="prevFile('a-bf','a-bfp-img','a-bfp')" style="font-size:15px;"/>
+          <div class="ip" id="a-bfp"><img id="a-bfp-img" alt=""/></div>
+        </div>
+        <div class="fr"><label>Wikipedia link</label><input type="url" id="a-bw" placeholder="https://en.wikipedia.org/wiki/..."/></div>
+        <button class="rb" onclick="saveBella()">PUBLISH FACT</button><span class="ok" id="ok-bella"></span>
+      </div>
+
+      <div class="af">
+        <h3>Image / Video of the Day (main window)</h3>
+        <p style="font-size:14px;color:#666;margin-bottom:15px;">This is the large image filling the bottom of the home page. Also saved to NASA Archive automatically.</p>
+        <div class="fr"><label>Title</label><input type="text" id="a-nt" placeholder="e.g. Pillars of Creation"/></div>
+        <div class="fr">
+          <label>Image or video URL</label>
+          <input type="url" id="a-nu" placeholder="https://apod.nasa.gov/apod/image/..."/>
+          <div class="fn">For YouTube paste the embed URL: https://www.youtube.com/embed/VIDEOID</div>
+        </div>
+        <div class="fr"><label>Type</label><select id="a-ntype"><option value="image">Image</option><option value="video">Video (YouTube embed or .mp4)</option></select></div>
+        <div class="fr"><label>Credit / caption</label><input type="text" id="a-nc" placeholder="Credit: NASA / ESA / Hubble..."/></div>
+        <button class="rb" onclick="saveNASA()">SET AS TODAY'S IMAGE</button><span class="ok" id="ok-nasa"></span>
+        <div style="margin-top:12px;">
+          <button class="rb grey" onclick="clearNASA()">CLEAR MANUAL — USE AUTO APOD</button><span class="ok" id="ok-nasa2"></span>
+        </div>
+      </div>
+
+      <div class="af">
+        <h3>In Other News &mdash; Sidebar Panel</h3>
+        <p style="font-size:14px;color:#666;margin-bottom:15px;">The two most recent entries appear in the sidebar. All entries are saved to the ION Archive. Images are required; caption and link are optional.</p>
+        <div class="fr"><label>Image URL</label><input type="url" id="a-ii" placeholder="https://..."/></div>
+        <div class="fr">
+          <label>— OR — upload image</label>
+          <input type="file" id="a-if" accept="image/*" onchange="prevFile('a-if','a-ifp-img','a-ifp')" style="font-size:15px;"/>
+          <div class="ip" id="a-ifp"><img id="a-ifp-img" alt=""/></div>
+        </div>
+        <div class="fr"><label>Caption (shown below image)</label><textarea id="a-ic" rows="2" placeholder="A short description of what this is..."></textarea></div>
+        <div class="fr"><label>Link (optional — makes the card clickable)</label><input type="url" id="a-il" placeholder="https://..."/></div>
+        <div class="fr"><label>Link label (optional)</label><input type="text" id="a-ilb" placeholder="e.g. Read more"/></div>
+        <button class="rb" onclick="pubION()">PUBLISH TO ION</button><span class="ok" id="ok-ion"></span>
+        <div id="ion-adm-list" style="margin-top:20px;"></div>
+      </div>
+
+      <div class="af">
+        <h3>Sidebar Image Gallery</h3>
+        <p style="font-size:14px;color:#666;margin-bottom:15px;">Images appear in the right-side panel. Click any to open full size.</p>
+        <div class="fr"><label>Image URL</label><input type="url" id="a-si" placeholder="https://..."/></div>
+        <div class="fr">
+          <label>— OR — upload image</label>
+          <input type="file" id="a-sf" accept="image/*" onchange="prevFile('a-sf','a-sfp-img','a-sfp')" style="font-size:15px;"/>
+          <div class="ip" id="a-sfp"><img id="a-sfp-img" alt=""/></div>
+        </div>
+        <div class="fr"><label>Caption (optional)</label><input type="text" id="a-sc" placeholder="Short label"/></div>
+        <button class="rb" onclick="addGallery()">ADD TO GALLERY</button><span class="ok" id="ok-gal"></span>
+        <div id="gal-adm-list" style="margin-top:16px;"></div>
+      </div>
+
+      <div class="af">
+        <h3>New Letter</h3>
+        <div class="fr"><label>Title</label><input type="text" id="a-lt" placeholder="Letter title"/></div>
+        <div class="fr"><label>Body — separate paragraphs with a blank line</label><textarea id="a-lb" rows="10"></textarea></div>
+        <div class="fr"><label>Image URL (optional)</label><input type="url" id="a-li" placeholder="https://..."/></div>
+        <div class="fr"><label>External link (optional)</label><input type="url" id="a-ll" placeholder="https://..."/></div>
+        <div class="fr"><label>Link label</label><input type="text" id="a-llb" placeholder="e.g. Read the full paper"/></div>
+        <button class="rb" onclick="pubLetter()">PUBLISH LETTER</button><span class="ok" id="ok-letter"></span>
+      </div>
+
+      <div class="af">
+        <h3>Manage Letters</h3>
+        <div id="adm-letters"><div class="rl">[ loading... ]</div></div>
+      </div>
+
+      <div class="af">
+        <h3>Change Password</h3>
+        <div class="fr"><label>New password</label><input type="password" id="a-np1" placeholder="new password"/></div>
+        <div class="fr"><label>Confirm</label><input type="password" id="a-np2" placeholder="confirm"/></div>
+        <button class="rb" onclick="changePw()">CHANGE PASSWORD</button><span class="ok" id="ok-pw"></span>
+      </div>
+
+      <button class="rb grey" onclick="lockAdmin()">LOCK &amp; EXIT</button>
+
+    </div>
+  </div>
+
+</div><script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import{getDatabase,ref,set,push,get,onValue,remove}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+const FB={apiKey:"AIzaSyAxFfLgoXqHh6vkS788YCK0HmV5JuDlrEo",authDomain:"kosmoso.firebaseapp.com",databaseURL:"https://kosmoso-default-rtdb.firebaseio.com",projectId:"kosmoso",storageBucket:"kosmoso.firebasestorage.app",messagingSenderId:"907090872412",appId:"1:907090872412:web:e8f4d4044c3a2726cafe99"};
+const app=initializeApp(FB);
+const db=getDatabase(app);
+const NK='TKBivYAGaBGI8eMexg23ORunenoeAHvZOlwqoWLh';
+
+/* ── utils ── */
+function ls(k,fb){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):fb;}catch{return fb;}}
+function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+function flash(id,msg){const el=document.getElementById(id);if(!el)return;el.textContent=msg;setTimeout(()=>el.textContent='',3000);}
+function fmt(iso){try{return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});}catch{return iso||'';}}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ── nav ── */
+window.showPage=function(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.remove('active'));
+  const pg=document.getElementById('page-'+n);if(pg)pg.classList.add('active');
+  const nv=document.getElementById('nav-'+n);if(nv)nv.classList.add('active');
+};
+
+/* ── lightbox ── */
+window.openLB=function(src,type){
+  document.getElementById('lb-img').style.display='none';
+  document.getElementById('lb-vid').style.display='none';
+  document.getElementById('lb-ifr').style.display='none';
+  const lb=document.getElementById('lb');lb.classList.add('open');
+  if(type==='video-embed'){const ifr=document.getElementById('lb-ifr');ifr.src=src;ifr.style.display='block';}
+  else if(type==='video'){const v=document.getElementById('lb-vid');v.src=src;v.style.display='block';}
+  else{const img=document.getElementById('lb-img');img.src=src;img.style.display='block';}
+};
+window.closeLB=function(){
+  document.getElementById('lb').classList.remove('open');
+  try{document.getElementById('lb-vid').pause();}catch(e){}
+  document.getElementById('lb-ifr').src='';
+};
+
+/* ── password ── */
+function getPw(){return ls('kosmoso_pw','cosmos2026');}
+window.checkPw=function(){
+  const v=document.getElementById('pw-in').value;
+  if(v===getPw()){
+    document.getElementById('lock-wrap').style.display='none';
+    document.getElementById('adm-panel').classList.add('open');
+    document.getElementById('pw-in').value='';
+    document.getElementById('pw-err').textContent='';
+    get(ref(db,'site/intro')).then(s=>{if(s.val())document.getElementById('a-intro').value=s.val();});
+    get(ref(db,'site/bellaToday')).then(s=>{
+      const b=s.val();if(!b)return;
+      document.getElementById('a-bt').value=b.title||'';
+      document.getElementById('a-bb').value=b.text||'';
+      document.getElementById('a-bi').value=b.imgUrl||'';
+      document.getElementById('a-bw').value=b.wiki||'';
+    });
+  } else document.getElementById('pw-err').textContent='Incorrect password.';
+};
+window.lockAdmin=function(){
+  document.getElementById('lock-wrap').style.display='block';
+  document.getElementById('adm-panel').classList.remove('open');
+  window.showPage('home');
+};
+window.changePw=function(){
+  const p1=document.getElementById('a-np1').value,p2=document.getElementById('a-np2').value;
+  if(!p1||p1!==p2){alert('Passwords do not match.');return;}
+  lss('kosmoso_pw',p1);
+  document.getElementById('a-np1').value='';document.getElementById('a-np2').value='';
+  flash('ok-pw','Password changed.');
+};
+
+/* ── file upload helper ── */
+window.prevFile=function(fid,iid,did){
+  const file=document.getElementById(fid).files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    document.getElementById(iid).src=ev.target.result;
+    document.getElementById(did).style.display='block';
+    if(fid==='a-bf')window._bUp=ev.target.result;
+    if(fid==='a-sf')window._sUp=ev.target.result;
+    if(fid==='a-if')window._iUp=ev.target.result;
+  };
+  r.readAsDataURL(file);
+};
+
+/* ── INTRO ── */
+onValue(ref(db,'site/intro'),s=>{
+  const v=s.val();
+  if(v){document.getElementById('intro-text').textContent=v;}
+  else document.getElementById('intro-text').textContent='Welcome to Kosmoso.';
+});
+window.saveIntro=function(){
+  const v=document.getElementById('a-intro').value.trim();if(!v)return;
+  set(ref(db,'site/intro'),v).then(()=>flash('ok-intro','Saved.'));
+};
+
+/* ── LETTERS ── */
+let _letters=[];
+onValue(ref(db,'letters'),s=>{
+  const d=s.val();
+  const list=document.getElementById('blog-list');
+  if(!d){list.innerHTML='<p style="color:#888;font-style:italic;">No letters yet.</p>';renderLatest(null);renderAdmLetters([]);return;}
+  _letters=Object.entries(d).sort((a,b)=>(b[1].date||'').localeCompare(a[1].date||''));
+  renderLatest(_letters[0]?_letters[0][1]:null);
+  list.innerHTML=_letters.map(([k,p])=>{
+    const paras=(p.content||'').split(/\n\s*\n/).filter(Boolean);
+    const body=paras.map(t=>`<p>${esc(t).replace(/\n/g,'<br/>')}</p>`).join('');
+    const img=p.img?`<img src="${esc(p.img)}" class="letter-img" alt="" onclick="openLB('${esc(p.img)}','image')"/>` :'';
+    const lnk=p.link?`<div class="letter-link">&#8594; <a href="${esc(p.link)}" target="_blank">${esc(p.linkLabel||p.link)}</a></div>`:'';
+    return `<div class="letter"><div class="letter-date">${fmt(p.date)}</div><div class="letter-title">${esc(p.title)}</div><div class="letter-body">${body}${img}${lnk}</div></div>`;
+  }).join('');
+  renderAdmLetters(_letters);
+});
+function renderLatest(p){
+  document.getElementById('lat-title').textContent=p?p.title:'No letters yet';
+  document.getElementById('lat-snip').textContent=p?(p.content||'').slice(0,180)+'…':'';
+  const imgWrap = document.getElementById('lat-img-wrap');
+  const imgEl = document.getElementById('lat-img-d');
+  if(p && p.img) {
+      imgEl.src = p.img;
+      imgWrap.style.display = 'block';
+  } else {
+      imgWrap.style.display = 'none';
+  }
+}
+function renderAdmLetters(entries){
+  const el=document.getElementById('adm-letters');if(!el)return;
+  if(!entries.length){el.innerHTML='<div class="rl">[ no letters yet ]</div>';return;}
+  el.innerHTML=entries.map(([k,p])=>`
+    <div class="adm-row">
+      <div><strong>${esc(p.title)}</strong><div style="font-size:12px;color:#888;">${fmt(p.date)}</div></div>
+      <button class="delbtn" onclick="delLetter('${k}')">DELETE</button>
+    </div>`).join('');
+}
+window.pubLetter=function(){
+  const t=document.getElementById('a-lt').value.trim(),b=document.getElementById('a-lb').value.trim();
+  if(!t||!b){alert('Title and body required.');return;}
+  push(ref(db,'letters'),{title:t,content:b,date:new Date().toISOString(),img:document.getElementById('a-li').value.trim()||null,link:document.getElementById('a-ll').value.trim()||null,linkLabel:document.getElementById('a-llb').value.trim()||null})
+  .then(()=>{['a-lt','a-lb','a-li','a-ll','a-llb'].forEach(id=>document.getElementById(id).value='');flash('ok-letter','Published.');});
+};
+window.delLetter=function(k){if(!confirm('Delete this letter permanently?'))return;remove(ref(db,'letters/'+k));};
+
+/* ── BELLISSIMA ── */
+onValue(ref(db,'site/bellaToday'),s=>{
+  const b=s.val();
+  const td=document.getElementById('bella-title-d');
+  if(!b){td.textContent='No fact yet — add one in EDIT.';return;}
+  td.textContent=b.title||'';
+  document.getElementById('bella-text-d').textContent=b.text||'';
+  document.getElementById('bella-wiki-d').innerHTML=b.wiki?`&#8594; <a href="${esc(b.wiki)}" target="_blank" style="font-weight:normal;font-size:14px;">Read on Wikipedia</a>`:'';
+  const img=document.getElementById('bella-img-d');
+  const noImg=document.getElementById('bella-no-img');
+  if(b.img){img.src=b.img;img.style.display='block';noImg.style.display='none';}
+  else{img.style.display='none';noImg.style.display='flex';}
+});
+onValue(ref(db,'bellaArchive'),s=>{
+  const d=s.val();const el=document.getElementById('bella-arc');
+  if(!d){el.innerHTML='<div class="rl" style="grid-column:1/-1;">[ no archive entries yet ]</div>';return;}
+  el.innerHTML=Object.values(d).reverse().map(b=>`
+    <div class="arc-card">
+      ${b.img?`<img src="${esc(b.img)}" alt="" onclick="openLB('${esc(b.img)}','image')"/>`:`<div class="arc-card-empty">no image</div>`}
+      <div class="arc-date">${fmt(b.date)}</div>
+      <div class="arc-title">${esc(b.title)}</div>
+      ${b.wiki?`<a href="${esc(b.wiki)}" target="_blank" style="font-size:13px;font-weight:normal;">Wikipedia &#8599;</a>`:''}
+    </div>`).join('');
+});
+window.saveBella=function(){
+  const t=document.getElementById('a-bt').value.trim(),tx=document.getElementById('a-bb').value.trim();
+  if(!t||!tx){alert('Title and text required.');return;}
+  const img=window._bUp||document.getElementById('a-bi').value.trim()||null;
+  const b={title:t,text:tx,img,imgUrl:document.getElementById('a-bi').value.trim()||null,wiki:document.getElementById('a-bw').value.trim()||null,date:new Date().toISOString()};
+  set(ref(db,'site/bellaToday'),b)
+  .then(()=>{push(ref(db,'bellaArchive'),b);window._bUp=null;flash('ok-bella','Published & archived.');});
+};
+
+/* ── NASA IMAGE OF THE DAY ── */
+onValue(ref(db,'site/nasaDay'),s=>{const d=s.val();if(d)renderNASA(d);else autoAPOD();});
+function renderNASA(d){
+  const win=document.getElementById('apod-win');
+  win.querySelectorAll('.am').forEach(el=>el.remove());
+  const loader=document.getElementById('apod-loader');if(loader)loader.style.display='none';
+  const isYT=d.url&&(d.url.includes('youtube')||d.url.includes('youtu.be'));
+  if(d.type==='video'||isYT){
+    const ifr=document.createElement('iframe');
+    ifr.className='am';ifr.src=d.url;ifr.allowFullscreen=true;
+    ifr.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:none;display:block;';
+    win.insertBefore(ifr,document.getElementById('apod-badge'));
+    document.getElementById('apod-badge').style.display='block';
+    document.getElementById('apod-badge').textContent='video of the day';
+  } else {
+    const img=document.createElement('img');
+    img.className='am';img.src=(d.url||'').replace('http://','https://');img.alt=d.title||'';
+    img.style.cssText='cursor:zoom-in;';
+    img.onclick=()=>openLB(d.url.replace('http://','https://'),'image');
+    win.insertBefore(img,document.getElementById('apod-badge'));
+    document.getElementById('apod-badge').style.display='block';
+    document.getElementById('apod-badge').textContent='image of the day';
+  }
+  document.getElementById('apod-overlay').style.display='block';
+  document.getElementById('apod-t').textContent=d.title||'';
+  document.getElementById('apod-cr').textContent=d.credit||'';
+}
+async function autoAPOD(){
+  try{
+    const r=await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NK}`);
+    const d=await r.json();
+    const url=(d.url||'').replace('http://','https://');
+    renderNASA({title:d.title,url,type:d.media_type==='video'?'video':'image',credit:d.copyright?'Credit: '+d.copyright.replace(/\n/g,' '):'Credit: NASA'});
+    document.getElementById('apod-badge').textContent='nasa apod';
+  }catch(e){const l=document.getElementById('apod-loader');if(l)l.textContent='[ could not load image ]';}
+}
+window.saveNASA=function(){
+  const t=document.getElementById('a-nt').value.trim(),u=document.getElementById('a-nu').value.trim();
+  if(!t||!u){alert('Title and URL required.');return;}
+  const d={title:t,url:u,type:document.getElementById('a-ntype').value,credit:document.getElementById('a-nc').value.trim()||null,date:new Date().toISOString()};
+  set(ref(db,'site/nasaDay'),d).then(()=>{push(ref(db,'nasaArchive'),d);flash('ok-nasa','Set & archived.');});
+};
+window.clearNASA=function(){
+  if(!confirm('Remove manual image and use NASA APOD automatically?'))return;
+  remove(ref(db,'site/nasaDay')).then(()=>{flash('ok-nasa2','Cleared. Auto-APOD active.');autoAPOD();});
+};
+onValue(ref(db,'nasaArchive'),s=>{
+  const d=s.val();const el=document.getElementById('nasa-arc');
+  if(!d){el.innerHTML='<div class="rl">[ no archive yet ]</div>';return;}
+  el.innerHTML=Object.values(d).reverse().map(e=>{
+    const isYT=e.url&&(e.url.includes('youtube')||e.url.includes('youtu.be'));
+    const media=e.type==='video'||isYT
+      ?`<iframe src="${esc(e.url)}" allowfullscreen style="width:100%;height:360px;border:1px solid #ccc;margin:12px 0;display:block;"></iframe>`
+      :`<img src="${esc(e.url)}" alt="${esc(e.title)}" style="max-width:100%;border:1px solid #ccc;margin:12px 0;display:block;cursor:zoom-in;" onclick="openLB('${esc(e.url)}','image')"/>`;
+    return `<div class="nas-card"><div class="nas-date">${fmt(e.date)}</div><strong>${esc(e.title)}</strong>${media}${e.credit?`<div style="font-size:13px;color:#888;">${esc(e.credit)}</div>`:''}</div>`;
+  }).join('');
+});
+
+/* ── IN OTHER NEWS ── */
+onValue(ref(db,'ionEntries'),s=>{
+  const d=s.val();
+  const grid=document.getElementById('ion-grid');
+  const arc=document.getElementById('ion-arc');
+  const admList=document.getElementById('ion-adm-list');
+
+  if(!d){
+    grid.innerHTML='<div class="ion-empty">[ nothing yet ]</div>';
+    if(arc)arc.innerHTML='<div class="rl" style="grid-column:1/-1;">[ no ION entries yet ]</div>';
+    if(admList)admList.innerHTML='<div class="rl" style="font-size:13px;">[ none yet ]</div>';
+    return;
+  }
+
+  const entries=Object.entries(d).sort((a,b)=>(b[1].date||'').localeCompare(a[1].date||''));
+
+  /* sidebar — show 2 most recent */
+  const top2=entries.slice(0,2);
+  let sideCells=top2.map(([k,item])=>{
+    const clickAttr=item.link?`onclick="window.open('${esc(item.link)}','_blank')" style="cursor:pointer;"`:`onclick="openLB('${esc(item.src)}','image')" style="cursor:zoom-in;"`;
+    return `<div class="ion-card" ${clickAttr}>
+      <img class="ion-card-img" src="${esc(item.src)}" alt="${esc(item.cap||'')}"/>
+      <div class="ion-card-body">
+        ${item.cap?`<div class="ion-card-cap">${esc(item.cap)}</div>`:''}
+        ${item.link?`<a class="ion-card-link" href="${esc(item.link)}" target="_blank">${esc(item.linkLabel||item.link)}</a>`:''}
+        <div class="ion-card-date">${fmt(item.date)}</div>
+      </div>
+    </div>`;
+  });
+  /* pad to 2 if only 1 entry */
+  while(sideCells.length<2){
+    sideCells.push(`<div class="ion-card"><div class="ion-placeholder"><span>—</span></div></div>`);
+  }
+  grid.innerHTML=sideCells.join('');
+
+  /* ION archive page */
+  if(arc){
+    arc.innerHTML=entries.map(([k,item])=>`
+      <div class="ion-arc-card">
+        ${item.src
+          ?`<img src="${esc(item.src)}" alt="${esc(item.cap||'')}" onclick="openLB('${esc(item.src)}','image')"/>`
+          :`<div class="ion-arc-no-img"><span>no image</span></div>`}
+        <div class="ion-arc-card-body">
+          <div class="ion-arc-date">${fmt(item.date)}</div>
+          ${item.cap?`<div class="ion-arc-cap">${esc(item.cap)}</div>`:''}
+          ${item.link?`<a class="ion-arc-link" href="${esc(item.link)}" target="_blank">&#8594; ${esc(item.linkLabel||item.link)}</a>`:''}
+        </div>
+      </div>`).join('');
+  }
+
+  /* admin manage list */
+  if(admList){
+    admList.innerHTML=`<div style="font-family:Arial,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:8px;">existing entries (newest first)</div>`+
+    entries.map(([k,item])=>`
+      <div class="adm-row">
+        ${item.src?`<img src="${esc(item.src)}" style="width:48px;height:48px;object-fit:cover;border:1px solid #ccc;flex-shrink:0;"/>`:'<div style="width:48px;height:48px;background:#eee;flex-shrink:0;border:1px solid #ccc;"></div>'}
+        <div style="flex:1;margin:0 10px;font-size:14px;overflow:hidden;">
+          <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(item.cap||'(no caption)')}</div>
+          <div style="font-size:12px;color:#888;">${fmt(item.date)}</div>
+        </div>
+        <button class="delbtn" onclick="delION('${k}')">REMOVE</button>
+      </div>`).join('');
+  }
+});
+
+window.pubION=function(){
+  const src=window._iUp||document.getElementById('a-ii').value.trim();
+  if(!src){alert('An image (URL or upload) is required.');return;}
+  const entry={
+    src,
+    cap:document.getElementById('a-ic').value.trim()||null,
+    link:document.getElementById('a-il').value.trim()||null,
+    linkLabel:document.getElementById('a-ilb').value.trim()||null,
+    date:new Date().toISOString()
+  };
+  push(ref(db,'ionEntries'),entry).then(()=>{
+    document.getElementById('a-ii').value='';
+    document.getElementById('a-ic').value='';
+    document.getElementById('a-il').value='';
+    document.getElementById('a-ilb').value='';
+    document.getElementById('a-ifp').style.display='none';
+    window._iUp=null;
+    flash('ok-ion','Published to ION.');
+  });
+};
+window.delION=function(k){if(!confirm('Remove this ION entry?'))return;remove(ref(db,'ionEntries/'+k));};
+
+/* ── SIDEBAR GALLERY ── */
+onValue(ref(db,'sidebarImages'),s=>{
+  const d=s.val();
+  const grid=document.getElementById('sb-gallery-grid');
+  const adm=document.getElementById('gal-adm-list');
+  if(!d){
+    grid.innerHTML='<div class="rl" style="padding:10px;font-size:13px;">[ no images yet ]</div>';
+    if(adm)adm.innerHTML='<div class="rl" style="font-size:13px;">[ none yet ]</div>';
+    return;
+  }
+  grid.innerHTML=Object.entries(d).map(([k,item])=>`
+    <div class="gal-item" onclick="openLB('${esc(item.src)}','image')">
+      <img src="${esc(item.src)}" alt="${esc(item.cap||'')}"/>
+      ${item.cap?`<div class="gal-cap">${esc(item.cap)}</div>`:''}
+    </div>`).join('');
+  if(adm){adm.innerHTML=Object.entries(d).map(([k,item])=>`
+    <div class="adm-row">
+      <img src="${esc(item.src)}" style="width:42px;height:42px;object-fit:cover;border:1px solid #ccc;flex-shrink:0;"/>
+      <div style="flex:1;margin:0 10px;font-size:14px;">${esc(item.cap||'(no caption)')}</div>
+      <button class="delbtn" onclick="delGal('${k}')">REMOVE</button>
+    </div>`).join('');}
+});
+window.delGal=function(k){if(!confirm('Remove?'))return;remove(ref(db,'sidebarImages/'+k));};
+window.addGallery=function(){
+  const src=window._sUp||document.getElementById('a-si').value.trim();
+  if(!src){alert('Provide URL or upload a file.');return;}
+  push(ref(db,'sidebarImages'),{src,cap:document.getElementById('a-sc').value.trim()||null})
+  .then(()=>{document.getElementById('a-si').value='';document.getElementById('a-sc').value='';document.getElementById('a-sfp').style.display='none';window._sUp=null;flash('ok-gal','Added.');});
+};
+
+</script>
+
+</body>
+</html>
