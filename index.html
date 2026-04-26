@@ -1,3 +1,5 @@
+
+  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,8 +58,6 @@ a:hover{color:#cc0000;text-decoration:underline;}
 .bella-img{flex:0 0 280px;position:relative;background:#f0f0e0;border-left:1px solid #ccccaa;overflow:hidden;min-height:180px;}
 .bella-img img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;position:absolute;top:0;left:0;}
 .bella-img .no-img{display:flex;align-items:center;justify-content:center;position:absolute;inset:0;font-size:12px;color:#aaa;font-style:italic;}
-.bella-img::before{top:6px;left:6px;}
-.bella-img::after{bottom:6px;right:6px;transform:rotate(180deg);}
 
 /* APOD big window */
 #apod-win{flex:1;position:relative;background:#000;overflow:hidden;}
@@ -71,9 +71,9 @@ a:hover{color:#cc0000;text-decoration:underline;}
 /* ── SIDEBAR ── */
 #home-sidebar{display:flex;flex-direction:column;overflow:hidden;background:#fafafa;}
 .sb-head{background:#000080;color:#fff;font-family:Arial,sans-serif;font-size:9px;font-weight:bold;padding:5px 10px;letter-spacing:1.5px;text-transform:uppercase;flex-shrink:0;}
-.sb-sec{border-bottom:1px solid #ddd;flex-shrink:0;}
 
 /* epic */
+.sb-sec{border-bottom:1px solid #ddd;flex-shrink:0;}
 #epic-wrap{background:#000;position:relative;}
 #epic-img{width:100%;aspect-ratio:1;object-fit:cover;}
 #epic-loading{font-family:"Courier New",monospace;font-size:11px;color:#888;padding:12px;text-align:center;}
@@ -84,11 +84,24 @@ a:hover{color:#cc0000;text-decoration:underline;}
 #epic-date{font-size:9px;font-family:Arial,sans-serif;border:1px solid #444;background:#111;color:#fff;padding:1px 3px;width:90px;}
 #epic-time{font-family:Arial,sans-serif;font-size:9px;color:#888;text-align:center;padding:2px 0 3px;background:#111;}
 
-/* mars */
-#mars-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:5px;}
-#mars-grid img{width:100%;aspect-ratio:1;object-fit:cover;border:1px solid #ccc;display:block;cursor:zoom-in;}
-#mars-grid img:hover{opacity:0.8;}
-#mars-lbl{font-family:Arial,sans-serif;font-size:10px;color:#888;padding:0 6px 5px;}
+/* ── IN OTHER NEWS ── */
+#ion-sec{border-bottom:1px solid #ddd;flex-shrink:0;}
+#ion-head{display:flex;align-items:center;justify-content:space-between;background:#000080;padding:5px 10px;}
+#ion-head span{color:#fff;font-family:Arial,sans-serif;font-size:9px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;}
+#ion-head a{color:#aaaaff;font-family:Arial,sans-serif;font-size:9px;font-weight:normal;cursor:pointer;letter-spacing:0;text-transform:none;}
+#ion-head a:hover{color:#fff;}
+#ion-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:5px;background:#eee;}
+.ion-card{background:#fff;border:1px solid #ccc;overflow:hidden;position:relative;}
+.ion-card-img{width:100%;height:90px;object-fit:cover;display:block;cursor:zoom-in;}
+.ion-card-img:hover{opacity:0.85;}
+.ion-card-body{padding:4px 5px 5px;}
+.ion-card-cap{font-family:Arial,sans-serif;font-size:9px;color:#333;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.ion-card-link{font-family:Arial,sans-serif;font-size:9px;color:#000080;display:block;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ion-card-link:hover{color:#cc0000;}
+.ion-card-date{font-family:"Courier New",monospace;font-size:8px;color:#aaa;margin-top:2px;}
+.ion-empty{font-size:10px;color:#aaa;font-style:italic;padding:10px;text-align:center;font-family:Arial,sans-serif;grid-column:1/-1;background:#fff;}
+.ion-placeholder{background:#f5f5f5;border:1px dashed #ccc;height:90px;display:flex;align-items:center;justify-content:center;}
+.ion-placeholder span{font-size:9px;color:#bbb;font-family:Arial,sans-serif;font-style:italic;}
 
 /* sidebar gallery */
 #sb-gallery{flex:1;overflow-y:auto;}
@@ -118,6 +131,18 @@ a:hover{color:#cc0000;text-decoration:underline;}
 .nas-card img,.nas-card video,.nas-card iframe{max-width:100%;margin:8px 0;display:block;border:1px solid #ccc;}
 .nas-card iframe{width:100%;height:320px;border:1px solid #ccc;}
 .nas-date{font-family:Arial,sans-serif;font-size:10px;color:#888;margin-bottom:4px;}
+
+/* ── ION ARCHIVE PAGE ── */
+.ion-arc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.ion-arc-card{border:1px solid #ccc;background:#fff;overflow:hidden;}
+.ion-arc-card img{width:100%;height:110px;object-fit:cover;display:block;cursor:zoom-in;border-bottom:1px solid #ddd;}
+.ion-arc-card-body{padding:8px 10px 10px;}
+.ion-arc-date{font-family:Arial,sans-serif;font-size:10px;color:#888;margin-bottom:4px;}
+.ion-arc-cap{font-size:13px;line-height:1.5;color:#222;margin-bottom:4px;}
+.ion-arc-link{font-size:11px;color:#000080;font-style:italic;}
+.ion-arc-link:hover{color:#cc0000;}
+.ion-arc-no-img{width:100%;height:110px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #ddd;}
+.ion-arc-no-img span{font-size:11px;color:#bbb;font-style:italic;}
 
 /* ── ADMIN ── */
 #lock-wrap{max-width:340px;margin:50px auto;border:2px solid #000;padding:26px;background:#fffff0;text-align:center;}
@@ -171,6 +196,7 @@ a:hover{color:#cc0000;text-decoration:underline;}
   <a id="nav-blog" onclick="showPage('blog')">THE LETTERS</a>
   <a id="nav-archive-bella" onclick="showPage('archive-bella')">BELLISSIMA ARCHIVE</a>
   <a id="nav-archive-nasa" onclick="showPage('archive-nasa')">NASA ARCHIVE</a>
+  <a id="nav-archive-ion" onclick="showPage('archive-ion')">ION ARCHIVE</a>
   <a id="nav-admin" onclick="showPage('admin')">EDIT</a>
 </div>
 
@@ -218,8 +244,10 @@ a:hover{color:#cc0000;text-decoration:underline;}
 
       </div>
 
+      <!-- SIDEBAR -->
       <div id="home-sidebar">
 
+        <!-- EPIC -->
         <div class="sb-sec">
           <div class="sb-head"><span class="ldot"></span>EARTH — NASA EPIC</div>
           <div id="epic-wrap">
@@ -236,12 +264,18 @@ a:hover{color:#cc0000;text-decoration:underline;}
           <div id="epic-time"></div>
         </div>
 
-        <div class="sb-sec">
-          <div class="sb-head">MARS &mdash; CURIOSITY ROVER</div>
-          <div id="mars-grid"><div class="rl" style="padding:8px;grid-column:1/-1;">[ loading... ]</div></div>
-          <div id="mars-lbl"></div>
+        <!-- IN OTHER NEWS -->
+        <div id="ion-sec" class="sb-sec">
+          <div id="ion-head">
+            <span><span class="ldot"></span>IN OTHER NEWS...</span>
+            <a onclick="showPage('archive-ion')">[ archive ]</a>
+          </div>
+          <div id="ion-grid">
+            <div class="ion-empty">[ nothing yet ]</div>
+          </div>
         </div>
 
+        <!-- GALLERY -->
         <div id="sb-gallery">
           <div class="sb-head">IMAGE GALLERY</div>
           <div id="sb-gallery-grid"><div class="rl" style="padding:8px;font-size:11px;">[ no images added yet ]</div></div>
@@ -270,6 +304,13 @@ a:hover{color:#cc0000;text-decoration:underline;}
     <div class="sec-head">NASA ARCHIVE</div>
     <p style="font-size:13px;color:#666;font-style:italic;margin-bottom:20px;">Every image and video of the day, archived.</p>
     <div id="nasa-arc"><div class="rl">[ loading... ]</div></div>
+  </div>
+
+  <!-- ION ARCHIVE -->
+  <div id="page-archive-ion" class="page scroll">
+    <div class="sec-head">ION ARCHIVE &mdash; IN OTHER NEWS</div>
+    <p style="font-size:13px;color:#666;font-style:italic;margin-bottom:20px;">Everything that has appeared in the sidebar's <em>In Other News</em> panel, accumulated.</p>
+    <div class="ion-arc-grid" id="ion-arc"><div class="rl" style="grid-column:1/-1;">[ loading... ]</div></div>
   </div>
 
   <!-- ADMIN -->
@@ -328,7 +369,24 @@ a:hover{color:#cc0000;text-decoration:underline;}
         </div>
       </div>
 
-      <!-- 4. SIDEBAR GALLERY -->
+      <!-- 4. IN OTHER NEWS -->
+      <div class="af">
+        <h3>In Other News &mdash; Sidebar Panel</h3>
+        <p style="font-size:12px;color:#666;margin-bottom:12px;">The two most recent entries appear in the sidebar. All entries are saved to the ION Archive. Images are required; caption and link are optional.</p>
+        <div class="fr"><label>Image URL</label><input type="url" id="a-ii" placeholder="https://..."/></div>
+        <div class="fr">
+          <label>— OR — upload image</label>
+          <input type="file" id="a-if" accept="image/*" onchange="prevFile('a-if','a-ifp-img','a-ifp')" style="font-size:13px;"/>
+          <div class="ip" id="a-ifp"><img id="a-ifp-img" alt=""/></div>
+        </div>
+        <div class="fr"><label>Caption (shown below image)</label><textarea id="a-ic" rows="2" placeholder="A short description of what this is..."></textarea></div>
+        <div class="fr"><label>Link (optional — makes the card clickable)</label><input type="url" id="a-il" placeholder="https://..."/></div>
+        <div class="fr"><label>Link label (optional)</label><input type="text" id="a-ilb" placeholder="e.g. Read more"/></div>
+        <button class="rb" onclick="pubION()">PUBLISH TO ION</button><span class="ok" id="ok-ion"></span>
+        <div id="ion-adm-list" style="margin-top:16px;"></div>
+      </div>
+
+      <!-- 5. SIDEBAR GALLERY -->
       <div class="af">
         <h3>Sidebar Image Gallery</h3>
         <p style="font-size:12px;color:#666;margin-bottom:12px;">Images appear in the right-side panel. Click any to open full size.</p>
@@ -343,7 +401,7 @@ a:hover{color:#cc0000;text-decoration:underline;}
         <div id="gal-adm-list" style="margin-top:14px;"></div>
       </div>
 
-      <!-- 5. NEW LETTER -->
+      <!-- 6. NEW LETTER -->
       <div class="af">
         <h3>New Letter</h3>
         <div class="fr"><label>Title</label><input type="text" id="a-lt" placeholder="Letter title"/></div>
@@ -354,13 +412,13 @@ a:hover{color:#cc0000;text-decoration:underline;}
         <button class="rb" onclick="pubLetter()">PUBLISH LETTER</button><span class="ok" id="ok-letter"></span>
       </div>
 
-      <!-- 6. MANAGE LETTERS -->
+      <!-- 7. MANAGE LETTERS -->
       <div class="af">
         <h3>Manage Letters</h3>
         <div id="adm-letters"><div class="rl">[ loading... ]</div></div>
       </div>
 
-      <!-- 7. CHANGE PASSWORD -->
+      <!-- 8. CHANGE PASSWORD -->
       <div class="af">
         <h3>Change Password</h3>
         <div class="fr"><label>New password</label><input type="password" id="a-np1" placeholder="new password"/></div>
@@ -456,6 +514,7 @@ window.prevFile=function(fid,iid,did){
     document.getElementById(did).style.display='block';
     if(fid==='a-bf')window._bUp=ev.target.result;
     if(fid==='a-sf')window._sUp=ev.target.result;
+    if(fid==='a-if')window._iUp=ev.target.result;
   };
   r.readAsDataURL(file);
 };
@@ -600,6 +659,93 @@ onValue(ref(db,'nasaArchive'),s=>{
   }).join('');
 });
 
+/* ── IN OTHER NEWS ── */
+onValue(ref(db,'ionEntries'),s=>{
+  const d=s.val();
+  const grid=document.getElementById('ion-grid');
+  const arc=document.getElementById('ion-arc');
+  const admList=document.getElementById('ion-adm-list');
+
+  if(!d){
+    grid.innerHTML='<div class="ion-empty">[ nothing yet ]</div>';
+    if(arc)arc.innerHTML='<div class="rl" style="grid-column:1/-1;">[ no ION entries yet ]</div>';
+    if(admList)admList.innerHTML='<div class="rl" style="font-size:11px;">[ none yet ]</div>';
+    return;
+  }
+
+  const entries=Object.entries(d).sort((a,b)=>(b[1].date||'').localeCompare(a[1].date||''));
+
+  /* sidebar — show 2 most recent */
+  const top2=entries.slice(0,2);
+  let sideCells=top2.map(([k,item])=>{
+    const clickAttr=item.link?`onclick="window.open('${esc(item.link)}','_blank')" style="cursor:pointer;"`:`onclick="openLB('${esc(item.src)}','image')" style="cursor:zoom-in;"`;
+    return `<div class="ion-card" ${clickAttr}>
+      <img class="ion-card-img" src="${esc(item.src)}" alt="${esc(item.cap||'')}"/>
+      <div class="ion-card-body">
+        ${item.cap?`<div class="ion-card-cap">${esc(item.cap)}</div>`:''}
+        ${item.link?`<a class="ion-card-link" href="${esc(item.link)}" target="_blank">${esc(item.linkLabel||item.link)}</a>`:''}
+        <div class="ion-card-date">${fmt(item.date)}</div>
+      </div>
+    </div>`;
+  });
+  /* pad to 2 if only 1 entry */
+  while(sideCells.length<2){
+    sideCells.push(`<div class="ion-card"><div class="ion-placeholder"><span>—</span></div></div>`);
+  }
+  grid.innerHTML=sideCells.join('');
+
+  /* ION archive page */
+  if(arc){
+    arc.innerHTML=entries.map(([k,item])=>`
+      <div class="ion-arc-card">
+        ${item.src
+          ?`<img src="${esc(item.src)}" alt="${esc(item.cap||'')}" onclick="openLB('${esc(item.src)}','image')"/>`
+          :`<div class="ion-arc-no-img"><span>no image</span></div>`}
+        <div class="ion-arc-card-body">
+          <div class="ion-arc-date">${fmt(item.date)}</div>
+          ${item.cap?`<div class="ion-arc-cap">${esc(item.cap)}</div>`:''}
+          ${item.link?`<a class="ion-arc-link" href="${esc(item.link)}" target="_blank">&#8594; ${esc(item.linkLabel||item.link)}</a>`:''}
+        </div>
+      </div>`).join('');
+  }
+
+  /* admin manage list */
+  if(admList){
+    admList.innerHTML=`<div style="font-family:Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:6px;">existing entries (newest first)</div>`+
+    entries.map(([k,item])=>`
+      <div class="adm-row">
+        ${item.src?`<img src="${esc(item.src)}" style="width:42px;height:42px;object-fit:cover;border:1px solid #ccc;flex-shrink:0;"/>`:'<div style="width:42px;height:42px;background:#eee;flex-shrink:0;border:1px solid #ccc;"></div>'}
+        <div style="flex:1;margin:0 8px;font-size:12px;overflow:hidden;">
+          <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(item.cap||'(no caption)')}</div>
+          <div style="font-size:10px;color:#888;">${fmt(item.date)}</div>
+        </div>
+        <button class="delbtn" onclick="delION('${k}')">REMOVE</button>
+      </div>`).join('');
+  }
+});
+
+window.pubION=function(){
+  const src=window._iUp||document.getElementById('a-ii').value.trim();
+  if(!src){alert('An image (URL or upload) is required.');return;}
+  const entry={
+    src,
+    cap:document.getElementById('a-ic').value.trim()||null,
+    link:document.getElementById('a-il').value.trim()||null,
+    linkLabel:document.getElementById('a-ilb').value.trim()||null,
+    date:new Date().toISOString()
+  };
+  push(ref(db,'ionEntries'),entry).then(()=>{
+    document.getElementById('a-ii').value='';
+    document.getElementById('a-ic').value='';
+    document.getElementById('a-il').value='';
+    document.getElementById('a-ilb').value='';
+    document.getElementById('a-ifp').style.display='none';
+    window._iUp=null;
+    flash('ok-ion','Published to ION.');
+  });
+};
+window.delION=function(k){if(!confirm('Remove this ION entry?'))return;remove(ref(db,'ionEntries/'+k));};
+
 /* ── SIDEBAR GALLERY ── */
 onValue(ref(db,'sidebarImages'),s=>{
   const d=s.val();
@@ -666,21 +812,8 @@ window.epicToggle=function(){
 };
 window.epicDate=d=>{if(ePl)epicToggle();fetchEPIC(d);};
 
-/* ── MARS ── */
-async function fetchMars(){
-  try{
-    const res=await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?api_key=${NK}`);
-    const d=await res.json();const photos=(d.latest_photos||[]).slice(0,4);
-    const grid=document.getElementById('mars-grid');
-    if(!photos.length){grid.innerHTML='<span class="rl" style="font-size:11px;padding:8px;grid-column:1/-1;">No photos.</span>';return;}
-    grid.innerHTML=photos.map(p=>{const src=p.img_src.replace('http://','https://');return`<img src="${src}" alt="Mars" loading="lazy" onclick="openLB('${src}','image')" title="${p.camera?.full_name||''}"/>`;}).join('');
-    document.getElementById('mars-lbl').textContent=`Sol ${photos[0].sol} · Curiosity`;
-  }catch(e){document.getElementById('mars-grid').innerHTML='<span class="rl" style="font-size:11px;padding:8px;grid-column:1/-1;">Unavailable.</span>';}
-}
-
 /* ── INIT ── */
 fetchEPIC();
-fetchMars();
 </script>
 
 </body>
