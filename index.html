@@ -424,7 +424,6 @@ a:hover{color:#cc0000;text-decoration:underline;}
 </head>
 <body>
 
-<!-- Lightbox -->
 <div id="lb" onclick="if(event.target===this)closeLB()">
   <button id="lb-x" onclick="closeLB()">&#x2715;</button>
   <img id="lb-img" src="" alt="" style="display:none;"/>
@@ -432,7 +431,6 @@ a:hover{color:#cc0000;text-decoration:underline;}
   <iframe id="lb-ifr" src="" style="display:none;" allowfullscreen></iframe>
 </div>
 
-<!-- Hidden YouTube player -->
 <iframe id="yt-frame"
   src="https://www.youtube.com/embed/zy75TkJci5c?enablejsapi=1&autoplay=0&controls=0&origin=https://kosmoso.bladedestroyer.workers.dev"
   allow="autoplay"
@@ -447,7 +445,6 @@ a:hover{color:#cc0000;text-decoration:underline;}
   <div class="sub">a personal record of the universe</div>
 </div>
 
-<!-- Music player -->
 <div id="music-bar" title="click to play / pause">
   <span id="music-icon">&#9834;</span>
   <span id="music-label">angels are hard to find &mdash; hank williams jr.</span>
@@ -465,7 +462,6 @@ a:hover{color:#cc0000;text-decoration:underline;}
 
 <div id="shell">
 
-  <!-- HOME -->
   <div id="page-home" class="page active">
     <div id="home-grid">
 
@@ -512,15 +508,13 @@ a:hover{color:#cc0000;text-decoration:underline;}
         </div>
 
         <div id="apod-win">
-          <div id="apod-loader">[ image of the day ]</div>
+          <div id="apod-loader"></div>
           <div class="apod-badge" id="apod-badge"></div>
           <a id="apod-link-btn" target="_blank">&#8599; open link</a>
           <div id="apod-overlay"><span id="apod-t"></span><span id="apod-cr"></span></div>
         </div>
 
-      </div><!-- /home-main -->
-
-      <div id="home-sidebar">
+      </div><div id="home-sidebar">
 
         <div id="ion-sec" class="sb-sec">
           <div id="ion-head">
@@ -539,9 +533,7 @@ a:hover{color:#cc0000;text-decoration:underline;}
           </div>
         </div>
 
-      </div><!-- /home-sidebar -->
-
-      <div id="home-photo">
+      </div><div id="home-photo">
         <img id="home-photo-img" src="" alt="" style="display:none;" onclick="openLB(this.src,'image')"/>
         <div id="home-photo-empty"><span>[ no photo set ]</span><span style="font-size:11px;">add one in EDIT</span></div>
       </div>
@@ -549,23 +541,19 @@ a:hover{color:#cc0000;text-decoration:underline;}
     </div>
   </div>
 
-  <!-- THE LETTERS -->
   <div id="page-blog" class="page scroll">
     <div class="sec-head">THE LETTERS</div>
     <div style="font-style:italic;color:#555;font-size:16px;border-left:3px solid #000080;padding:10px 16px;margin-bottom:32px;background:#f8f8ff;line-height:1.65;">Letters written to no one in particular and everyone at once. About space, physics, cricket, boxing, and the strangeness of being alive on a rock hurtling through a universe we barely understand.</div>
-    <!-- List view -->
     <div id="letter-list-wrap">
       <div id="blog-list"><div class="rl">[ loading... ]</div></div>
       <div class="pg-controls" id="blog-pg-ctrl" style="display:none;"></div>
     </div>
-    <!-- Detail view -->
     <div id="letter-detail-wrap">
       <div id="letter-back" onclick="closeLetter()">&#8592; Back to all letters</div>
       <div id="letter-detail-inner"></div>
     </div>
   </div>
 
-  <!-- BELLISSIMA ARCHIVE -->
   <div id="page-archive-bella" class="page scroll">
     <div class="sec-head">BELLISSIMA ARCHIVE</div>
     <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:25px;">Every physics fact, every day. The accumulation of wonder.</p>
@@ -573,7 +561,6 @@ a:hover{color:#cc0000;text-decoration:underline;}
     <div class="pg-controls" id="bella-pg-ctrl" style="display:none;"></div>
   </div>
 
-  <!-- NASA ARCHIVE -->
   <div id="page-archive-nasa" class="page scroll">
     <div class="sec-head">NASA ARCHIVE</div>
     <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:25px;">Every image and video of the day, archived.</p>
@@ -581,7 +568,6 @@ a:hover{color:#cc0000;text-decoration:underline;}
     <div class="pg-controls" id="nasa-pg-ctrl" style="display:none;"></div>
   </div>
 
-  <!-- ION ARCHIVE -->
   <div id="page-archive-ion" class="page scroll">
     <div class="sec-head">ION ARCHIVE &mdash; IN OTHER NEWS</div>
     <p style="font-size:15px;color:#666;font-style:italic;margin-bottom:25px;">Everything that has appeared in the sidebar's <em>In Other News</em> panel, accumulated.</p>
@@ -589,7 +575,6 @@ a:hover{color:#cc0000;text-decoration:underline;}
     <div class="pg-controls" id="ion-pg-ctrl" style="display:none;"></div>
   </div>
 
-  <!-- ADMIN -->
   <div id="page-admin" class="page scroll">
     <div class="sec-head">EDIT &mdash; KOSMOSO</div>
 
@@ -696,6 +681,11 @@ a:hover{color:#cc0000;text-decoration:underline;}
         <div class="fr"><label>Title</label><input type="text" id="a-lt" placeholder="Letter title"/></div>
         <div class="fr"><label>Body — separate paragraphs with a blank line</label><textarea id="a-lb" rows="10"></textarea></div>
         <div class="fr"><label>Image URL (optional)</label><input type="url" id="a-li" placeholder="https://..."/></div>
+        <div class="fr">
+          <label>— OR — upload image from computer</label>
+          <input type="file" id="a-lf" accept="image/*" onchange="prevFile('a-lf','a-lfp-img','a-lfp')" style="font-size:15px;"/>
+          <div class="ip" id="a-lfp"><img id="a-lfp-img" alt=""/></div>
+        </div>
         <div class="fr"><label>External link (optional)</label><input type="url" id="a-ll" placeholder="https://..."/></div>
         <div class="fr"><label>Link label</label><input type="text" id="a-llb" placeholder="e.g. Read the full paper"/></div>
         <button class="rb" onclick="pubLetter()">PUBLISH LETTER</button><span class="ok" id="ok-letter"></span>
@@ -718,10 +708,7 @@ a:hover{color:#cc0000;text-decoration:underline;}
     </div>
   </div>
 
-</div><!-- /shell -->
-
-<!-- YouTube IFrame API -->
-<script src="https://www.youtube.com/iframe_api"></script>
+</div><script src="https://www.youtube.com/iframe_api"></script>
 <script>
 /* ── MUSIC PLAYER ── */
 let ytPlayer = null;
@@ -842,6 +829,7 @@ window.prevFile=function(fid,iid,did){
     if(fid==='a-sf')window._sUp=ev.target.result;
     if(fid==='a-if')window._iUp=ev.target.result;
     if(fid==='a-hpf')window._hpUp=ev.target.result;
+    if(fid==='a-lf')window._lUp=ev.target.result;
   };
   r.readAsDataURL(file);
 };
@@ -859,7 +847,7 @@ window.saveIntro=function(){
 const LETTERS_PER_PAGE = 8;
 let _allLetters = [];
 let _lettersPage = 0;
-const _letterMap = {}; // key → letter object
+const _letterMap = {}; 
 
 onValue(ref(db,'letters'),s=>{
   const d=s.val();
@@ -945,12 +933,20 @@ function renderAdmLetters(entries){
 window.pubLetter=function(){
   const t=document.getElementById('a-lt').value.trim(),b=document.getElementById('a-lb').value.trim();
   if(!t||!b){alert('Title and body required.');return;}
-  push(ref(db,'letters'),{title:t,content:b,date:new Date().toISOString(),img:document.getElementById('a-li').value.trim()||null,link:document.getElementById('a-ll').value.trim()||null,linkLabel:document.getElementById('a-llb').value.trim()||null})
-  .then(()=>{['a-lt','a-lb','a-li','a-ll','a-llb'].forEach(id=>document.getElementById(id).value='');flash('ok-letter','Published.');});
+  const imgStr = window._lUp || document.getElementById('a-li').value.trim() || null;
+  push(ref(db,'letters'),{title:t,content:b,date:new Date().toISOString(),img:imgStr,link:document.getElementById('a-ll').value.trim()||null,linkLabel:document.getElementById('a-llb').value.trim()||null})
+  .then(()=>{
+    ['a-lt','a-lb','a-li','a-ll','a-llb'].forEach(id=>document.getElementById(id).value='');
+    const prev = document.getElementById('a-lfp');
+    if(prev) prev.style.display='none';
+    const finput = document.getElementById('a-lf');
+    if(finput) finput.value='';
+    window._lUp=null;
+    flash('ok-letter','Published.');
+  });
 };
 window.delLetter=function(k){if(!confirm('Delete this letter?'))return;remove(ref(db,'letters/'+k));};
 
-/* BELLISSIMA */
 /* BELLISSIMA */
 const BELLA_PER_PAGE=6;
 let _allBella=[];
@@ -1235,7 +1231,7 @@ onValue(ref(db,'sidebarImages'),s=>{
     </div>`).join('');
   if(adm){adm.innerHTML=Object.entries(d).map(([k,item])=>`
     <div class="adm-row">
-      <img src="${esc(item.src)}" style="width:42px;height:42px;object-fit:contain;background:#eee;border:1px solid #ccc;flex-shrink:0;"/>
+      <img src="${esc(item.src)}" style="width:42px;height:42px;object-fit:cover;border:1px solid #ccc;flex-shrink:0;"/>
       <div style="flex:1;margin:0 10px;font-size:14px;">${esc(item.cap||'(no caption)')}</div>
       <button class="delbtn" onclick="delGal('${k}')">REMOVE</button>
     </div>`).join('');}
@@ -1247,6 +1243,8 @@ window.addGallery=function(){
   push(ref(db,'sidebarImages'),{src,cap:document.getElementById('a-sc').value.trim()||null})
   .then(()=>{['a-si','a-sc'].forEach(id=>document.getElementById(id).value='');document.getElementById('a-sfp').style.display='none';window._sUp=null;flash('ok-gal','Added.');});
 };
+
 </script>
+
 </body>
 </html>
