@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,9 +53,9 @@ a:hover{color:#cc0000;text-decoration:underline;}
 #bella-title-d{font-size:20px;font-weight:bold;margin-bottom:5px;line-height:1.2;}
 #bella-text-d{font-size:13px;line-height:1.65;color:#333;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
 #bella-wiki-d{font-size:11px;font-style:italic;margin-top:5px;}
-.bella-img{flex:0 0 280px;position:relative;background:#f0f0e0;border-left:1px solid #ccccaa;overflow:hidden;}
-.bella-img img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;}
-.bella-img .no-img{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:#aaa;font-style:italic;}
+.bella-img{flex:0 0 280px;position:relative;background:#f0f0e0;border-left:1px solid #ccccaa;overflow:hidden;min-height:180px;}
+.bella-img img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;position:absolute;top:0;left:0;}
+.bella-img .no-img{display:flex;align-items:center;justify-content:center;position:absolute;inset:0;font-size:12px;color:#aaa;font-style:italic;}
 .bella-img::before,.bella-img::after{content:'❧';position:absolute;font-size:18px;color:rgba(136,136,102,0.8);z-index:3;background:rgba(255,255,240,0.7);line-height:1;padding:2px 4px;}
 .bella-img::before{top:6px;left:6px;}
 .bella-img::after{bottom:6px;right:6px;transform:rotate(180deg);}
@@ -77,7 +76,7 @@ a:hover{color:#cc0000;text-decoration:underline;}
 
 /* epic */
 #epic-wrap{background:#000;position:relative;}
-#epic-img{width:100%;display:block;aspect-ratio:1;object-fit:cover;display:none;}
+#epic-img{width:100%;aspect-ratio:1;object-fit:cover;}
 #epic-loading{font-family:"Courier New",monospace;font-size:11px;color:#888;padding:12px;text-align:center;}
 #epic-controls{display:flex;align-items:center;justify-content:center;gap:4px;padding:4px;background:#111;border-top:1px solid #333;}
 .ebtn{background:#000080;color:#fff;border:1px outset #8888cc;font-size:10px;padding:2px 7px;cursor:pointer;font-family:Arial,sans-serif;}
@@ -225,7 +224,7 @@ a:hover{color:#cc0000;text-decoration:underline;}
         <div class="sb-sec">
           <div class="sb-head"><span class="ldot"></span>EARTH — NASA EPIC</div>
           <div id="epic-wrap">
-            <img id="epic-img" alt="Earth from space"/>
+            <img id="epic-img" alt="Earth from space" style="display:none;"/>
             <div id="epic-loading">[ contacting EPIC... ]</div>
           </div>
           <div id="epic-controls">
@@ -639,12 +638,12 @@ async function fetchEPIC(date){
   try{
     document.getElementById('epic-loading').style.display='block';
     document.getElementById('epic-img').style.display='none';
-    const res=await fetch(url);const data=await res.json();
+    const res=await fetch(url,{mode:'cors'});if(!res.ok)throw new Error('HTTP '+res.status);const data=await res.json();
     if(!data||!data.length){document.getElementById('epic-loading').textContent='[ no images for this date ]';return;}
     eP=data;eI=0;
     document.getElementById('epic-date').value=data[0].date.slice(0,10);
     eShow(0);
-  }catch(e){document.getElementById('epic-loading').textContent='[ EPIC unavailable ]';}
+  }catch(e){console.error('EPIC error:',e);document.getElementById('epic-loading').textContent='[ EPIC unavailable — '+e.message+' ]';}
 }
 function eShow(i){
   if(!eP.length)return;
@@ -652,8 +651,10 @@ function eShow(i){
   const p=eP[eI];const d=p.date.slice(0,10).replace(/-/g,'/');
   const src=`https://epic.gsfc.nasa.gov/archive/natural/${d}/jpg/${p.image}.jpg`;
   const img=document.getElementById('epic-img');
-  img.src=src;img.style.display='none';
+  img.style.display='none';
+  img.onerror=()=>{document.getElementById('epic-loading').textContent='[ image load failed ]';img.style.display='none';};
   img.onload=()=>{document.getElementById('epic-loading').style.display='none';img.style.display='block';};
+  img.src=src;
   document.getElementById('epic-ctr').textContent=`${eI+1}/${eP.length}`;
   document.getElementById('epic-time').textContent=p.date?p.date.slice(11,16)+' UTC':'';
 }
